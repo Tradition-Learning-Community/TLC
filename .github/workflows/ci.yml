@@ -11,17 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Install deps
-        run: pnpm install
-      - name: Build
-        run: pnpm build
-      - name: Lint
-        run: pnpm lint
-      - name: Run tests
-        run: pnpm test -- --run
+
       - name: Install pnpm
         run: npm install -g pnpm
+
+      - name: Install deps
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Run tests
+        run: pnpm test -- --run
