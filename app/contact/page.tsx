@@ -5,20 +5,38 @@ export const metadata = {
 
 const ContactPage = () => {
   return (
-    <section className="mx-auto max-w-2xl px-6 py-16">
-      <h1 className="text-3xl font-semibold">Contact</h1>
+    <section className="content-shell">
+      <header className="content-header">
+        <span className="content-kicker">Restons en lien</span>
+        <h1 className="content-title">Contact</h1>
+        <p className="content-lead">
+          Pour toute question, collaboration ou contribution, contactez l'équipe
+          TLC via email ou via le dépôt GitHub.
+        </p>
+      </header>
 
-      <p className="mt-6 text-zinc-700">
-        Pour toute question, collaboration ou contribution, écrivez-nous à :
-      </p>
+      <div className="mt-8 space-y-5">
+        <article className="content-panel">
+          <h2 className="content-panel-title">Email</h2>
+          <p className="content-panel-copy">
+            Réponse rapide pour les partenariats, questions techniques et
+            demandes de collaboration.
+          </p>
+          <p className="mt-4 text-lg font-semibold text-[#062147] dark:text-white">
+            <a href="mailto:contact@tlc.example" className="text-primary">
+              contact@tlc.example
+            </a>
+          </p>
+        </article>
 
-      <p className="mt-4 font-medium">
-        <a href="mailto:contact@tlc.example" className="text-primary">
-          contact@tlc.example
-        </a>
-      </p>
-
-      <p className="mt-6 text-zinc-700">Ou ouvrez une issue sur le dépôt GitHub pour discuter d'un sujet précis.</p>
+        <article className="content-panel">
+          <h2 className="content-panel-title">GitHub</h2>
+          <p className="content-panel-copy">
+            Ouvrez une issue sur le dépôt pour discuter d'un sujet précis,
+            proposer une amélioration ou signaler un bug.
+          </p>
+        </article>
+      </div>
     </section>
   )
 }

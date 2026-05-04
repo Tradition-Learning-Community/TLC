@@ -1,3 +1,23 @@
 [
-  { "id": "ev-1", "title": "Hackathon TLC", "date": "2026-06-01" }
+  {
+    "id": "ev-1",
+    "title": "Atelier : Modèles légers en production",
+    "date": "2026-05-15",
+    "type": "Workshop",
+    "description": "Découvrez comment déployer des modèles compacts efficacement"
+  },
+  {
+    "id": "ev-2",
+    "title": "Webinaire : Interprétabilité des modèles IA",
+    "date": "2026-05-22",
+    "type": "Webinaire",
+    "description": "Comprendre et expliquer les décisions des modèles IA"
+  },
+  {
+    "id": "ev-3",
+    "title": "Hackathon TLC #2",
+    "date": "2026-06-05",
+    "type": "Hackathon",
+    "description": "48h de collaboration intensive autour d'IA responsable"
+  }
 ]

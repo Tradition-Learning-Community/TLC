@@ -1,8 +1,26 @@
 [
   {
     "id": "user-alice",
-    "name": "Alice",
-    "skills": ["ML", "Data"],
-    "points": 120
+    "name": "Dr. Alice Martin",
+    "role": "Fondatrice & Chercheure",
+    "skills": ["ML", "Data", "Research"],
+    "points": 450,
+    "projects": 5
+  },
+  {
+    "id": "user-bob",
+    "name": "Bob Chen",
+    "role": "Lead Engineer",
+    "skills": ["Backend", "DevOps", "Python"],
+    "points": 380,
+    "projects": 8
+  },
+  {
+    "id": "user-claire",
+    "name": "Claire Dupont",
+    "role": "Data Scientist",
+    "skills": ["ML", "Data", "Statistics"],
+    "points": 250,
+    "projects": 3
   }
 ]

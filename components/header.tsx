@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { SiGithub } from "react-icons/si";
+import { Logo } from "@/components/logo";
 import { ModeToggle } from "./ModeToggle";
 
 const menuItems = [
@@ -13,25 +15,31 @@ const menuItems = [
   { name: "Contact", href: "/contact" },
 ];
 const Header = () => {
+  const pathname = usePathname();
   const [menuState, setMenuState] = useState(false);
+
+  const closeMenu = () => setMenuState(false);
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50">
+      <header className="fixed top-0 left-0 right-0 z-50 px-3 pt-3 md:px-5">
         <nav
           role="navigation"
           aria-label="Main navigation"
           data-state={menuState && "active"}
-          className="fixed z-20 w-full border-b border-dashed bg-background backdrop-blur md:relative dark:bg-zinc-950/50 lg:dark:bg-transparent"
+          className="mx-auto w-full max-w-6xl rounded-2xl border border-[rgba(11,61,145,0.15)] bg-transparent shadow-[0_14px_35px_rgba(6,33,71,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-[rgba(7,24,51,0.75)]"
         >
-          <div className="m-auto max-w-5xl px-6">
-            <div className="flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
-              <div className="flex w-full justify-between lg:w-auto">
+          <div className="relative overflow-hidden px-5 md:px-6">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#d4af37] to-transparent" />
+
+            <div className="flex flex-wrap items-center justify-between gap-4 py-3 lg:gap-0 lg:py-4">
+              <div className="flex w-full items-center justify-between lg:w-auto">
                 <Link
                   href="/"
                   aria-label="home"
-                  className="flex items-center space-x-2"
+                  className="group inline-flex items-center rounded-xl px-2 py-1 transition-transform duration-300 hover:scale-[1.02]"
                 >
-                  {/* <Logo /> */} <h1>TLC</h1>
+                  <Logo uniColor className="h-5 text-[#062147] dark:text-white" />
                 </Link>
 
                 <button
@@ -39,34 +47,50 @@ const Header = () => {
                   aria-controls="site-menu"
                   aria-expanded={menuState}
                   aria-label={menuState == true ? "Close Menu" : "Open Menu"}
-                  className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
+                  className="relative z-20 -m-1 block cursor-pointer rounded-xl border border-[rgba(11,61,145,0.16)] bg-white/70 p-2.5 shadow-sm transition-colors hover:bg-white lg:hidden dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10"
                 >
                   <Menu className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
                   <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
                 </button>
               </div>
 
-              <div id="site-menu" className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
-                <div className="lg:pr-4">
-                  <ul className="space-y-6 text-base lg:flex lg:gap-8 lg:space-y-0 lg:text-sm">
+              <div
+                id="site-menu"
+                className="in-data-[state=active]:block mb-4 hidden w-full rounded-2xl border border-[rgba(11,61,145,0.12)] bg-white/90 p-5 shadow-xl shadow-zinc-300/20 md:flex-nowrap lg:mb-0 lg:flex lg:w-auto lg:items-center lg:justify-end lg:gap-5 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none dark:border-white/10 dark:bg-[rgba(7,24,51,0.92)] dark:shadow-none dark:lg:bg-transparent"
+              >
+                <div className="lg:pr-2">
+                  <ul className="space-y-3 text-base lg:flex lg:items-center lg:gap-2 lg:space-y-0 lg:text-sm">
                     {menuItems.map((item, index) => (
                       <li key={index}>
                         <Link
                           href={item.href}
-                          className="text-muted-foreground hover:text-accent-foreground block duration-150"
+                          onClick={closeMenu}
+                          className={`group relative inline-flex items-center rounded-full px-3 py-2 font-medium transition-all duration-200 ${
+                            pathname === item.href
+                              ? "bg-[#0b3d91] text-white shadow-[0_8px_20px_rgba(11,61,145,0.25)]"
+                              : "text-muted-foreground hover:bg-[#0b3d91]/8 hover:text-[#062147] dark:hover:bg-white/10 dark:hover:text-white"
+                          }`}
                         >
-                          <span>{item.name}</span>
+                          <span className="relative">
+                            {item.name}
+                            <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-all duration-300 group-hover:w-full" />
+                          </span>
                         </Link>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="flex w-full items-center flex-col space-y-4 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l lg:pl-6">
+                <div className="mt-5 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center md:w-fit lg:mt-0 lg:border-l lg:border-[rgba(11,61,145,0.14)] lg:pl-5 dark:lg:border-white/15">
                   <ModeToggle />
 
-                  <Link href="#" className="text-2xl">
-                    <SiGithub />
+                  <Link
+                    href="#"
+                    className="group inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(11,61,145,0.16)] bg-white px-4 py-2 text-sm font-medium text-[#062147] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#d4af37] hover:bg-[#d4af37]/15 dark:border-white/15 dark:bg-white/5 dark:text-white"
+                  >
+                    <SiGithub className="text-base" />
+                    <span>GitHub</span>
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </Link>
                 </div>
               </div>

@@ -127,10 +127,83 @@
   }
 }
 
+@layer components {
+  .content-shell {
+    @apply mx-auto w-full max-w-6xl px-6 py-14 md:py-16;
+  }
+
+  .content-header {
+    @apply relative overflow-hidden rounded-3xl border border-[rgba(11,61,145,0.12)] bg-[linear-gradient(120deg,rgba(11,61,145,0.09),rgba(212,175,55,0.1))] p-7 text-center md:p-9;
+  }
+
+  .content-kicker {
+    @apply inline-flex items-center rounded-full border border-[rgba(11,61,145,0.15)] bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[#0b3d91] dark:border-white/15 dark:bg-white/5 dark:text-[#d4af37];
+  }
+
+  .content-title {
+    @apply mt-4 text-3xl font-semibold tracking-tight text-[#062147] md:text-4xl dark:text-white;
+  }
+
+  .content-lead {
+    @apply mx-auto mt-4 max-w-3xl text-base leading-8 text-slate-700 dark:text-slate-300;
+  }
+
+  .content-grid {
+    @apply mt-8 grid gap-5 md:grid-cols-2;
+  }
+
+  .content-panel {
+    @apply rounded-3xl border border-[rgba(11,61,145,0.12)] bg-white p-6 shadow-[0_18px_35px_rgba(6,33,71,0.08)] dark:border-white/10 dark:bg-[rgba(7,24,51,0.8)];
+  }
+
+  .content-panel-title {
+    @apply text-lg font-semibold text-[#062147] dark:text-white;
+  }
+
+  .content-panel-copy {
+    @apply mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300;
+  }
+
+  .content-chip-row {
+    @apply mt-4 flex flex-wrap gap-2;
+  }
+
+  .content-chip {
+    @apply rounded-full border border-[rgba(11,61,145,0.14)] bg-[#0b3d91]/5 px-3 py-1 text-xs font-medium text-[#0b3d91] dark:border-white/15 dark:bg-white/5 dark:text-slate-200;
+  }
+
+  .content-list {
+    @apply mt-4 space-y-3;
+  }
+
+  .content-list-item {
+    @apply rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200;
+  }
+
+  .content-api-link {
+    @apply inline-flex items-center rounded-2xl border border-dashed border-[#d4af37]/60 bg-[#d4af37]/10 px-4 py-2 text-sm font-medium text-[#062147] transition-colors hover:bg-[#d4af37]/20 dark:text-white;
+  }
+
+  /* Background for homepage to match hero visual style */
+  .home-hero-bg {
+    @apply relative overflow-hidden;
+    background-image: radial-gradient(circle at 8% 10%, rgba(212,175,55,0.18) 0%, transparent 32%), radial-gradient(circle at 92% 8%, rgba(11,61,145,0.22) 0%, transparent 30%), linear-gradient(180deg, rgba(6,20,45,0.03) 0%, transparent 40%);
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+  }
+}
+
 .code {
   font-family: 'JetBrains Mono', monospace;
 }
 
 body {
   font-family: 'Inter', sans-serif;
+}
+
+/* Smooth anchor scrolling and offset for fixed header */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
 }

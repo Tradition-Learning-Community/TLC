@@ -1,11 +1,22 @@
 export default function DiscussionsPage(){
   return (
-    <section className="mx-auto max-w-4xl px-6 py-16">
-      <h1 className="text-3xl font-semibold">Discussions</h1>
-      <p className="mt-4 text-zinc-700">Espace de discussion (stub). Voir l'API pour les threads.</p>
-      <div className="mt-6">
-        <a href="/api/discussions" className="text-primary">/api/discussions</a>
-      </div>
+    <section className="content-shell">
+      <header className="content-header">
+        <span className="content-kicker">Forum technique</span>
+        <h1 className="content-title">Discussions</h1>
+        <p className="content-lead">
+          Espace de discussion pour les threads communautaires, questions de
+          recherche et retours sur les projets.
+        </p>
+      </header>
+
+      <article className="content-panel mt-8">
+        <h2 className="content-panel-title">Accès API</h2>
+        <p className="content-panel-copy">Consultez la liste des discussions via l'endpoint dédié.</p>
+        <div className="mt-4">
+          <a href="/api/discussions" className="content-api-link">/api/discussions</a>
+        </div>
+      </article>
     </section>
   )
 }
