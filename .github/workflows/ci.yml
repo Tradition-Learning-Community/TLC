@@ -23,6 +23,5 @@ jobs:
         run: pnpm lint
       - name: Run tests
         run: pnpm test -- --run
-
       - name: Install pnpm
         run: npm install -g pnpm
