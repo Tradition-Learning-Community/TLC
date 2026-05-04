@@ -7,17 +7,24 @@ export default function ProjectsPage(){
   const [refreshKey, setRefreshKey] = useState(0)
 
   return (
-    <section className="mx-auto max-w-4xl px-6 py-16">
-      <h1 className="text-3xl font-semibold">Projets</h1>
+    <section className="content-shell">
+      <header className="content-header">
+        <span className="content-kicker">Pilotage</span>
+        <h1 className="content-title">Projets</h1>
+        <p className="content-lead">
+          Créez de nouvelles initiatives, suivez l'avancement et consultez les
+          projets existants de la communauté TLC.
+        </p>
+      </header>
 
-      <div className="mt-6 grid gap-8 md:grid-cols-2">
-        <div>
-          <h2 className="text-lg font-medium">Créer un projet</h2>
+      <div className="mt-8 grid gap-8 md:grid-cols-2">
+        <div className="content-panel">
+          <h2 className="content-panel-title">Créer un projet</h2>
           <ProjectForm onCreated={() => setRefreshKey(k => k + 1)} />
         </div>
 
-        <div>
-          <h2 className="text-lg font-medium">Projets existants</h2>
+        <div className="content-panel">
+          <h2 className="content-panel-title">Projets existants</h2>
           <ProjectList refreshKey={refreshKey} />
         </div>
       </div>

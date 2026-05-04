@@ -1,5 +1,6 @@
 import { Logo } from "@/components/logo";
 import Link from "next/link";
+import { ArrowUpRight, Github, Instagram, Linkedin, Slack } from "lucide-react";
 
 const links = [
   {
@@ -7,27 +8,27 @@ const links = [
     items: [
       {
         title: "Qu’est-ce que le Tradition Learning ?",
-        href: "#",
+            href: "/about#what-is",
       },
       {
         title: "Vision & Mission",
-        href: "#",
+            href: "/about#vision",
       },
       {
         title: "Valeurs & Éthique",
-        href: "#",
+            href: "/about#values",
       },
       {
         title: "L’Équipe",
-        href: "#",
+            href: "/about#team",
       },
       {
         title: "Roadmap",
-        href: "#",
+            href: "/about#roadmap",
       },
       {
         title: "FAQ",
-        href: "#",
+            href: "/about#faq",
       },
     ],
   },
@@ -36,31 +37,31 @@ const links = [
     items: [
       {
         title: "Startup",
-        href: "#",
+        href: "/projects",
       },
       {
         title: "Freelancers",
-        href: "#",
+        href: "/community",
       },
       {
         title: "Organizations",
-        href: "#",
+        href: "/community",
       },
       {
         title: "Students",
-        href: "#",
+        href: "/community",
       },
       {
         title: "Collaboration",
-        href: "#",
+        href: "/community",
       },
       {
         title: "Design",
-        href: "#",
+        href: "/resources",
       },
       {
         title: "Management",
-        href: "#",
+        href: "/resources",
       },
     ],
   },
@@ -69,19 +70,19 @@ const links = [
     items: [
       {
         title: "Comment contribuer",
-        href: "#",
+        href: "/about#team",
       },
       {
         title: "Événements",
-        href: "#",
+        href: "/events",
       },
       {
         title: "Blog",
-        href: "#",
+        href: "/resources",
       },
       {
         title: "Témoignages",
-        href: "#",
+        href: "/community",
       },
       {
         title: "Discord",
@@ -98,158 +99,123 @@ const links = [
     items: [
       {
         title: "Statuts ASBL",
-        href: "#",
+        href: "/resources#statuts-asbl",
       },
       {
         title: "Charte communautaire",
-        href: "#",
+        href: "/resources#charte-communautaire",
       },
       {
         title: "Politique de confidentialité",
-        href: "#",
+        href: "/resources#politique-confidentialite",
       },
       {
         title: "Cookies",
-        href: "#",
+        href: "/resources#cookies",
       },
       {
         title: "Licence open-source",
-        href: "#",
+        href: "/resources#licence-open-source",
       },
       {
         title: "Sécurité",
-        href: "#",
+        href: "/resources#securite",
       },
       {
         title: "Contact presse",
-        href: "#",
+        href: "/contact",
       },
     ],
   },
 ];
 
+const socialLinks = [
+  { label: "GitHub", href: "#", icon: Github },
+  { label: "LinkedIn", href: "#", icon: Linkedin },
+  { label: "Slack", href: "#", icon: Slack },
+  { label: "Instagram", href: "#", icon: Instagram },
+];
+
 export default function FooterSection() {
   return (
-    <footer className="mt-auto border-b border-t border-dashed bg-background pt-10 dark:bg-transparent">
-      <div className="mx-auto max-w-5xl px-6">
-        <div className="grid gap-12 md:grid-cols-5">
-          <div className="md:col-span-2">
-            <Link href="/" aria-label="go home" className="block size-fit">
-              {/* <Logo /> */} <h1>TLC</h1>
+    <footer className="relative mt-auto overflow-hidden border-t border-[rgba(11,61,145,0.15)] bg-[linear-gradient(180deg,rgba(11,61,145,0.04),rgba(212,175,55,0.06)_45%,rgba(255,255,255,0.95))] pt-14 dark:bg-[linear-gradient(180deg,rgba(7,24,51,0.95),rgba(7,24,51,0.98))]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#d4af37] to-transparent" />
+      <div className="pointer-events-none absolute -left-24 top-10 h-56 w-56 rounded-full bg-[#0b3d91]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 top-20 h-56 w-56 rounded-full bg-[#d4af37]/20 blur-3xl" />
+
+      <div className="relative mx-auto max-w-6xl px-6 pb-8">
+        <div className="grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-4 lg:col-span-3">
+            <Link href="/" aria-label="go home" className="inline-flex w-fit rounded-xl p-1 transition-transform duration-300 hover:scale-[1.02]">
+              <Logo uniColor className="h-6" />
             </Link>
+
+            <p className="mt-5 max-w-xs text-sm leading-7 text-slate-600 dark:text-slate-300">
+              Tradition Learning Community, la plateforme collaborative pour une IA
+              plus sobre, plus lisible et plus utile.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              <span className="rounded-full border border-[rgba(11,61,145,0.2)] bg-white/80 px-3 py-1 text-xs font-medium text-[#0b3d91] dark:border-white/20 dark:bg-white/5 dark:text-[#d4af37]">
+                Open-source
+              </span>
+              <span className="rounded-full border border-[rgba(11,61,145,0.2)] bg-white/80 px-3 py-1 text-xs font-medium text-[#0b3d91] dark:border-white/20 dark:bg-white/5 dark:text-[#d4af37]">
+                Communauté
+              </span>
+              <span className="rounded-full border border-[rgba(11,61,145,0.2)] bg-white/80 px-3 py-1 text-xs font-medium text-[#0b3d91] dark:border-white/20 dark:bg-white/5 dark:text-[#d4af37]">
+                Recherche
+              </span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:col-span-3">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:col-span-8 lg:col-span-9">
             {links.map((link, index) => (
-              <div key={index} className="space-y-4 text-xs">
-                <span className="block font-medium">{link.group}</span>
+              <div
+                key={index}
+                className="group rounded-2xl border border-transparent p-3 text-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(11,61,145,0.14)] hover:bg-white/60 hover:shadow-[0_10px_24px_rgba(6,33,71,0.08)] dark:hover:border-white/10 dark:hover:bg-white/5"
+              >
+                <span className="mb-4 block font-semibold uppercase tracking-[0.14em] text-[#062147] dark:text-white">
+                  {link.group}
+                </span>
                 {link.items.map((item, index) => (
                   <Link
                     key={index}
                     href={item.href}
-                    className="text-muted-foreground hover:text-primary block duration-150"
+                    className="group/item text-muted-foreground hover:text-primary flex items-center justify-between gap-2 py-1.5 text-[13px] transition-colors duration-200"
                   >
-                    <span>{item.title}</span>
+                    <span className="relative inline-block after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 group-hover/item:after:w-full">
+                      {item.title}
+                    </span>
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-all duration-300 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 group-hover/item:opacity-100" />
                   </Link>
                 ))}
               </div>
             ))}
           </div>
         </div>
-        <div className="mt-12 flex flex-wrap items-end justify-between gap-6 border-t py-6">
+
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-[rgba(11,61,145,0.12)] pt-6">
           <span className="text-muted-foreground order-last block text-center text-sm md:order-first">
             © {new Date().getFullYear()} TLC, Tous droits réservés
           </span>
-          <div className="order-first flex flex-wrap justify-center gap-6 text-sm md:order-last">
-            <Link
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="X/Twitter"
-              className="text-muted-foreground hover:text-primary block"
-            >
-              <svg
-                className="size-6"
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M10.488 14.651L15.25 21h7l-7.858-10.478L20.93 3h-2.65l-5.117 5.886L8.75 3h-7l7.51 10.015L2.32 21h2.65zM16.25 19L5.75 5h2l10.5 14z"
-                ></path>
-              </svg>
-            </Link>
-            <Link
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="text-muted-foreground hover:text-primary block"
-            >
-              <svg
-                className="size-6"
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"
-                ></path>
-              </svg>
-            </Link>
-            <Link
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Threads"
-              className="text-muted-foreground hover:text-primary block"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-slack-icon lucide-slack"
-              >
-                <rect width="3" height="8" x="13" y="2" rx="1.5" />
-                <path d="M19 8.5V10h1.5A1.5 1.5 0 1 0 19 8.5" />
-                <rect width="3" height="8" x="8" y="14" rx="1.5" />
-                <path d="M5 15.5V14H3.5A1.5 1.5 0 1 0 5 15.5" />
-                <rect width="8" height="3" x="14" y="13" rx="1.5" />
-                <path d="M15.5 19H14v1.5a1.5 1.5 0 1 0 1.5-1.5" />
-                <rect width="8" height="3" x="2" y="8" rx="1.5" />
-                <path d="M8.5 5H10V3.5A1.5 1.5 0 1 0 8.5 5" />
-              </svg>
-            </Link>
-            <Link
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="text-muted-foreground hover:text-primary block"
-            >
-              <svg
-                className="size-6"
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"
-                ></path>
-              </svg>
-            </Link>
+          <div className="order-first flex flex-wrap justify-center gap-3 md:order-last">
+            {socialLinks.map((social) => {
+              const Icon = social.icon;
+
+              return (
+                <Link
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="group/social text-muted-foreground relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-[rgba(11,61,145,0.16)] bg-white/70 shadow-[0_8px_20px_rgba(6,33,71,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/80 hover:text-[#062147] hover:shadow-[0_14px_24px_rgba(6,33,71,0.16)] dark:border-white/10 dark:bg-white/5 dark:hover:text-[#d4af37]"
+                >
+                  <span className="absolute inset-0 bg-linear-to-br from-[#0b3d91]/0 via-[#0b3d91]/0 to-[#d4af37]/0 transition-all duration-300 group-hover/social:from-[#0b3d91]/10 group-hover/social:to-[#d4af37]/20" />
+                  <Icon className="relative h-4.5 w-4.5" />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

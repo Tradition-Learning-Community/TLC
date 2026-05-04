@@ -5,30 +5,30 @@ import { ArrowRight, Github, ShieldCheck, Sparkles, Slack, Telescope } from "luc
 export default function HeroSection() {
   return (
     <main id="home-hero" className="overflow-x-hidden">
-      <section className="relative isolate overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(212,175,55,0.18),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(11,61,145,0.22),_transparent_30%),linear-gradient(180deg,_rgba(6,20,45,0.03),_transparent_40%)]" />
-          <div className="mx-auto max-w-7xl px-6 pb-24 pt-0 md:pb-28 md:pt-0 lg:pb-32">
-          <div className="grid items-center gap-14 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="max-w-3xl text-center lg:text-left">
+      <section className="relative isolate overflow-hidden min-h-[calc(100vh-6rem)] flex items-center">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.18),transparent_32%),radial-gradient(circle_at_top_right,rgba(11,61,145,0.22),transparent_30%),linear-gradient(180deg,rgba(6,20,45,0.03),transparent_40%)]" />
+          <div className="mx-auto max-w-6xl px-6 h-full flex items-cente">
+          <div className="grid w-full items-center justify-items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="mx-auto max-w-2xl text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(11,61,145,0.18)] bg-[rgba(255,255,255,0.75)] px-4 py-2 text-sm font-medium text-[#0b3d91] shadow-sm backdrop-blur dark:bg-[rgba(7,24,51,0.7)] dark:text-white">
-                <Sparkles className="h-4 w-4 text-[#d4af37]" />
+                <Sparkles className="h-full w-4 text-[#d4af37]" />
                 Tradition Learning • IA ouverte, claire et ambitieuse
               </div>
 
-              <h1 className="mt-8 max-w-4xl text-balance text-5xl font-semibold tracking-tight text-[#062147] md:text-6xl lg:text-7xl dark:text-white">
+              <h1 className="mt-6 max-w-3xl text-balance text-4xl font-semibold tracking-tight text-[#062147] md:text-5xl lg:text-6xl dark:text-white">
                 Moins de données,
-                <span className="block bg-gradient-to-r from-[#0b3d91] via-[#1c5fb8] to-[#d4af37] bg-clip-text text-transparent">
+                <span className="block bg-linear-to-r from-[#0b3d91] via-[#1c5fb8] to-[#d4af37] bg-clip-text text-transparent">
                   plus d’intelligence.
                 </span>
               </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-8 text-slate-600 md:text-lg lg:mx-0 dark:text-slate-300">
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-7 text-slate-600 md:text-lg dark:text-slate-300">
                 Développons ensemble l’IA de demain. TLC est la plateforme centrale
                 pour l’approche Tradition Learning : une IA open-source performante,
                 interprétable et accessible à tous.
               </p>
 
-              <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
+              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg" className="rounded-full bg-[#0b3d91] px-6 text-white shadow-lg shadow-[#0b3d91]/20 hover:bg-[#0a357f]">
                   <Link href="/projects">
                     <Telescope className="h-4 w-4" />
@@ -40,7 +40,7 @@ export default function HeroSection() {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="rounded-full border-[#d4af37] px-6 text-[#062147] hover:bg-[#d4af37]/10 dark:text-white"
+                  className="rounded-full border-[#d4af37] px-5 text-[#062147] hover:bg-[#d4af37]/10 dark:text-white"
                 >
                   <Link href="/community">
                     <Slack className="h-4 w-4" />
@@ -49,7 +49,7 @@ export default function HeroSection() {
                 </Button>
               </div>
 
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              <div className="mt-8 grid w-full gap-3 sm:grid-cols-3">
                 {[
                   {
                     icon: <ShieldCheck className="h-5 w-5 text-[#d4af37]" />,
@@ -69,9 +69,9 @@ export default function HeroSection() {
                 ].map((item) => (
                   <div
                     key={item.title}
-                    className="rounded-3xl border border-[rgba(11,61,145,0.12)] bg-white/80 p-4 text-left shadow-[0_12px_30px_rgba(6,33,71,0.06)] backdrop-blur dark:border-white/10 dark:bg-[rgba(7,24,51,0.72)]"
+                    className="rounded-2xl border border-[rgba(11,61,145,0.1)] bg-white/80 p-3 text-center shadow-[0_10px_24px_rgba(6,33,71,0.06)] backdrop-blur dark:border-white/8 dark:bg-[rgba(7,24,51,0.7)]"
                   >
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0b3d91]/10 dark:bg-white/5">
+                    <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-[#0b3d91]/10 dark:bg-white/5">
                       {item.icon}
                     </div>
                     <h3 className="text-sm font-semibold text-[#062147] dark:text-white">{item.title}</h3>
@@ -81,8 +81,8 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-xl">
-              <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-[#0b3d91]/20 via-transparent to-[#d4af37]/20 blur-2xl" />
+            <div className="relative mx-auto w-full max-w-md lg:max-w-lg">
+              <div className="absolute -inset-4 rounded-[2rem] bg-linear-to-br from-[#0b3d91]/18 via-transparent to-[#d4af37]/18 blur-2xl" />
               <div className="relative overflow-hidden rounded-[2rem] border border-white/60 bg-white/85 px-6 py-4 shadow-2xl shadow-[#062147]/10 backdrop-blur-xl dark:border-white/10 dark:bg-[rgba(7,24,51,0.88)]">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-white/10">
                   <div>
@@ -94,13 +94,13 @@ export default function HeroSection() {
                   </div>
                 </div>
 
-                <div className="mt-4 grid gap-4">
+                <div className="mt-2 grid gap-4">
                   {[
                     { label: "Projets actifs", value: "12", note: "+3 ce mois-ci" },
                     { label: "Contributeurs", value: "48", note: "Communauté ouverte" },
                     { label: "Ressources", value: "120+", note: "Guides et datasets" }
                   ].map((stat) => (
-                    <div key={stat.label} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/5">
+                    <div key={stat.label} className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-white/5">
                       <div className="flex items-end justify-between gap-4">
                         <div>
                           <p className="text-sm text-slate-500 dark:text-slate-300">{stat.label}</p>
@@ -112,7 +112,7 @@ export default function HeroSection() {
                   ))}
                 </div>
 
-                <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#0b3d91] to-[#1a5fb7] p-5 text-white shadow-lg shadow-[#0b3d91]/20">
+                <div className="mt-6 rounded-2xl bg-linear-to-r from-[#0b3d91] to-[#1a5fb7] p-5 text-white shadow-lg shadow-[#0b3d91]/20">
                   <p className="text-sm uppercase tracking-[0.25em] text-white/70">Focus du moment</p>
                   <p className="mt-2 text-lg font-medium">Construire des systèmes plus sobres, plus lisibles, plus utiles.</p>
                 </div>

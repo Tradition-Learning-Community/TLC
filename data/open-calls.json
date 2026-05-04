@@ -1,0 +1,14 @@
+[
+  {
+    "id": "call-1",
+    "title": "Contributeurs : Module de validation robuste",
+    "description": "Nous cherchons 2-3 contributeurs pour élaborer un framework complet de validation robuste des modèles. Expertise requise : Python, testing, ML.",
+    "urgency": "high"
+  },
+  {
+    "id": "call-2",
+    "title": "Chercheurs : Étude comparative de modèles compacts",
+    "description": "Participation à un projet de recherche collaboratif sur la comparaison de modèles compacts. Excellente opportunité de publication.",
+    "urgency": "medium"
+  }
+]

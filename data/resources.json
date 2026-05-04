@@ -1,0 +1,26 @@
+[
+  {
+    "id": "res-1",
+    "title": "Guide : Reproduire une expérience TLC",
+    "category": "Documentation",
+    "url": "#"
+  },
+  {
+    "id": "res-2",
+    "title": "Dataset : Images annotées pour vision",
+    "category": "Données",
+    "url": "#"
+  },
+  {
+    "id": "res-3",
+    "title": "Tutorial : Fine-tuning de modèles légers",
+    "category": "Code",
+    "url": "#"
+  },
+  {
+    "id": "res-4",
+    "title": "Benchmark : Comparaison de modèles 2024",
+    "category": "Recherche",
+    "url": "#"
+  }
+]
