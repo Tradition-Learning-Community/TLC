@@ -1,0 +1,9 @@
+[
+  {
+    "id": "disc-1",
+    "title": "Discussion pilote",
+    "messages": [
+      { "id": "m1", "author": "alice", "text": "Bienvenue!" }
+    ]
+  }
+]

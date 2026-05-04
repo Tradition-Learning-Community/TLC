@@ -1,0 +1,8 @@
+[
+  {
+    "id": "user-alice",
+    "name": "Alice",
+    "skills": ["ML", "Data"],
+    "points": 120
+  }
+]

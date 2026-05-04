@@ -1,0 +1,11 @@
+[
+  {
+    "id": "proj-1",
+    "title": "Projet pilote TLC",
+    "description": "Prototype pour tester le flux de contribution.",
+    "members": ["alice", "bob"],
+    "tasks": [
+      { "id": "t1", "title": "Définir scope", "done": false }
+    ]
+  }
+]
