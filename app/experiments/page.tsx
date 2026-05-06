@@ -1,6 +1,6 @@
 export default function ExperimentsPage(){
   return (
-    <section className="content-shell">
+    <section className="content-shell pt-40">
       <header className="content-header">
         <span className="content-kicker">Lab TLC</span>
         <h1 className="content-title">Espace Expérimentation</h1>

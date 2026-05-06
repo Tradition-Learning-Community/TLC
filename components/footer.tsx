@@ -138,31 +138,31 @@ const socialLinks = [
 
 export default function FooterSection() {
   return (
-    <footer className="relative mt-auto overflow-hidden border-t border-[rgba(11,61,145,0.15)] bg-[linear-gradient(180deg,rgba(11,61,145,0.04),rgba(212,175,55,0.06)_45%,rgba(255,255,255,0.95))] pt-14 dark:bg-[linear-gradient(180deg,rgba(7,24,51,0.95),rgba(7,24,51,0.98))]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#d4af37] to-transparent" />
-      <div className="pointer-events-none absolute -left-24 top-10 h-56 w-56 rounded-full bg-[#0b3d91]/10 blur-3xl" />
+    <footer className="relative mt-auto overflow-hidden border-t border-[#d4af37]/20 bg-gradient-to-b from-[#06142d] via-[#071a33] to-[#051225] pt-14 text-white">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
+      <div className="pointer-events-none absolute -left-24 top-10 h-56 w-56 rounded-full bg-[#0b3d91]/20 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 top-20 h-56 w-56 rounded-full bg-[#d4af37]/20 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl px-6 pb-8">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-4 lg:col-span-3">
-            <Link href="/" aria-label="go home" className="inline-flex w-fit rounded-xl p-1 transition-transform duration-300 hover:scale-[1.02]">
-              <Logo uniColor className="h-6" />
+            <Link href="/" aria-label="go home" className="inline-flex w-fit rounded-xl border border-white/10 bg-white/5 p-3 shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition-all duration-300 hover:border-[#d4af37]/40 hover:bg-white/10 hover:shadow-[0_14px_40px_rgba(11,61,145,0.25)]">
+              <Logo uniColor className="h-20" />
             </Link>
 
-            <p className="mt-5 max-w-xs text-sm leading-7 text-slate-600 dark:text-slate-300">
+            <p className="mt-5 max-w-xs text-sm leading-7 text-slate-300">
               Tradition Learning Community, la plateforme collaborative pour une IA
               plus sobre, plus lisible et plus utile.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              <span className="rounded-full border border-[rgba(11,61,145,0.2)] bg-white/80 px-3 py-1 text-xs font-medium text-[#0b3d91] dark:border-white/20 dark:bg-white/5 dark:text-[#d4af37]">
+              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37] shadow-[0_8px_20px_rgba(212,175,55,0.12)]">
                 Open-source
               </span>
-              <span className="rounded-full border border-[rgba(11,61,145,0.2)] bg-white/80 px-3 py-1 text-xs font-medium text-[#0b3d91] dark:border-white/20 dark:bg-white/5 dark:text-[#d4af37]">
+              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37] shadow-[0_8px_20px_rgba(212,175,55,0.12)]">
                 Communauté
               </span>
-              <span className="rounded-full border border-[rgba(11,61,145,0.2)] bg-white/80 px-3 py-1 text-xs font-medium text-[#0b3d91] dark:border-white/20 dark:bg-white/5 dark:text-[#d4af37]">
+              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37] shadow-[0_8px_20px_rgba(212,175,55,0.12)]">
                 Recherche
               </span>
             </div>
@@ -172,16 +172,16 @@ export default function FooterSection() {
             {links.map((link, index) => (
               <div
                 key={index}
-                className="group rounded-2xl border border-transparent p-3 text-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(11,61,145,0.14)] hover:bg-white/60 hover:shadow-[0_10px_24px_rgba(6,33,71,0.08)] dark:hover:border-white/10 dark:hover:bg-white/5"
+                className="group rounded-2xl border border-white/10 bg-white/5 p-4 text-xs shadow-[0_12px_28px_rgba(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/30 hover:bg-white/10 hover:shadow-[0_16px_36px_rgba(11,61,145,0.22)]"
               >
-                <span className="mb-4 block font-semibold uppercase tracking-[0.14em] text-[#062147] dark:text-white">
+                <span className="mb-4 block font-semibold uppercase tracking-[0.14em] text-white/90">
                   {link.group}
                 </span>
                 {link.items.map((item, index) => (
                   <Link
                     key={index}
                     href={item.href}
-                    className="group/item text-muted-foreground hover:text-primary flex items-center justify-between gap-2 py-1.5 text-[13px] transition-colors duration-200"
+                    className="group/item flex items-center justify-between gap-2 py-1.5 text-[13px] text-slate-300 transition-colors duration-200 hover:text-[#f0d87f]"
                   >
                     <span className="relative inline-block after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 group-hover/item:after:w-full">
                       {item.title}
@@ -194,8 +194,8 @@ export default function FooterSection() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-[rgba(11,61,145,0.12)] pt-6">
-          <span className="text-muted-foreground order-last block text-center text-sm md:order-first">
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-6">
+          <span className="order-last block text-center text-sm text-slate-400 md:order-first">
             © {new Date().getFullYear()} TLC, Tous droits réservés
           </span>
           <div className="order-first flex flex-wrap justify-center gap-3 md:order-last">
@@ -209,9 +209,9 @@ export default function FooterSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="group/social text-muted-foreground relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-[rgba(11,61,145,0.16)] bg-white/70 shadow-[0_8px_20px_rgba(6,33,71,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/80 hover:text-[#062147] hover:shadow-[0_14px_24px_rgba(6,33,71,0.16)] dark:border-white/10 dark:bg-white/5 dark:hover:text-[#d4af37]"
+                  className="group/social relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 text-slate-300 shadow-[0_8px_20px_rgba(0,0,0,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/60 hover:text-[#f0d87f] hover:shadow-[0_14px_24px_rgba(11,61,145,0.22)]"
                 >
-                  <span className="absolute inset-0 bg-linear-to-br from-[#0b3d91]/0 via-[#0b3d91]/0 to-[#d4af37]/0 transition-all duration-300 group-hover/social:from-[#0b3d91]/10 group-hover/social:to-[#d4af37]/20" />
+                    <span className="absolute inset-0 bg-gradient-to-br from-[#0b3d91]/0 via-[#0b3d91]/0 to-[#d4af37]/0 transition-all duration-300 group-hover/social:from-[#0b3d91]/15 group-hover/social:to-[#d4af37]/20" />
                   <Icon className="relative h-4.5 w-4.5" />
                 </Link>
               );

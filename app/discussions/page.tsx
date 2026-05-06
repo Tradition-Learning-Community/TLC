@@ -1,6 +1,6 @@
 export default function DiscussionsPage(){
   return (
-    <section className="content-shell">
+    <section className="content-shell pt-40">
       <header className="content-header">
         <span className="content-kicker">Forum technique</span>
         <h1 className="content-title">Discussions</h1>

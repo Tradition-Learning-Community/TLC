@@ -6,7 +6,7 @@ export const metadata = {
 
 const RessourcesPage = () => {
   return (
-    <section className="content-shell">
+    <section className="content-shell pt-40">
       <header className="content-header">
         <span className="content-kicker">Base de connaissances</span>
         <h1 className="content-title">Ressources</h1>

@@ -14,6 +14,9 @@ const menuItems = [
   { name: "Ressources", href: "/resources" },
   { name: "Contact", href: "/contact" },
 ];
+
+const githubUrl = process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/Tradition-Learning-Community";
+
 const Header = () => {
   const pathname = usePathname();
   const [menuState, setMenuState] = useState(false);
@@ -22,12 +25,12 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 px-3 pt-3 md:px-5">
+      <header className="fixed top-0 left-0 right-0 z-50 px-3 pt-9 md:px-5 ">
         <nav
           role="navigation"
           aria-label="Main navigation"
           data-state={menuState && "active"}
-          className="mx-auto w-full max-w-6xl rounded-2xl border border-[rgba(11,61,145,0.15)] bg-transparent shadow-[0_14px_35px_rgba(6,33,71,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-[rgba(7,24,51,0.75)]"
+          className="mx-auto w-full max-w-6xl rounded-2xl border border-[rgba(11,61,145,0.15)] bg-transparent text-[#062147] shadow-[0_14px_35px_rgba(6,33,71,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-[rgba(7,24,51,0.75)] dark:text-white"
         >
           <div className="relative overflow-hidden px-5 md:px-6">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#d4af37] to-transparent" />
@@ -39,7 +42,7 @@ const Header = () => {
                   aria-label="home"
                   className="group inline-flex items-center rounded-xl px-2 py-1 transition-transform duration-300 hover:scale-[1.02]"
                 >
-                  <Logo uniColor className="h-5 text-[#062147] dark:text-white" />
+                  <Logo uniColor size="lg" className="text-[#d4af37] dark:text-white " />
                 </Link>
 
                 <button
@@ -68,7 +71,7 @@ const Header = () => {
                           className={`group relative inline-flex items-center rounded-full px-3 py-2 font-medium transition-all duration-200 ${
                             pathname === item.href
                               ? "bg-[#0b3d91] text-white shadow-[0_8px_20px_rgba(11,61,145,0.25)]"
-                              : "text-muted-foreground hover:bg-[#0b3d91]/8 hover:text-[#062147] dark:hover:bg-white/10 dark:hover:text-white"
+                                : "text-[#d4af37] hover:bg-[#0b3d91]/8 hover:text-[#0b3d91] dark:text-white dark:hover:bg-white/10 dark:hover:text-[#d4af37]"
                           }`}
                         >
                           <span className="relative">
@@ -85,8 +88,10 @@ const Header = () => {
                   <ModeToggle />
 
                   <Link
-                    href="#"
-                    className="group inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(11,61,145,0.16)] bg-white px-4 py-2 text-sm font-medium text-[#062147] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#d4af37] hover:bg-[#d4af37]/15 dark:border-white/15 dark:bg-white/5 dark:text-white"
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(11,61,145,0.16)] bg-white px-4 py-2 text-sm font-medium text-[#d4af37] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#d4af37] hover:bg-[#d4af37]/15 dark:border-white/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
                   >
                     <SiGithub className="text-base" />
                     <span>GitHub</span>
