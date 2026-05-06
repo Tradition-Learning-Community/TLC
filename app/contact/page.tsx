@@ -5,7 +5,7 @@ export const metadata = {
 
 const ContactPage = () => {
   return (
-    <section className="content-shell">
+    <section className="content-shell pt-40">
       <header className="content-header">
         <span className="content-kicker">Restons en lien</span>
         <h1 className="content-title">Contact</h1>

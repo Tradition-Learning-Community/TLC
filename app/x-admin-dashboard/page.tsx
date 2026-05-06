@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { LogOut } from "lucide-react";
 
 type EventItem = {
   id: string;
@@ -31,15 +32,15 @@ type CallItem = {
   urgency?: "low" | "medium" | "high";
 };
 
-export default function CommunityAdminPage() {
+export default function AdminDashboardPage() {
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [events, setEvents] = useState<EventItem[]>([]);
   const [members, setMembers] = useState<MemberItem[]>([]);
   const [resources, setResources] = useState<ResourceItem[]>([]);
   const [calls, setCalls] = useState<CallItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [status, setStatus] = useState<string>("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [eventForm, setEventForm] = useState({
     title: "",
@@ -62,6 +63,16 @@ export default function CommunityAdminPage() {
     description: "",
     urgency: "medium" as "low" | "medium" | "high",
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("admin-auth");
+    if (!token) {
+      router.push("/x-admin-auth");
+    } else {
+      setIsAuthenticated(true);
+      loadAll();
+    }
+  }, [router]);
 
   async function loadAll() {
     setIsLoading(true);
@@ -88,16 +99,6 @@ export default function CommunityAdminPage() {
       setIsLoading(false);
     }
   }
-
-  useEffect(() => {
-    const session = localStorage.getItem("admin_session");
-    if (session !== "true") {
-      router.push("/admin/login");
-      return;
-    }
-    setIsAuthenticated(true);
-    loadAll();
-  }, [router]);
 
   async function createItem(url: string, payload: unknown, successMessage: string) {
     setStatus("");
@@ -167,40 +168,37 @@ export default function CommunityAdminPage() {
     }
   }
 
-  function handleLogout() {
-    localStorage.removeItem("admin_session");
-    router.push("/admin/login");
+  function logout() {
+    localStorage.removeItem("admin-auth");
+    router.push("/x-admin-auth");
   }
 
   if (!isAuthenticated) {
     return (
-      <section className="content-shell">
-        <p className="py-20 text-center">Redirection vers la connexion...</p>
-      </section>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center text-slate-500">Redirection...</div>
+      </div>
     );
   }
 
   return (
     <section className="content-shell">
-      <header className="content-header">
-        <span className="content-kicker">Back-office</span>
-        <h1 className="content-title">Admin Communaute</h1>
-        <p className="content-lead">
-          Ajoutez des evenements, membres, ressources et appels a contribution.
-          Les donnees sont enregistrees dans les fichiers JSON de la plateforme.
-        </p>
-        <div className="mt-4 flex gap-3">
-          <Link href="/community" className="content-api-link">
-            Voir la page Communaute
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="inline-flex items-center rounded-2xl border border-red-300 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-100 dark:border-red-900/30 dark:bg-red-950/30 dark:text-red-400 dark:hover:bg-red-950/50"
-          >
-            Se deconnecter
-          </button>
-        </div>
-      </header>
+      <div className="flex items-center justify-between">
+        <header className="content-header flex-1">
+          <span className="content-kicker">Back-office</span>
+          <h1 className="content-title">Tableau de bord Admin</h1>
+          <p className="content-lead">
+            Gestion des evenements, membres, ressources et appels a contribution.
+          </p>
+        </header>
+        <button
+          onClick={logout}
+          className="ml-4 inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 hover:bg-red-500/20 transition-all"
+        >
+          <LogOut className="h-4 w-4" />
+          Déconnexion
+        </button>
+      </div>
 
       {status ? (
         <p className="mt-6 rounded-xl border border-[rgba(11,61,145,0.15)] bg-white px-4 py-3 text-sm dark:bg-[rgba(7,24,51,0.8)]">
