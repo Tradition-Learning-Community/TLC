@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Github, ShieldCheck, Sparkles, Slack, Telescope } from "lucide-react";
+import { ArrowRight, Github, ShieldCheck, Sparkles, Slack, Telescope, Brain, Book } from "lucide-react";
 
 export default function HeroSection() {
   return (
@@ -13,22 +13,16 @@ export default function HeroSection() {
           <div className="absolute -bottom-20 left-0 w-[700px] h-[700px] rounded-full blur-3xl bg-gradient-to-tr from-[#0b3d91]/25 to-transparent opacity-50" />
         </div>
 
-        <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-center px-6 py-0">
+        <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-center px-6 py-0 pt-[-10]">
           <div className="grid w-full items-center justify-items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div className="mx-auto max-w-2xl text-center">
-              <div>
-                <br/>
-      
-              </div>
-              <br/>
-
               <h1 className="mt-8 max-w-4xl mx-auto text-balance text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight animate-slide-up">
-                <span className="text-white">IA responsable</span>
-                <br />
-                <span className="bg-gradient-to-r from-[#d4af37] via-[#f0d87f] to-[#d4af37] bg-clip-text text-transparent animate-glow">et collaborative</span>
+                <span className="text-white">Moins des données, plus </span>
+              
+                <span className="bg-gradient-to-r from-[#d4af37] via-[#f0d87f] to-[#d4af37] bg-clip-text text-transparent animate-glow"> d'intelligence</span>
               </h1>
 
-              <p className="mx-auto mt-6 max-w-3xl text-lg md:text-xl text-slate-300 leading-relaxed">
+              <p className="mx-auto mt-6 max-w-3xl text-lg md:text-xl text-slate-300 leading-relaxed pt-2">
                 Des travaux plus sobres, rapides a tester et faciles a partager.
               </p>
 
@@ -49,7 +43,7 @@ export default function HeroSection() {
                 </Button>
               </div>
 
-              <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+              <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto ">
                 {[
                   { label: "Exp.", value: "12", note: "ok" },
                   { label: "Contrib.", value: "48", note: "live" },
@@ -85,35 +79,60 @@ export default function HeroSection() {
                 <div className="relative mt-5 flex min-h-[320px] items-center justify-center overflow-hidden rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.14),transparent_34%),radial-gradient(circle_at_30%_30%,rgba(11,61,145,0.26),transparent_30%),radial-gradient(circle_at_70%_68%,rgba(212,175,55,0.12),transparent_28%)]">
                   <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0,rgba(255,255,255,0.04)_50%,transparent_100%)] opacity-40" />
 
-                  <div className="absolute h-56 w-56 rounded-full border border-[#d4af37]/20 animate-spin [animation-duration:18s]" />
-                  <div className="absolute h-40 w-40 rounded-full border border-[#0b3d91]/30 animate-spin [animation-duration:11s] [animation-direction:reverse]" />
-                  <div className="absolute h-24 w-24 rounded-full border border-[#d4af37]/35 animate-pulse" />
+                  {/* SVG pour les pointillés avec animation */}
+                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                    <defs>
+                      <style>{`
+                        .dotted-line-base { stroke: #d4af37; stroke-width: 0.5; stroke-dasharray: 2,3; opacity: 0.3; fill: none; }
+                        .dotted-line-glow { stroke: #f0d87f; stroke-width: 0.8; stroke-dasharray: 2,3; opacity: 0; fill: none; filter: drop-shadow(0 0 1px #f0d87f); animation: flow 2s ease-in-out infinite; }
+                        @keyframes flow { 0% { opacity: 0; stroke-dashoffset: 20; } 50% { opacity: 0.8; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: -20; } }
+                        .flow1 { animation-delay: 0s; }
+                        .flow2 { animation-delay: 0.5s; }
+                        .flow3 { animation-delay: 1s; }
+                        .flow4 { animation-delay: 1.5s; }
+                      `}</style>
+                    </defs>
+                    {/* Pointillés haut-gauche (sortant du livre) */}
+                    <line className="dotted-line-base" x1="16" y1="16" x2="50" y2="50" />
+                    <line className="dotted-line-glow flow1" x1="16" y1="16" x2="50" y2="50" />
+                    {/* Pointillés haut-droite (sortant du livre) */}
+                    <line className="dotted-line-base" x1="84" y1="16" x2="50" y2="50" />
+                    <line className="dotted-line-glow flow2" x1="84" y1="16" x2="50" y2="50" />
+                    {/* Pointillés bas-gauche (sortant du livre) */}
+                    <line className="dotted-line-base" x1="16" y1="84" x2="50" y2="50" />
+                    <line className="dotted-line-glow flow3" x1="16" y1="84" x2="50" y2="50" />
+                    {/* Pointillés bas-droite (sortant du livre) */}
+                    <line className="dotted-line-base" x1="84" y1="84" x2="50" y2="50" />
+                    <line className="dotted-line-glow flow4" x1="84" y1="84" x2="50" y2="50" />
+                  </svg>
 
-                  <div className="absolute left-8 top-12 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1.5 text-[10px] text-slate-200 backdrop-blur">
-                    <span className="h-2 w-2 rounded-full bg-[#d4af37] animate-pulse" />
-                    Data
-                  </div>
-                  <div className="absolute right-8 top-20 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1.5 text-[10px] text-slate-200 backdrop-blur">
-                    <span className="h-2 w-2 rounded-full bg-[#0b3d91] animate-pulse" />
-                    Model
-                  </div>
-                  <div className="absolute left-10 bottom-14 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1.5 text-[10px] text-slate-200 backdrop-blur">
-                    <span className="h-2 w-2 rounded-full bg-[#f0d87f] animate-pulse" />
-                    Feedback
+                  {/* Livre haut gauche (positionné sur le point SVG) */}
+                  <div className="absolute animate-bounce" style={{left: '16%', top: '16%', transform: 'translate(-50%, -50%)', animationDuration: '3s', animationDelay: '0s'}}>
+                    <Book className="h-10 w-10 text-[#d4af37] opacity-70" strokeWidth={1.5} />
                   </div>
 
-                  <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#0b3d91] via-[#11428f] to-[#d4af37] animate-pulse-gold">
-                    <div className="absolute inset-2.5 rounded-full border border-white/20" />
-                    <div className="absolute inset-5 rounded-full border border-white/20 animate-spin [animation-duration:20s]" />
-                    <div className="absolute inset-8 rounded-full bg-[#06142d]" />
+                  {/* Livre haut droite (positionné sur le point SVG) */}
+                  <div className="absolute animate-bounce" style={{right: '16%', top: '16%', transform: 'translate(50%, -50%)', animationDuration: '3.2s', animationDelay: '0.2s'}}>
+                    <Book className="h-10 w-10 text-[#d4af37] opacity-70" strokeWidth={1.5} />
+                  </div>
+
+                  {/* Livre bas gauche (positionné sur le point SVG) */}
+                  <div className="absolute animate-bounce" style={{left: '16%', top: '84%', transform: 'translate(-50%, -50%)', animationDuration: '3.4s', animationDelay: '0.4s'}}>
+                    <Book className="h-10 w-10 text-[#d4af37] opacity-70" strokeWidth={1.5} />
+                  </div>
+
+                  {/* Livre bas droite (positionné sur le point SVG) */}
+                  <div className="absolute animate-bounce" style={{right: '16%', top: '84%', transform: 'translate(50%, -50%)', animationDuration: '3s', animationDelay: '0.1s'}}>
+                    <Book className="h-10 w-10 text-[#d4af37] opacity-70" strokeWidth={1.5} />
+                  </div>
+
+                  {/* Cerveau au centre */}
+                  <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#0b3d91] via-[#11428f] to-[#d4af37]" style={{boxShadow: '0 0 30px rgba(244, 216, 127, 0.4)'}}>
+                    <div className="relative inset-8 rounded-full bg-[#06142d]" />
                     <div className="relative text-center">
-                      <Sparkles className="mx-auto h-5 w-5 text-[#f0d87f] animate-glow" />
-                      <p className="mt-1.5 text-[11px] font-semibold tracking-[0.22em] text-white">AI CORE</p>
+                      <Brain className="mx-auto h-10 w-10 text-[#f0d87f]" strokeWidth={1.5} />
+                      <p className="mt-2 text-[10px] font-semibold tracking-[0.22em] text-white pl-1">IA</p>
                     </div>
-                  </div>
-
-                  <div className="absolute bottom-6 right-6 h-12 w-12 rounded-2xl border border-[#d4af37]/30 bg-[#d4af37]/10 p-2.5 backdrop-blur animate-float-up">
-                    <ShieldCheck className="h-full w-full text-[#d4af37]" />
                   </div>
                 </div>
 
