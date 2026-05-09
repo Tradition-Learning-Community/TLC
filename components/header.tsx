@@ -35,7 +35,7 @@ const Header = () => {
           <div className="relative overflow-hidden px-5 md:px-6">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#d4af37] to-transparent" />
 
-            <div className="flex flex-wrap items-center justify-between gap-4 py-3 lg:gap-0 lg:py-4">
+            <div className="flex flex-wrap items-center justify-between gap-4 py-2 lg:gap-0 lg:py-2.5">
               <div className="flex w-full items-center justify-between lg:w-auto">
                 <Link
                   href="/"

@@ -146,7 +146,7 @@ export default function FooterSection() {
       <div className="relative mx-auto max-w-6xl px-6 pb-8">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-4 lg:col-span-3">
-            <Link href="/" aria-label="go home" className="inline-flex w-fit rounded-xl border border-white/10 bg-white/5 p-3 shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition-all duration-300 hover:border-[#d4af37]/40 hover:bg-white/10 hover:shadow-[0_14px_40px_rgba(11,61,145,0.25)]">
+            <Link href="/" aria-label="go home" className="inline-flex w-fit rounded-xl border border-white/10 bg-white/5 p-3">
               <Logo uniColor className="h-20" />
             </Link>
 
@@ -156,13 +156,13 @@ export default function FooterSection() {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37] shadow-[0_8px_20px_rgba(212,175,55,0.12)]">
+              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37]">
                 Open-source
               </span>
-              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37] shadow-[0_8px_20px_rgba(212,175,55,0.12)]">
+              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37]">
                 Communauté
               </span>
-              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37] shadow-[0_8px_20px_rgba(212,175,55,0.12)]">
+              <span className="rounded-full border border-[#d4af37]/25 bg-[#d4af37]/10 px-3 py-1 text-xs font-medium text-[#d4af37]">
                 Recherche
               </span>
             </div>
@@ -172,7 +172,7 @@ export default function FooterSection() {
             {links.map((link, index) => (
               <div
                 key={index}
-                className="group rounded-2xl border border-white/10 bg-white/5 p-4 text-xs shadow-[0_12px_28px_rgba(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/30 hover:bg-white/10 hover:shadow-[0_16px_36px_rgba(11,61,145,0.22)]"
+                className="group rounded-2xl border border-white/10 bg-white/5 p-4 text-xs"
               >
                 <span className="mb-4 block font-semibold uppercase tracking-[0.14em] text-white/90">
                   {link.group}
@@ -181,12 +181,12 @@ export default function FooterSection() {
                   <Link
                     key={index}
                     href={item.href}
-                    className="group/item flex items-center justify-between gap-2 py-1.5 text-[13px] text-slate-300 transition-colors duration-200 hover:text-[#f0d87f]"
+                    className="group/item flex items-center justify-between gap-2 py-1.5 text-[13px] text-slate-300 hover:text-[#f0d87f]"
                   >
                     <span className="relative inline-block after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 group-hover/item:after:w-full">
                       {item.title}
                     </span>
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-all duration-300 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 group-hover/item:opacity-100" />
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
                   </Link>
                 ))}
               </div>
@@ -209,9 +209,9 @@ export default function FooterSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="group/social relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 text-slate-300 shadow-[0_8px_20px_rgba(0,0,0,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/60 hover:text-[#f0d87f] hover:shadow-[0_14px_24px_rgba(11,61,145,0.22)]"
+                  className="group/social relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 text-slate-300"
                 >
-                    <span className="absolute inset-0 bg-gradient-to-br from-[#0b3d91]/0 via-[#0b3d91]/0 to-[#d4af37]/0 transition-all duration-300 group-hover/social:from-[#0b3d91]/15 group-hover/social:to-[#d4af37]/20" />
+                      <span className="absolute inset-0 bg-gradient-to-br from-[#0b3d91]/0 via-[#0b3d91]/0 to-[#d4af37]/0" />
                   <Icon className="relative h-4.5 w-4.5" />
                 </Link>
               );
