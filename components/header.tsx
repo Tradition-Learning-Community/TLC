@@ -21,6 +21,9 @@ const Header = () => {
   const pathname = usePathname();
   const [menuState, setMenuState] = useState(false);
 
+  // Hide site header on admin routes
+  if (pathname && pathname.startsWith('/admin')) return null;
+
   const closeMenu = () => setMenuState(false);
 
   return (
