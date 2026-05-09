@@ -3,7 +3,11 @@
     "id": "user-alice",
     "name": "Dr. Alice Martin",
     "role": "Fondatrice & Chercheure",
-    "skills": ["ML", "Data", "Research"],
+    "skills": [
+      "ML",
+      "Data",
+      "Research"
+    ],
     "points": 450,
     "projects": 5
   },
@@ -11,7 +15,11 @@
     "id": "user-bob",
     "name": "Bob Chen",
     "role": "Lead Engineer",
-    "skills": ["Backend", "DevOps", "Python"],
+    "skills": [
+      "Backend",
+      "DevOps",
+      "Python"
+    ],
     "points": 380,
     "projects": 8
   },
@@ -19,8 +27,18 @@
     "id": "user-claire",
     "name": "Claire Dupont",
     "role": "Data Scientist",
-    "skills": ["ML", "Data", "Statistics"],
+    "skills": [
+      "ML",
+      "Data",
+      "Statistics"
+    ],
     "points": 250,
     "projects": 3
+  },
+  {
+    "name": "SEM Kisanga",
+    "role": "Admin",
+    "projects": 4,
+    "id": "user-1778226224792"
   }
 ]

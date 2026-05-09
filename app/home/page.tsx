@@ -1,10 +1,19 @@
 import HeroSection from "@/components/hero-section"
+import CommunityVision from "@/components/community-vision"
+import CommunitySection from "@/components/community-section"
+import ContributorsSection from "@/components/contributors-section"
 import { Bot, ChartSpline, GitBranchPlus, Radar } from "lucide-react"
 
 const HomePage = () => {
   return (
     <div className="home-hero-bg">
       <HeroSection />
+
+      <CommunityVision />
+
+      <CommunitySection />
+
+      <ContributorsSection />
 
       <section className="content-shell pb-20 pt-16">
         <div className="content-header text-left md:text-center">

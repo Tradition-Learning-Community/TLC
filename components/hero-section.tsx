@@ -16,10 +16,11 @@ export default function HeroSection() {
         <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-center px-6 py-0">
           <div className="grid w-full items-center justify-items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div className="mx-auto max-w-2xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#d4af37]/50 bg-[rgba(212,175,55,0.08)] px-4 py-2.5 text-sm font-medium text-[#d4af37] backdrop-blur-lg animate-slide-down">
-                <Sparkles className="h-4 w-4 text-[#d4af37] animate-glow" />
-                <span>Labo IA</span>
+              <div>
+                <br/>
+      
               </div>
+              <br/>
 
               <h1 className="mt-8 max-w-4xl mx-auto text-balance text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight animate-slide-up">
                 <span className="text-white">IA responsable</span>

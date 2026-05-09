@@ -19,5 +19,12 @@
     "date": "2026-06-05",
     "type": "Hackathon",
     "description": "48h de collaboration intensive autour d'IA responsable"
+  },
+  {
+    "title": "tlc event",
+    "date": "2026-05-23",
+    "type": "Workshop",
+    "description": "bhbbk ",
+    "id": "ev-1778226101837"
   }
 ]
