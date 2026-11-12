@@ -1,27 +1,21 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { NextResponse } from "next/server";
+import { readCollection, updateRecord } from "@/lib/database";
+import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import type { Profile } from "@/lib/types";
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'profiles.json');
-
-async function readData(){
-  const raw = await fs.readFile(DATA_FILE, 'utf-8');
-  return JSON.parse(raw || '[]');
+export async function GET() {
+  return NextResponse.json(readCollection<Profile>("profiles"));
 }
 
-export async function GET(){
-  const data = await readData();
-  return NextResponse.json(data);
-}
-
-export async function PATCH(request: Request){
-  const body = await request.json();
-  const profilesPath = path.join(process.cwd(), 'data', 'profiles.json');
-  const raw = await fs.readFile(profilesPath, 'utf-8');
-  const profiles = JSON.parse(raw || '[]');
-  const idx = profiles.findIndex((p:any)=>p.id===body.id);
-  if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  profiles[idx] = { ...profiles[idx], ...body };
-  await fs.writeFile(profilesPath, JSON.stringify(profiles,null,2),'utf-8');
-  return NextResponse.json(profiles[idx]);
+export async function PATCH(request: Request) {
+  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body.id !== "string") {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  }
+  const current = readCollection<Profile>("profiles").find((profile) => profile.id === body.id);
+  if (!current) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const updated = { ...current, ...body } as Profile;
+  updateRecord("profiles", updated);
+  return NextResponse.json(updated);
 }

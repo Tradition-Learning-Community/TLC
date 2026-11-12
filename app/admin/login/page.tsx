@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Lock } from "lucide-react";
 
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123";
-
 export default function LoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
@@ -18,12 +16,17 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    if (password === ADMIN_PASSWORD) {
-      localStorage.setItem("admin_session", "true");
+    const response = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    if (response.ok) {
       setPassword("");
-      router.push("/community/admin");
+      router.push("/admin/data");
     } else {
-      setError("Mot de passe incorrect");
+      setError("Mot de passe incorrect ou administration non configurée");
     }
 
     setLoading(false);

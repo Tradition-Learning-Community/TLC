@@ -23,8 +23,8 @@ const ContactPage = () => {
             demandes de collaboration.
           </p>
           <p className="mt-4 text-lg font-semibold text-[#062147] dark:text-white">
-            <a href="mailto:contact@tlc.example" className="text-primary">
-              contact@tlc.example
+            <a href="mailto:tlccommunitymanager2@gmail.com" className="text-primary">
+              tlccommunitymanager2@gmail.com
             </a>
           </p>
         </article>

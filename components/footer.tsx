@@ -125,13 +125,21 @@ const links = [
         title: "Contact presse",
         href: "/contact",
       },
+      {
+        title: "Contacter le community manager",
+        href: "mailto:tlccommunitymanager2@gmail.com",
+      },
     ],
   },
 ];
 
 const socialLinks = [
-  { label: "GitHub", href: "#", icon: Github },
-  { label: "LinkedIn", href: "#", icon: Linkedin },
+  { label: "GitHub", href: "https://github.com/Tradition-Learning-Community", icon: Github },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/search/results/all/?keywords=Tradition%20Learning&origin=RICH_QUERY_SUGGESTION&heroEntityKey=urn%3Ali%3Aorganization%3A112040236&position=0",
+    icon: Linkedin,
+  },
   { label: "Slack", href: "#", icon: Slack },
   { label: "Instagram", href: "#", icon: Instagram },
 ];

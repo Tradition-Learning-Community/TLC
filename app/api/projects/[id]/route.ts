@@ -1,46 +1,34 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { NextResponse } from "next/server";
+import { getProject, removeProject, saveProject } from "@/lib/project-store";
+import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'projects.json');
+type Context = { params: Promise<{ id: string }> };
 
-async function readData() {
-  const raw = await fs.readFile(DATA_FILE, 'utf-8');
-  return JSON.parse(raw || '[]');
-}
-
-async function writeData(data: any) {
-  await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
-}
-
-export async function GET(request: Request, context: any) {
-  const params = await context.params;
-  const { id } = params;
-  const projects = await readData();
-  const project = projects.find((p: any) => p.id === id);
-  if (!project) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+export async function GET(_request: Request, context: Context) {
+  const { id } = await context.params;
+  const project = getProject(id);
+  if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(project);
 }
 
-export async function PUT(request: Request, context: any) {
-  const params = await context.params;
-  const { id } = params;
-  const body = await request.json();
-  const projects = await readData();
-  const idx = projects.findIndex((p: any) => p.id === id);
-  if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  projects[idx] = { ...projects[idx], ...body };
-  await writeData(projects);
-  return NextResponse.json(projects[idx]);
+export async function PUT(request: Request, context: Context) {
+  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const { id } = await context.params;
+  const current = getProject(id);
+  if (!current) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+  }
+  const updated = saveProject({ ...current, ...body, id });
+  return NextResponse.json(updated);
 }
 
-export async function DELETE(request: Request, context: any) {
-  const params = await context.params;
-  const { id } = params;
-  let projects = await readData();
-  const idx = projects.findIndex((p: any) => p.id === id);
-  if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  const removed = projects.splice(idx, 1)[0];
-  await writeData(projects);
-  return NextResponse.json({ removed });
+export async function DELETE(request: Request, context: Context) {
+  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const { id } = await context.params;
+  const project = getProject(id);
+  if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  removeProject(id);
+  return NextResponse.json({ removed: project });
 }

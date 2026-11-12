@@ -1,7 +1,7 @@
 import DataManager from '@/components/admin/DataManager'
 
-export default function AdminDataTypePage({ params }: { params: { type: string } }) {
-  const { type } = params
+export default async function AdminDataTypePage({ params }: { params: Promise<{ type: string }> }) {
+  const { type } = await params
   return (
     <div>
       <DataManager type={type} />

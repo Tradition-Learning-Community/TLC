@@ -169,3 +169,14 @@ pnpm dev      # Démarrer le serveur de développement
 pnpm build    # Compiler le projet
 pnpm start    # Lancer en production
 pnpm lint     # Vérifier le code
+
+## Database backup
+
+After initializing the database, create a local backup with:
+
+```bash
+pnpm backup
+```
+
+Backups are stored in `.data/backups/`. In production, copy them to external
+storage or include this directory in the hosting provider's backup policy.
