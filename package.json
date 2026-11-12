@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run --pool=forks --poolOptions.forks.singleFork",
+    "test": "vitest run --pool=threads --poolOptions.threads.singleThread --no-file-parallelism",
     "backup": "node scripts/backup-database.mjs"
   },
   "dependencies": {
