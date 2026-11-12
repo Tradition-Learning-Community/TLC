@@ -1,4 +1,5 @@
 import { appendJsonItem, readJsonArray } from "@/lib/community-store";
+import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 
 type CallItem = {
   id?: string;
@@ -17,6 +18,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!isAdminRequest(request)) return unauthorizedResponse();
   try {
     const body = (await request.json()) as CallItem;
 

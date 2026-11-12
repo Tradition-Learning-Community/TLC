@@ -1,9 +1,14 @@
 "use client"
 import { useEffect, useState } from 'react'
 
-type Item = any
+type Item = {
+  id?: string
+  title?: string
+  name?: string
+  [key: string]: unknown
+}
 
-const TYPE_HELP: Record<string, { title: string; expected: string; tips: string[]; template: any }> = {
+const TYPE_HELP: Record<string, { title: string; expected: string; tips: string[]; template: Item }> = {
   contributors: {
     title: 'Contributeurs',
     expected: 'Champs recommandes: name, github, avatar (optionnel).',
@@ -81,6 +86,7 @@ const TYPE_HELP: Record<string, { title: string; expected: string; tips: string[
 export default function DataManager({ type }: { type: string }) {
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [editing, setEditing] = useState<Item | null>(null)
   const [editorValue, setEditorValue] = useState('')
   const help = TYPE_HELP[type] ?? {
@@ -91,12 +97,18 @@ export default function DataManager({ type }: { type: string }) {
   }
 
   async function fetchItems() {
+    setLoading(true)
+    setError('')
     try {
       const res = await fetch(`/api/data/${type}`)
+      if (!res.ok) throw new Error('Unable to load data')
       const data = await res.json()
       setItems(data)
-    } catch (e) {
+    } catch {
+      setError('Impossible de charger les données.')
       setItems([])
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -132,18 +144,21 @@ export default function DataManager({ type }: { type: string }) {
         setEditing(null)
         setEditorValue('')
       } else {
-        alert('Erreur serveur')
+        const data = await res.json().catch(() => null)
+        setError(data?.error || 'Erreur serveur')
       }
-    } catch (e) {
-      alert('JSON invalide')
+    } catch {
+      setError('JSON invalide')
     }
     setLoading(false)
   }
 
-  async function remove(id: string) {
+  async function remove(id?: string) {
+    if (!id) return
     if (!confirm('Supprimer cet élément ?')) return
     setLoading(true)
-    await fetch(`/api/data/${type}?id=${id}`, { method: 'DELETE' })
+    const response = await fetch(`/api/data/${type}?id=${id}`, { method: 'DELETE' })
+    if (!response.ok) setError('Impossible de supprimer cet élément.')
     await fetchItems()
     setLoading(false)
   }
@@ -157,6 +172,8 @@ export default function DataManager({ type }: { type: string }) {
           <button onClick={fetchItems} className="rounded-md bg-white/5 px-3 py-2 text-white">Rafraîchir</button>
         </div>
       </div>
+
+      {error && <div role="alert" className="mb-4 rounded-lg border border-red-400/30 bg-red-950/30 p-3 text-sm text-red-200">{error}</div>}
 
       <div className="mb-4 rounded-lg border border-white/10 bg-white/5 p-4">
         <div className="text-sm font-semibold text-white">Structure attendue</div>
@@ -183,7 +200,7 @@ export default function DataManager({ type }: { type: string }) {
           <div className="rounded-lg bg-white/3 p-4 max-h-[60vh] overflow-auto">
             <div className="text-sm text-slate-300 mb-2">Éléments ({items.length})</div>
             <ul className="space-y-2">
-              {items.map((it: any) => (
+              {items.map((it: Item) => (
                 <li key={it.id} className="flex items-center justify-between gap-2">
                   <div className="truncate">{it.title || it.name || it.id}</div>
                   <div className="flex gap-2">

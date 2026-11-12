@@ -1,8 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Github, ShieldCheck, Sparkles, Slack, Telescope, Brain, Book } from "lucide-react";
+import HeroEcosystem from "@/components/hero-ecosystem";
 
-export default function HeroSection() {
+type HeroStats = {
+  experiments: number;
+  contributors: number;
+  resources: number;
+};
+
+export default function HeroSection({ stats }: { stats: HeroStats }) {
   return (
     <main id="home-hero" className="overflow-x-hidden ">
       <section className="relative isolate flex min-h-[calc(100vh-var(--header-offset))] items-center justify-center overflow-hidden bg-gradient-to-b from-[#06142d] via-[#0a1f2e] to-[#06142d] border-b border-[#d4af37]/20 pt-40 pb-15">
@@ -17,7 +24,7 @@ export default function HeroSection() {
           <div className="grid w-full items-center justify-items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div className="mx-auto max-w-2xl text-center">
               <h1 className="mt-8 max-w-4xl mx-auto text-balance text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight animate-slide-up">
-                <span className="text-white">Moins des données, plus </span>
+                <span className="text-white">Moins de données, plus </span>
               
                 <span className="bg-gradient-to-r from-[#d4af37] via-[#f0d87f] to-[#d4af37] bg-clip-text text-transparent animate-glow"> d'intelligence</span>
               </h1>
@@ -45,9 +52,9 @@ export default function HeroSection() {
 
               <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto ">
                 {[
-                  { label: "Exp.", value: "12", note: "ok" },
-                  { label: "Contrib.", value: "48", note: "live" },
-                  { label: "Data", value: "120+", note: "pretes" }
+                  { label: "Expériences", value: String(stats.experiments), note: "suivies" },
+                  { label: "Contributeurs", value: String(stats.contributors), note: "actifs" },
+                  { label: "Ressources", value: String(stats.resources), note: "partagées" }
                 ].map((stat, i) => (
                   <div
                     key={i}
@@ -62,7 +69,8 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-sm lg:max-w-md">
+            <HeroEcosystem />
+            <div className="hidden relative mx-auto w-full max-w-sm lg:max-w-md">
               <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-[#0b3d91]/18 via-transparent to-[#d4af37]/18 blur-2xl" />
               <div className="relative overflow-hidden rounded-[1.75rem] border border-[#d4af37]/30 bg-gradient-to-br from-[#07162f]/95 via-[#06142d]/90 to-[#0a1f2e] px-5 py-5 backdrop-blur-xl">
                 <div className="flex items-center justify-between border-b border-white/10 pb-4">
@@ -107,27 +115,27 @@ export default function HeroSection() {
                   </svg>
 
                   {/* Livre haut gauche (positionné sur le point SVG) */}
-                  <div className="absolute animate-bounce" style={{left: '16%', top: '16%', transform: 'translate(-50%, -50%)', animationDuration: '3s', animationDelay: '0s'}}>
-                    <Book className="h-10 w-10 text-[#d4af37] opacity-70" strokeWidth={1.5} />
+                  <div className="neural-node neural-node-one absolute" style={{left: '16%', top: '16%'}}>
+                    <Book className="h-5 w-5 text-[#f0d87f]" strokeWidth={1.5} />
                   </div>
 
                   {/* Livre haut droite (positionné sur le point SVG) */}
-                  <div className="absolute animate-bounce" style={{right: '16%', top: '16%', transform: 'translate(50%, -50%)', animationDuration: '3.2s', animationDelay: '0.2s'}}>
-                    <Book className="h-10 w-10 text-[#d4af37] opacity-70" strokeWidth={1.5} />
+                  <div className="neural-node neural-node-two absolute" style={{right: '16%', top: '16%'}}>
+                    <Book className="h-5 w-5 text-[#f0d87f]" strokeWidth={1.5} />
                   </div>
 
                   {/* Livre bas gauche (positionné sur le point SVG) */}
-                  <div className="absolute animate-bounce" style={{left: '16%', top: '84%', transform: 'translate(-50%, -50%)', animationDuration: '3.4s', animationDelay: '0.4s'}}>
-                    <Book className="h-10 w-10 text-[#d4af37] opacity-70" strokeWidth={1.5} />
+                  <div className="neural-node neural-node-three absolute" style={{left: '16%', top: '84%'}}>
+                    <Book className="h-5 w-5 text-[#f0d87f]" strokeWidth={1.5} />
                   </div>
 
                   {/* Livre bas droite (positionné sur le point SVG) */}
-                  <div className="absolute animate-bounce" style={{right: '16%', top: '84%', transform: 'translate(50%, -50%)', animationDuration: '3s', animationDelay: '0.1s'}}>
-                    <Book className="h-10 w-10 text-[#d4af37] opacity-70" strokeWidth={1.5} />
+                  <div className="neural-node neural-node-four absolute" style={{right: '16%', top: '84%'}}>
+                    <Book className="h-5 w-5 text-[#f0d87f]" strokeWidth={1.5} />
                   </div>
 
                   {/* Cerveau au centre */}
-                  <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#0b3d91] via-[#11428f] to-[#d4af37]" style={{boxShadow: '0 0 30px rgba(244, 216, 127, 0.4)'}}>
+                  <div className="neural-core relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#0b3d91] via-[#11428f] to-[#d4af37]" style={{boxShadow: '0 0 30px rgba(244, 216, 127, 0.4)'}}>
                     <div className="relative inset-8 rounded-full bg-[#06142d]" />
                     <div className="relative text-center">
                       <Brain className="mx-auto h-10 w-10 text-[#f0d87f]" strokeWidth={1.5} />

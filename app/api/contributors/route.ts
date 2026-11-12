@@ -1,70 +1,45 @@
-import { NextResponse } from 'next/server'
-import fs from 'fs/promises'
-import path from 'path'
-import { randomUUID } from 'crypto'
-
-const DATA_PATH = path.join(process.cwd(), 'data', 'contributors.json')
-
-async function readData() {
-  try {
-    const content = await fs.readFile(DATA_PATH, 'utf-8')
-    return JSON.parse(content)
-  } catch (err) {
-    return []
-  }
-}
-
-async function writeData(data: any) {
-  await fs.mkdir(path.join(process.cwd(), 'data'), { recursive: true })
-  await fs.writeFile(DATA_PATH, JSON.stringify(data, null, 2), 'utf-8')
-}
+import { NextResponse } from "next/server";
+import { randomUUID } from "node:crypto";
+import { deleteRecord, readCollection, updateRecord, appendRecord } from "@/lib/database";
+import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import type { Contributor } from "@/lib/types";
 
 export async function GET() {
-  const items = await readData()
-  return NextResponse.json(items)
+  return NextResponse.json(readCollection<Contributor>("contributors"));
 }
 
 export async function POST(request: Request) {
-  const body = await request.json()
-  if (!body || !body.name || !body.github) {
-    return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
+  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body.name !== "string" || typeof body.github !== "string") {
+    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
-
-  const items = await readData()
-  const newItem = {
+  const contributor = appendRecord<Contributor>("contributors", {
     id: randomUUID(),
-    name: body.name,
-    github: body.github,
-    avatar: body.avatar || `${body.github.replace(/\/$/, '')}.png`,
-  }
-
-  items.push(newItem)
-  await writeData(items)
-  return NextResponse.json(newItem, { status: 201 })
+    name: body.name.trim(),
+    github: body.github.trim(),
+    avatar: typeof body.avatar === "string" ? body.avatar : undefined,
+  }, "contributor");
+  return NextResponse.json(contributor, { status: 201 });
 }
 
 export async function PUT(request: Request) {
-  const body = await request.json()
-  if (!body || !body.id) {
-    return NextResponse.json({ error: 'Missing id' }, { status: 400 })
+  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body.id !== "string") {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
-
-  const items = await readData()
-  const idx = items.findIndex((i: any) => i.id === body.id)
-  if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-
-  items[idx] = { ...items[idx], ...body }
-  await writeData(items)
-  return NextResponse.json(items[idx])
+  const current = readCollection<Contributor>("contributors").find((item) => item.id === body.id);
+  if (!current) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const updated = { ...current, ...body } as Contributor;
+  updateRecord("contributors", updated);
+  return NextResponse.json(updated);
 }
 
 export async function DELETE(request: Request) {
-  const url = new URL(request.url)
-  const id = url.searchParams.get('id')
-  if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
-
-  const items = await readData()
-  const filtered = items.filter((i: any) => i.id !== id)
-  await writeData(filtered)
-  return NextResponse.json({ success: true })
+  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const id = new URL(request.url).searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  deleteRecord("contributors", id);
+  return NextResponse.json({ success: true });
 }

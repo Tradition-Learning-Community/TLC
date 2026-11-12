@@ -1,8 +1,42 @@
-import Link from 'next/link'
+"use client";
+
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const dynamic = 'force-dynamic'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [checking, setChecking] = useState(pathname !== "/admin/login");
+
+  useEffect(() => {
+    if (pathname === "/admin/login") {
+      return;
+    }
+
+    let active = true;
+    fetch("/api/admin/verify", { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) router.replace("/admin/login");
+        else if (active) setChecking(false);
+      })
+      .catch(() => router.replace("/admin/login"));
+
+    return () => {
+      active = false;
+    };
+  }, [pathname, router]);
+
+  if (pathname === "/admin/login") return <>{children}</>;
+  if (checking) return <div className="min-h-screen bg-[#04111a]" />;
+
+  async function logout() {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.replace("/admin/login");
+  }
+
   return (
     <div className="min-h-screen bg-linear-to-b from-[#04111a] to-[#071428] text-white">
       <div className="flex min-h-screen">
@@ -23,7 +57,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Link href="/admin/data" className="px-3 py-2 rounded-md hover:bg-white/5">Gestion des donnees</Link>
           </nav>
 
-          <div className="pt-4 text-sm text-slate-400">Sécurité: mot de passe unique</div>
+          <div className="pt-4 text-sm text-slate-400">Sécurité : mot de passe unique</div>
+          <button onClick={logout} className="mt-3 rounded-md border border-red-400/30 px-3 py-2 text-left text-sm text-red-300 hover:bg-red-500/10">
+            Se déconnecter
+          </button>
         </aside>
 
         <main className="flex-1 p-8">

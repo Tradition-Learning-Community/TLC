@@ -1,131 +1,67 @@
-import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs/promises'
-import path from 'path'
-import { randomUUID } from 'crypto'
+import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "node:crypto";
+import {
+  deleteRecord,
+  getDatabase,
+  readCollection,
+  updateRecord,
+} from "@/lib/database";
+import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { validateDataRecord, type DataRecord } from "@/lib/validation";
 
-const DATA_DIR = path.join(process.cwd(), 'data')
+const ALLOWED_TYPES = new Set([
+  "contributors", "profiles", "projects", "events", "resources",
+  "experiments", "open-calls", "discussions",
+]);
 
-async function readFile(file: string) {
-  try {
-    const content = await fs.readFile(file, 'utf-8')
-    return JSON.parse(content)
-  } catch (e) {
-    return []
-  }
+type RouteContext = { params: Promise<{ type: string }> };
+async function resolveType(context: RouteContext) {
+  const { type } = await context.params;
+  return ALLOWED_TYPES.has(type) ? type : null;
 }
 
-async function writeFile(file: string, data: any) {
-  await fs.mkdir(DATA_DIR, { recursive: true })
-  await fs.writeFile(file, JSON.stringify(data, null, 2), 'utf-8')
+export async function GET(_request: NextRequest, context: RouteContext) {
+  const type = await resolveType(context);
+  if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
+  return NextResponse.json(readCollection<DataRecord>(type));
 }
 
-type RouteContext = {
-  params: Promise<{ type: string }>
+export async function POST(request: NextRequest, context: RouteContext) {
+  const type = await resolveType(context);
+  if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
+  if (!isAdminRequest(request)) return unauthorizedResponse();
+
+  const body = await request.json().catch(() => null);
+  const validation = validateDataRecord(type, body);
+  if (!validation.ok) return NextResponse.json({ error: validation.error }, { status: 400 });
+  const item = { ...validation.value, id: randomUUID() };
+  getDatabase()
+    .prepare("INSERT INTO records (collection, id, data) VALUES (?, ?, ?)")
+    .run(type, item.id, JSON.stringify(item));
+  return NextResponse.json(item, { status: 201 });
 }
 
-export async function GET(
-  request: NextRequest,
-  context: RouteContext
-) {
-  const { type } = await context.params
+export async function PUT(request: NextRequest, context: RouteContext) {
+  const type = await resolveType(context);
+  if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
+  if (!isAdminRequest(request)) return unauthorizedResponse();
 
-  const file = path.join(DATA_DIR, `${type}.json`)
-  const items = await readFile(file)
-
-  return NextResponse.json(items)
+  const body = await request.json().catch(() => null);
+  const validation = validateDataRecord(type, body);
+  if (!validation.ok) return NextResponse.json({ error: validation.error }, { status: 400 });
+  if (typeof validation.value.id !== "string") return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  const updated = updateRecord(type, validation.value as { id: string });
+  if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  return NextResponse.json(validation.value);
 }
 
-export async function POST(
-  request: NextRequest,
-  context: RouteContext
-) {
-  const { type } = await context.params
+export async function DELETE(request: NextRequest, context: RouteContext) {
+  const type = await resolveType(context);
+  if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
+  if (!isAdminRequest(request)) return unauthorizedResponse();
 
-  const body = await request.json()
-
-  if (!body || typeof body !== 'object') {
-    return NextResponse.json(
-      { error: 'Invalid body' },
-      { status: 400 }
-    )
-  }
-
-  const file = path.join(DATA_DIR, `${type}.json`)
-  const items = await readFile(file)
-
-  const newItem = {
-    id: body.id || randomUUID(),
-    ...body,
-  }
-
-  items.push(newItem)
-
-  await writeFile(file, items)
-
-  return NextResponse.json(newItem, { status: 201 })
-}
-
-export async function PUT(
-  request: NextRequest,
-  context: RouteContext
-) {
-  const { type } = await context.params
-
-  const body = await request.json()
-
-  if (!body || !body.id) {
-    return NextResponse.json(
-      { error: 'Missing id' },
-      { status: 400 }
-    )
-  }
-
-  const file = path.join(DATA_DIR, `${type}.json`)
-  const items = await readFile(file)
-
-  const idx = items.findIndex((i: any) => i.id === body.id)
-
-  if (idx === -1) {
-    return NextResponse.json(
-      { error: 'Not found' },
-      { status: 404 }
-    )
-  }
-
-  items[idx] = {
-    ...items[idx],
-    ...body,
-  }
-
-  await writeFile(file, items)
-
-  return NextResponse.json(items[idx])
-}
-
-export async function DELETE(
-  request: NextRequest,
-  context: RouteContext
-) {
-  const { type } = await context.params
-
-  const url = new URL(request.url)
-  const id = url.searchParams.get('id')
-
-  if (!id) {
-    return NextResponse.json(
-      { error: 'Missing id' },
-      { status: 400 }
-    )
-  }
-
-  const file = path.join(DATA_DIR, `${type}.json`)
-  const items = await readFile(file)
-
-  const filtered = items.filter((i: any) => i.id !== id)
-
-  await writeFile(file, filtered)
-
-  return NextResponse.json({
-    success: true,
-  })
+  const id = new URL(request.url).searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  if (!deleteRecord(type, id)) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  return NextResponse.json({ success: true });
 }

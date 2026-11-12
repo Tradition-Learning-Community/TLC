@@ -3,11 +3,20 @@ import CommunityVision from "@/components/community-vision"
 import CommunitySection from "@/components/community-section"
 import ContributorsSection from "@/components/contributors-section"
 import { Bot, ChartSpline, GitBranchPlus, Radar } from "lucide-react"
+import experiments from "@/data/experiments.json"
+import contributors from "@/data/contributors.json"
+import resources from "@/data/resources.json"
 
 const HomePage = () => {
   return (
     <div className="home-hero-bg">
-      <HeroSection />
+      <HeroSection
+        stats={{
+          experiments: experiments.length,
+          contributors: contributors.length,
+          resources: resources.length,
+        }}
+      />
 
       <CommunityVision />
 
