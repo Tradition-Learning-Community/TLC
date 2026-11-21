@@ -1,147 +1,31 @@
 import { Logo } from "@/components/logo";
 import Link from "next/link";
-import { ArrowUpRight, Github, Instagram, Linkedin, Slack } from "lucide-react";
+import { ArrowUpRight, Github } from "lucide-react";
 
 const links = [
-  {
-    group: "Projet",
-    items: [
-      {
-        title: "Qu’est-ce que le Tradition Learning ?",
-            href: "/about#what-is",
-      },
-      {
-        title: "Vision & Mission",
-            href: "/about#vision",
-      },
-      {
-        title: "Valeurs & Éthique",
-            href: "/about#values",
-      },
-      {
-        title: "L’Équipe",
-            href: "/about#team",
-      },
-      {
-        title: "Roadmap",
-            href: "/about#roadmap",
-      },
-      {
-        title: "FAQ",
-            href: "/about#faq",
-      },
-    ],
-  },
-  {
-    group: "Solution",
-    items: [
-      {
-        title: "Startup",
-        href: "/projects",
-      },
-      {
-        title: "Freelancers",
-        href: "/community",
-      },
-      {
-        title: "Organizations",
-        href: "/community",
-      },
-      {
-        title: "Students",
-        href: "/community",
-      },
-      {
-        title: "Collaboration",
-        href: "/community",
-      },
-      {
-        title: "Design",
-        href: "/resources",
-      },
-      {
-        title: "Management",
-        href: "/resources",
-      },
-    ],
-  },
-  {
-    group: "Communauté",
-    items: [
-      {
-        title: "Comment contribuer",
-        href: "/about#team",
-      },
-      {
-        title: "Événements",
-        href: "/events",
-      },
-      {
-        title: "Blog",
-        href: "/resources",
-      },
-      {
-        title: "Témoignages",
-        href: "/community",
-      },
-      {
-        title: "Discord",
-        href: "#",
-      },
-      {
-        title: "Newsletter",
-        href: "#",
-      },
-    ],
-  },
-  {
-    group: "Légal & Transparence",
-    items: [
-      {
-        title: "Statuts ASBL",
-        href: "/resources#statuts-asbl",
-      },
-      {
-        title: "Charte communautaire",
-        href: "/resources#charte-communautaire",
-      },
-      {
-        title: "Politique de confidentialité",
-        href: "/resources#politique-confidentialite",
-      },
-      {
-        title: "Cookies",
-        href: "/resources#cookies",
-      },
-      {
-        title: "Licence open-source",
-        href: "/resources#licence-open-source",
-      },
-      {
-        title: "Sécurité",
-        href: "/resources#securite",
-      },
-      {
-        title: "Contact presse",
-        href: "/contact",
-      },
-      {
-        title: "Contacter le community manager",
-        href: "mailto:tlccommunitymanager2@gmail.com",
-      },
-    ],
-  },
+  { group: "Tradition Learning", items: [
+    { title: "Présentation de TL", href: "/about#what-is" },
+    { title: "Les fondements", href: "/about" },
+    { title: "Sources et documentation", href: "/resources" },
+  ] },
+  { group: "Bibliothèque", items: [
+    { title: "tllib", href: "https://github.com/Tradition-Learning-Community/tllib" },
+    { title: "tllib-specs", href: "https://github.com/Tradition-Learning-Community/tllib-specs" },
+    { title: "État des travaux", href: "/about#roadmap" },
+  ] },
+  { group: "TLC", items: [
+    { title: "La communauté", href: "/community" },
+    { title: "Contribuer", href: "/community" },
+    { title: "Dépôt du site", href: "https://github.com/Tradition-Learning-Community/TLC" },
+  ] },
+  { group: "Informations", items: [
+    { title: "À propos", href: "/about" },
+    { title: "Documents institutionnels", href: "/resources#statuts-asbl" },
+    { title: "Contact", href: "/contact" },
+  ] },
 ];
-
 const socialLinks = [
   { label: "GitHub", href: "https://github.com/Tradition-Learning-Community", icon: Github },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/search/results/all/?keywords=Tradition%20Learning&origin=RICH_QUERY_SUGGESTION&heroEntityKey=urn%3Ali%3Aorganization%3A112040236&position=0",
-    icon: Linkedin,
-  },
-  { label: "Slack", href: "#", icon: Slack },
-  { label: "Instagram", href: "#", icon: Instagram },
 ];
 
 export default function FooterSection() {
@@ -204,7 +88,7 @@ export default function FooterSection() {
 
         <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-6">
           <span className="order-last block text-center text-sm text-slate-400 md:order-first">
-            © {new Date().getFullYear()} TLC, Tous droits réservés
+            © {new Date().getFullYear()} TLC · Code du site sous licence MIT
           </span>
           <div className="order-first flex flex-wrap justify-center gap-3 md:order-last">
             {socialLinks.map((social) => {
