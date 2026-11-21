@@ -33,7 +33,7 @@ const links = [
   {
     group: "Informations",
     items: [
-      { title: "Documents institutionnels", href: "/resources#statuts-asbl" },
+      { title: "Questions institutionnelles", href: "/contact" },
       { title: "Transparence et licences", href: "/resources#licence-open-source" },
       { title: "Contact", href: "/contact" },
     ],
@@ -102,7 +102,7 @@ export default function FooterSection() {
 
         <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-6">
           <span className="order-last block text-center text-sm text-slate-400 md:order-first">
-            © {new Date().getFullYear()} TLC, Tous droits réservés
+            © {new Date().getFullYear()} TLC · Code du site sous licence MIT
           </span>
           <div className="order-first flex flex-wrap justify-center gap-3 md:order-last">
             {socialLinks.map((social) => {

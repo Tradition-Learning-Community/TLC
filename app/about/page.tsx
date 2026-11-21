@@ -41,7 +41,7 @@ const AboutPage = () => {
             <span className="content-chip">Implémentation</span>
           </div>
           <p className="content-panel-copy mt-3">
-            L’un de ces travaux est tllib, une bibliothèque scientifique en développement. Les résultats recherchés — notamment en situation de données limitées — restent à éprouver : nous distinguons toujours ambitions, réalisations et résultats testés.
+            TLC développe notamment tllib, une bibliothèque destinée à constituer et faire fonctionner des systèmes Tradition Learning. Elle est encore en développement ; ses performances devront être établies par l’expérimentation.
           </p>
         </article>
 
@@ -77,7 +77,7 @@ const AboutPage = () => {
         <article id="faq" className="content-panel">
           <h2 className="content-panel-title">Sources de référence</h2>
           <p className="content-panel-copy">
-            Le site présente les idées essentielles au grand public. Les chercheurs et développeurs peuvent approfondir avec le manuscrit scientifique, les spécifications tllib-specs et le code de tllib, accessibles depuis la rubrique Ressources.
+            Les fondements de Tradition Learning sont développés dans le manuscrit scientifique. Les travaux de formalisation et de développement sont accessibles dans les spécifications et la bibliothèque tllib.
           </p>
         </article>
       </div>

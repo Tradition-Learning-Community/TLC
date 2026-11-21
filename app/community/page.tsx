@@ -47,21 +47,6 @@ export default function CommunityPage() {
     { label: "Organisations et partenaires", value: "Soutenir" },
   ];
 
-  const testimonials = [
-    {
-      quote: "Les fondements scientifiques, contrats et tests d'acceptation sont publiés dans le dépôt tllib-specs.",
-      author: "tllib-specs",
-      role: "Spécifications",
-      href: "https://github.com/Tradition-Learning-Community/tllib-specs",
-    },
-    {
-      quote: "Le moteur C++20 et les interfaces C++ et Python sont en développement dans le dépôt tllib.",
-      author: "tllib",
-      role: "Bibliothèque",
-      href: "https://github.com/Tradition-Learning-Community/tllib",
-    },
-  ];
-
   if (loading) {
     return (
       <section className="content-shell pt-40">
@@ -191,13 +176,14 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* Événements */}
+      {events.length > 0 && (
+
       <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
           Événements référencés
         </h2>
         <div className="space-y-3">
-          {events.length === 0 && <p className="content-panel-copy">Aucun événement à venir confirmé.</p>}
+          
           {events.map((event) => (
             <div
               key={event.id}
@@ -218,14 +204,16 @@ export default function CommunityPage() {
           ))}
         </div>
       </section>
+      )}
 
-      {/* Ressources partagées */}
+      {resources.length > 0 && (
+
       <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
           Ressources partagées
         </h2>
         <div className="grid gap-4 md:grid-cols-2">
-          {resources.length === 0 && <p className="content-panel-copy">Les ressources vérifiées sont disponibles sur la page Ressources.</p>}
+          
           {resources.map((res) => (
             <div
               key={res.id}
@@ -241,14 +229,16 @@ export default function CommunityPage() {
           ))}
         </div>
       </section>
+      )}
 
-      {/* Profils référencés */}
+      {members.length > 0 && (
+
       <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
           Profils publiés
         </h2>
         <div className="grid gap-4 md:grid-cols-3">
-          {members.length === 0 && <p className="content-panel-copy">Les profils seront présentés après validation de leur provenance.</p>}
+          
           {members.map((member) => (
             <div
               key={member.id}
@@ -268,14 +258,16 @@ export default function CommunityPage() {
           ))}
         </div>
       </section>
+      )}
 
-      {/* Appels à contribution */}
+      {openCalls.length > 0 && (
+
       <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
           Appels à contribution
         </h2>
         <div className="space-y-3">
-          {openCalls.length === 0 && <p className="content-panel-copy">Consultez les issues des dépôts officiels pour les travaux ouverts.</p>}
+          
           {openCalls.map((call) => (
             <div
               key={call.id}
@@ -291,16 +283,19 @@ export default function CommunityPage() {
           ))}
         </div>
       </section>
+      )}
 
       {/* Principes de collaboration */}
       <section className="mt-12">
         <div className="rounded-3xl border border-[rgba(11,61,145,0.12)] bg-white p-6 dark:border-white/10 dark:bg-[rgba(7,24,51,0.8)] md:p-8">
           <h2 className="text-xl font-semibold text-[#062147] dark:text-white">
-            Principes de collaboration
+            Contribuer aux projets
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
             La collaboration repose sur le respect, la traçabilité et la qualité des contributions.
-            Les procédures officielles sont précisées dans les guides de chaque dépôt.
+            Les projets TLC sont ouverts à des contributions scientifiques,
+            techniques et documentaires. Retrouvez les travaux en cours dans
+            nos espaces de collaboration.
           </p>
           <a href="https://github.com/Tradition-Learning-Community/tllib/blob/main/CONTRIBUTING.md" className="mt-4 inline-block rounded-full border border-[#0b3d91] px-4 py-2 text-sm font-medium text-[#0b3d91] transition-colors hover:bg-[#0b3d91] hover:text-white dark:border-[#d4af37] dark:text-[#d4af37] dark:hover:bg-[#d4af37]/20">
             Lire le guide de contribution
@@ -308,35 +303,7 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* Sources officielles, pas de témoignages simulés */}
-      <section className="mt-12">
-        <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
-          Sources des travaux
-        </h2>
-        <div className="grid gap-6 md:grid-cols-2">
-          {testimonials.map((testimonial, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-[rgba(11,61,145,0.12)] bg-white p-6 dark:border-white/10 dark:bg-[rgba(7,24,51,0.8)]"
-            >
-              <p className="italic text-slate-600 dark:text-slate-300">
-                {testimonial.quote}
-              </p>
-              <div className="mt-4 flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-[#062147] dark:text-white">
-                    {testimonial.author}
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {testimonial.role}
-                  </p>
-                  <a className="mt-2 inline-block text-xs font-medium underline text-[#0b3d91] dark:text-[#d4af37]" href={testimonial.href} target="_blank" rel="noopener noreferrer">Consulter le dépôt</a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+
     </section>
   );
 }
