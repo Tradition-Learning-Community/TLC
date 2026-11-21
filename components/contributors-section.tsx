@@ -7,9 +7,6 @@ const ContributorsSection = ({ contributors }: { contributors: Contributor[] }) 
       <div className="mx-auto max-w-6xl px-4">
         <div className="text-center mb-8">
           <h3 className="text-2xl font-semibold text-white">Ils contribuent à TLC</h3>
-          <p className="text-slate-300 mt-2">
-            Découvrez les personnes référencées qui participent à nos projets et à la communauté.
-          </p>
         </div>
 
         <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4">

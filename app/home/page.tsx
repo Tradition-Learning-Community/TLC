@@ -23,14 +23,14 @@ const HomePage = async () => {
 
       <section className="content-shell pb-20 pt-16">
         <div className="content-header text-left md:text-center">
-          <span className="content-kicker">Une recherche, des personnes, un avenir à construire</span>
+          <span className="content-kicker">Les travaux de TLC</span>
           <h2 className="content-title">
-            Pourquoi TLC existe et comment avancer ensemble
+            De la recherche aux outils
           </h2>
           <p className="content-lead">
-            Nous réunissons des personnes de différents horizons pour explorer une nouvelle approche
-            de l’apprentissage des intelligences artificielles, construire des outils
-            et confronter les idées à l’expérience.
+            TLC travaille sur les fondements de Tradition Learning, le développement
+            de la bibliothèque tllib et les expériences qui permettront d’en
+            évaluer les possibilités et les limites.
           </p>
         </div>
 

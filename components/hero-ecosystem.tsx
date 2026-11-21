@@ -38,8 +38,8 @@ const particles = [
 ];
 
 const floatingCards = [
-  { className: "hero-code-card hero-code-card-top", label: "TRADITION LEARNING", code: "Apprendre autrement" },
-  { className: "hero-code-card hero-code-card-bottom", label: "COMMUNAUTÉ TLC", code: "Construire ensemble" },
+  { className: "hero-code-card hero-code-card-top", label: "TRADITION LEARNING", code: "Transmission · Transformation" },
+  { className: "hero-code-card hero-code-card-bottom", label: "TRADITION LEARNING COMMUNITY", code: "Recherche · Développement" },
 ];
 
 export default function HeroEcosystem() {

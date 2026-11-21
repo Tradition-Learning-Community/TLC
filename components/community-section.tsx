@@ -1,6 +1,6 @@
 const CommunitySection = () => {
   return (
-    <section className="relative w-full bg-gradient-to-b from-[#06142d] via-[#0a1f2e] to-[#07162f] py-20 lg:py-32 border-b border-[#d4af37]/8">
+    <section className="relative w-full bg-gradient-to-b from-[#06142d] via-[#0a1f2e] to-[#07162f] py-16 lg:py-20 border-b border-[#d4af37]/8">
       {/* Texte centré au-dessus */}
       <div className="mx-auto max-w-3xl text-center px-4 mb-12 lg:mb-20 z-10 relative">
         <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
@@ -104,10 +104,6 @@ const CommunitySection = () => {
         </div>
       </div>
 
-      {/* Texte du credit au bas */}
-      <div className="text-center mt-12 text-sm text-slate-400">
-        Images illustrant les activités et la communauté TLC
-      </div>
     </section>
   )
 }

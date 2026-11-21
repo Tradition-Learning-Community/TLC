@@ -46,9 +46,9 @@ export default function HeroSection() {
 
               <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto ">
                 {[
-                  { label: "LE DÉFI", value: "Comprendre", note: "Explorer d’autres voies d’apprentissage" },
-                  { label: "LE TRAVAIL", value: "Construire", note: "Faire avancer la recherche ensemble" },
-                  { label: "L’OUVERTURE", value: "Participer", note: "Apporter ses idées, compétences ou moyens" }
+                  { label: "LE DÉFI", value: "Données limitées", note: "Explorer d’autres voies d’apprentissage" },
+                  { label: "L’APPROCHE", value: "Transmission", note: "Faire évoluer une Tradition" },
+                  { label: "LA COMMUNAUTÉ", value: "TLC", note: "Recherche, développement et participation" }
                 ].map((stat, i) => (
                   <div
                     key={i}
