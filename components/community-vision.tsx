@@ -1,26 +1,31 @@
-import Link from "next/link";
-
-export default function CommunityVision() {
+const CommunityVision = () => {
   return (
-    <section className="border-b border-[#d4af37]/10 bg-gradient-to-b from-[#06142d] via-[#0a1f2e] to-[#06142d] py-12 md:py-16">
-      <div className="mx-auto grid max-w-4xl items-center gap-6 px-4 md:grid-cols-2">
+    <section className="py-12 md:py-16 bg-gradient-to-b from-[#06142d] via-[#0a1f2e] to-[#06142d] border-b border-[#d4af37]/10">
+      <div className="max-w-4xl mx-auto grid gap-6 md:grid-cols-2 items:center px-4">
         <div>
-          <h2 className="text-2xl font-semibold text-white">De la théorie à la bibliothèque</h2>
-          <p className="mt-3 leading-relaxed text-slate-300">
-            Tradition Learning est un cadre scientifique d’apprentissage fondé sur la
-            transmission, la transformation et l’évolution d’une Tradition.
-            TLC rassemble les personnes qui étudient cette théorie et développent tllib.
+          <h3 className="text-2xl font-semibold text-white">Notre vision</h3>
+          <p className="mt-3 text-slate-300 leading-relaxed">
+            Tradition Learning est une théorie scientifique de l'apprentissage
+            fondée sur la transmission et la transformation d'une Tradition.
+            TLC est la communauté humaine qui mène la recherche, élabore les
+            spécifications et construit tllib.
           </p>
-          <p className="mt-3 text-sm leading-7 text-slate-300">
-            Les bénéfices recherchés en faible volume de données, généralisation
-            et robustesse restent à établir par des expériences.
-          </p>
+          <ul className="mt-4 space-y-2 text-sm text-slate-300">
+            <li>• Recherche sur l'apprentissage et la transmission</li>
+            <li>• Spécifications scientifiques traçables</li>
+            <li>• Bibliothèque tllib en développement</li>
+          </ul>
         </div>
-        <div className="flex flex-col gap-3 md:items-end">
-          <Link href="/about#what-is" className="inline-flex rounded-xl bg-[#d4af37] px-5 py-3 text-sm font-semibold text-[#06142d] hover:bg-[#e0c158]">Comprendre Tradition Learning</Link>
-          <Link href="https://github.com/Tradition-Learning-Community/tllib" className="text-sm font-semibold text-[#f0d87f] hover:underline">Découvrir tllib sur GitHub</Link>
+
+        <div className="text-left md:text-right">
+          <p className="text-sm text-slate-300">Engagez-vous :</p>
+          <a href="/community" className="inline-block mt-3 rounded-md bg-[#d4af37] px-4 py-2 text-sm font-semibold text-black hover:bg-[#e0c158]">
+            Contribuer à TLC
+          </a>
         </div>
       </div>
     </section>
-  );
+  )
 }
+
+export default CommunityVision

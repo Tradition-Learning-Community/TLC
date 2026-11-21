@@ -30,22 +30,22 @@ export default function HeroSection({ stats }: { stats: HeroStats }) {
               </h1>
 
               <p className="mx-auto mt-6 max-w-3xl text-lg md:text-xl text-slate-300 leading-relaxed pt-2">
-                Tradition Learning : recherche sur l’apprentissage, la transmission et l’évolution des connaissances. Découvrez la théorie et le développement de tllib.
+                Tradition Learning : une recherche sur l’apprentissage, la transmission et l’évolution d’une Tradition.
               </p>
 
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button asChild size="lg" className="rounded-xl bg-gradient-to-r from-[#0b3d91] to-[#1a5fb7] px-8 py-3 text-white font-semibold transition-all duration-300 hover:scale-105 border border-[#0b3d91]/50 hover:border-[#d4af37]/50">
                   <Link href="/about#what-is" className="inline-flex items-center gap-2">
                     <Telescope className="h-5 w-5" />
-                    Tradition Learning
+                    Comprendre TL
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
 
                 <Button asChild size="lg" className="rounded-xl border-2 border-[#d4af37]/60 px-8 py-3 text-white font-semibold bg-[rgba(212,175,55,0.05)] hover:bg-[#d4af37]/15 transition-all duration-300 hover:scale-105 hover:border-[#d4af37]">
-                  <Link href="https://github.com/Tradition-Learning-Community/tllib" className="inline-flex items-center gap-2">
+                  <Link href="/community" className="inline-flex items-center gap-2">
                     <Slack className="h-5 w-5" />
-                    Bibliothèque tllib
+                    Communaute
                   </Link>
                 </Button>
               </div>
@@ -54,7 +54,7 @@ export default function HeroSection({ stats }: { stats: HeroStats }) {
                 {[
                   { label: "Expériences", value: String(stats.experiments), note: "référencées" },
                   { label: "Contributeurs", value: String(stats.contributors), note: "référencés" },
-                  { label: "Ressources", value: String(stats.resources), note: "référencées" }
+                  { label: "Ressources", value: String(stats.resources), note: "partagées" }
                 ].map((stat, i) => (
                   <div
                     key={i}
