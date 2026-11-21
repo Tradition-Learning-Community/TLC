@@ -1,182 +1,38 @@
-![Node](https://img.shields.io/badge/node-%3E=18-brightgreen) ![License](https://img.shields.io/badge/license-MIT-blue)
+# Tradition Learning Community — TLC
 
-# TLC
-# 🧠 Plateforme de Communauté de Recherche en Intelligence Artificielle
+Site public de **Tradition Learning Community (TLC)**, organisation de recherche et de développement en intelligence artificielle.
 
-## 📌 Introduction
+## Identité scientifique
 
-Cette plateforme a pour objectif de rassembler des chercheurs, développeurs, étudiants et passionnés autour de projets concrets en intelligence artificielle.
-Elle ne se limite pas à la discussion : elle est conçue pour **produire, collaborer et innover**.
+- **Tradition Learning (TL)** est une théorie et un programme de recherche sur l’apprentissage, la transmission et l’évolution d’une Tradition.
+- **TLC** est la communauté humaine de chercheurs, ingénieurs et autres contributeurs. Elle ne doit pas être confondue avec la **Communauté**, entité fondamentale de la théorie.
+- **[tllib-specs](https://github.com/Tradition-Learning-Community/tllib-specs)** publie les spécifications et contrats scientifiques et techniques.
+- **[tllib](https://github.com/Tradition-Learning-Community/tllib)** implémente la bibliothèque scientifique. La V1 est encore en développement ; aucune conformité scientifique complète n’est annoncée.
 
----
+La théorie distingue trois entités fondamentales (Maître, Disciple, Communauté) et huit objets fondamentaux (Message, Principes, Valeurs, Vertus, Capacités, Compétences, Pratique, Expérience vécue). Le manuscrit scientifique fait autorité sur les fondements de TL.
 
-## 🎯 Objectifs
+## Plateforme web
 
-* Favoriser la collaboration sur des projets IA
-* Centraliser les ressources d’apprentissage
-* Encourager la recherche appliquée
-* Structurer les contributions des membres
-* Créer un écosystème technologique durable
+Next.js, React, TypeScript et Tailwind CSS ; hébergement Vercel et base persistante Neon PostgreSQL. Les pages publiques présentent la théorie, l’organisation, le produit et les ressources. L’administration utilise des sessions signées.
 
----
-
-## 🏠 Fonctionnalités principales
-
-### 1. Page d’accueil
-
-* Présentation de la mission de la communauté
-* Activités récentes (projets, publications, discussions)
-* Mise en avant des membres actifs
-
----
-
-### 2. Espace Projets (Core System)
-
-Chaque projet fonctionne comme un mini laboratoire :
-
-* Description du projet
-* Objectifs de recherche
-* Liste des membres
-* Gestion des tâches (Kanban)
-* Intégration du code (Git)
-* Datasets utilisés
-* Résultats et métriques
-
----
-
-### 3. Profils Membres
-
-Chaque utilisateur possède un profil détaillé :
-
-* Compétences techniques
-* Contributions aux projets
-* Publications
-* Niveau d’expertise
-
----
-
-### 4. Espace Discussions
-
-Un système de communication structuré :
-
-* Discussions par projet
-* Questions techniques
-* Partage de ressources
-* Système de réponses utiles (type Q&A)
-
----
-
-### 5. Bibliothèque de Ressources
-
-Base de connaissances centralisée :
-
-* Cours et tutoriels
-* Articles scientifiques
-* Datasets
-* Guides pratiques
-
----
-
-### 6. Espace Expérimentation
-
-Laboratoire virtuel intégré :
-
-* Test de modèles IA
-* Upload de modèles
-* Comparaison des performances
-* Visualisation des résultats
-
----
-
-### 7. Système de Motivation
-
-Gamification pour encourager la participation :
-
-* Points de contribution
-* Badges
-* Classement des membres
-
----
-
-### 8. Organisation des Activités
-
-Gestion des événements :
-
-* Hackathons
-* Challenges IA
-* Webinaires
-* Réunions de recherche
-
----
-
-
-## 🚀 Philosophie du Projet
-
-Cette plateforme repose sur trois piliers :
-
-1. **Collaboration** — travailler ensemble sur des projets réels
-2. **Production** — créer des solutions concrètes
-3. **Apprentissage** — évoluer continuellement
-
----
-
-## 📈 Vision
-
-Construire une communauté capable de :
-
-* Développer ses propres modèles IA
-* Résoudre des problèmes locaux avec la technologie
-* Former la prochaine génération de chercheurs
-
----
-
-## 🤝 Contribution
-
-Les contributions sont ouvertes à tous :
-
-* Développeurs
-* Data scientists
-* Chercheurs
-* Étudiants
-
----
-
-## 📬 Contact
-
-Pour rejoindre la communauté ou proposer un projet, contactez l’équipe via la plateforme.
-
----
-
-## 🧩 Évolutions futures
-
-* Intégration de notebooks interactifs
-* Système de publication scientifique interne
-* API publique pour projets externes
-* Marketplace de datasets
-
----
-
-## 📄 Licence
-
-Projet open-source (licence à définir)
-
----
-
-**“Construire ensemble l’intelligence de demain.”**
-
-
-pnpm dev      # Démarrer le serveur de développement
-pnpm build    # Compiler le projet
-pnpm start    # Lancer en production
-pnpm lint     # Vérifier le code
-
-## Database backup
-
-After initializing the database, create a local backup with:
+## Développement
 
 ```bash
-pnpm backup
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm lint
+pnpm test
+pnpm build
 ```
 
-Backups are stored in `.data/backups/`. In production, copy them to external
-storage or include this directory in the hosting provider's backup policy.
+Les variables sensibles sont documentées dans `.env.example` et se configurent dans l’environnement de déploiement, sans les publier.
+
+Consultez [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) pour le déploiement et les sauvegardes PostgreSQL.
+
+## Contributions
+
+Consultez [CONTRIBUTING.md](CONTRIBUTING.md) pour contribuer au site. Les contributions scientifiques et au produit doivent suivre les guides de `tllib-specs` et `tllib`.
+
+## Licence
+
+Le code de ce dépôt est distribué sous licence MIT (voir [LICENSE](LICENSE)).
