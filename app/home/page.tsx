@@ -10,8 +10,8 @@ import resources from "@/data/resources.json"
 
 export const dynamic = "force-dynamic"
 
-const HomePage = () => {
-  const contributors = readCollection<Contributor>("contributors")
+const HomePage = async () => {
+  const contributors = await readCollection<Contributor>("contributors")
   return (
     <div className="home-hero-bg">
       <HeroSection

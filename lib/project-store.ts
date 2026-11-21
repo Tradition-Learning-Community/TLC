@@ -3,20 +3,21 @@ import type { Project } from "@/lib/types";
 
 export type { ProjectTask, Project } from "@/lib/types";
 
-export function getProjects() {
+export async function getProjects() {
   return readCollection<Project>("projects");
 }
 
-export function getProject(id: string) {
-  return getProjects().find((project) => project.id === id);
+export async function getProject(id: string) {
+  const projects = await getProjects();
+  return projects.find((project) => project.id === id);
 }
 
-export function saveProject(project: Project) {
+export async function saveProject(project: Project) {
   if (!project.id) return appendRecord("projects", project, "proj");
-  updateRecord("projects", project as Project & { id: string });
+  await updateRecord("projects", project as Project & { id: string });
   return project;
 }
 
-export function removeProject(id: string) {
+export async function removeProject(id: string) {
   return deleteRecord("projects", id);
 }
