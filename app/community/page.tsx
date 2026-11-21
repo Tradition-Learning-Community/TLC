@@ -41,10 +41,10 @@ export default function CommunityPage() {
 
   // Ces repères décrivent les travaux réels, sans statistiques artificielles.
   const stats = [
-    { label: "Théorie", value: "TL" },
-    { label: "Spécifications", value: "36", note: "domaines" },
-    { label: "Bibliothèque", value: "tllib" },
-    { label: "Communauté", value: "TLC" },
+    { label: "Étudiants et curieux", value: "Découvrir" },
+    { label: "Chercheurs et enseignants", value: "Explorer" },
+    { label: "Développeurs et bénévoles", value: "Contribuer" },
+    { label: "Organisations et partenaires", value: "Soutenir" },
   ];
 
   const testimonials = [
@@ -76,16 +76,17 @@ export default function CommunityPage() {
         <span className="content-kicker">Travaux ouverts</span>
         <h1 className="content-title">Communauté</h1>
         <p className="content-lead">
-          TLC rassemble des chercheurs, ingénieurs et développeurs qui font
-          progresser Tradition Learning, ses spécifications et la bibliothèque
-          tllib. Consultez les travaux ouverts pour contribuer.
+          TLC est ouverte à celles et ceux qui veulent comprendre, étudier,
+          développer ou soutenir Tradition Learning. Vous pouvez participer
+          sans être spécialiste du code : la recherche a aussi besoin
+          de dialogue, de formation, de collaborations et de ressources.
         </p>
       </header>
 
       {/* Statistiques */}
       <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
-          Repères du projet
+          Il y a plusieurs façons de participer
         </h2>
         <div className="grid gap-4 md:grid-cols-4">
           {stats.map((stat, i) => (
@@ -93,7 +94,7 @@ export default function CommunityPage() {
               key={i}
               className="rounded-2xl border border-[rgba(11,61,145,0.12)] bg-white p-6 text-center dark:border-white/10 dark:bg-[rgba(7,24,51,0.8)]"
             >
-              <div className="text-3xl font-bold text-[#0b3d91] dark:text-[#d4af37]">
+              <div className="text-xl md:text-2xl font-bold text-[#0b3d91] dark:text-[#d4af37]">
                 {stat.value}
               </div>
               <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
@@ -111,29 +112,30 @@ export default function CommunityPage() {
             <h2 className="content-panel-title">Comment contribuer</h2>
             <ul className="content-list">
               <li className="content-list-item">
-                Consultez le guide CONTRIBUTING.md sur GitHub
+                Découvrez la recherche et partagez vos questions ou vos idées
               </li>
               <li className="content-list-item">
-                Ouvrez une issue pour proposer une idée ou signaler un bug
+                Contribuez à une étude, une expérimentation ou à la documentation
               </li>
               <li className="content-list-item">
-                Soumettez une Pull Request claire avec tests
+                Développez, testez ou améliorez les outils si vous êtes informaticien
               </li>
               <li className="content-list-item">
-                Rejoignez nos discussions et partagez vos retours
+                Proposez un partenariat, des ressources ou un soutien à la recherche
               </li>
             </ul>
           </article>
 
           <article className="content-panel">
-            <h2 className="content-panel-title">Où échanger ?</h2>
+            <h2 className="content-panel-title">Entrer en contact</h2>
             <p className="content-panel-copy">
-              Les dépôts officiels permettent de suivre les travaux, signaler des problèmes et contribuer.
+              Présentez votre intérêt, votre question ou votre proposition à TLC.
+              Les dépôts techniques restent accessibles à ceux qui souhaitent y contribuer.
             </p>
             <div className="content-chip-row">
-              <a className="content-chip" href="https://github.com/Tradition-Learning-Community/tllib">tllib</a>
-              <a className="content-chip" href="https://github.com/Tradition-Learning-Community/tllib-specs">tllib-specs</a>
-              <a className="content-chip" href="https://github.com/Tradition-Learning-Community/TLC">TLC</a>
+              <Link className="content-chip" href="/contact">Contacter TLC</Link>
+              <Link className="content-chip" href="/resources">Explorer les ressources</Link>
+              <a className="content-chip" href="https://github.com/Tradition-Learning-Community">Contribuer sur GitHub</a>
             </div>
           </article>
         </div>
@@ -141,11 +143,10 @@ export default function CommunityPage() {
 
       <section className="mt-12">
         <div className="content-header text-left md:text-center">
-          <span className="content-kicker">Communauté augmentée</span>
-          <h2 className="content-title">Des mécanismes innovants pour animer les contributions</h2>
+          <span className="content-kicker">Des contributions complémentaires</span>
+          <h2 className="content-title">Chaque contribution peut faire avancer la recherche</h2>
           <p className="content-lead">
-            Au-delà des échanges classiques, la communauté peut intégrer des outils qui rendent
-            les contributions plus visibles, plus utiles et plus motivantes.
+            Les progrès scientifiques et techniques s’appuient sur des compétences diverses, ainsi que sur des collaborations et des soutiens durables.
           </p>
         </div>
 
@@ -153,23 +154,23 @@ export default function CommunityPage() {
           {[
             {
               icon: <BrainCircuit className="h-5 w-5 text-[#d4af37]" />,
-              title: "Moteur d'idées",
-              text: "Suggérer des sujets de discussion ou des projets à partir des tendances de la communauté."
+              title: "Recherche",
+              text: "Étudier les idées, proposer des hypothèses et organiser des expériences pour vérifier les résultats."
             },
             {
               icon: <UsersRound className="h-5 w-5 text-[#d4af37]" />,
-              title: "Cartographie des talents",
-              text: "Visualiser les compétences, rôles et complémentarités entre membres."
+              title: "Développement",
+              text: "Concevoir, programmer, tester, documenter et améliorer les outils issus des travaux TL."
             },
             {
               icon: <BellRing className="h-5 w-5 text-[#d4af37]" />,
-              title: "Alertes ciblées",
-              text: "Notifier les membres quand un appel à contribution correspond à leur profil."
+              title: "Partenariats",
+              text: "Associer universités, organisations et acteurs publics à des projets de recherche ou de terrain."
             },
             {
               icon: <Sparkles className="h-5 w-5 text-[#d4af37]" />,
-              title: "Défis communautaires",
-              text: "Lancer des mini-hackathons et missions courtes pour maintenir l'élan collectif."
+              title: "Transmission et partage",
+              text: "Faire connaître les travaux, animer des échanges et ouvrir des portes aux nouvelles générations."
             }
           ].map((item) => (
             <article
