@@ -22,13 +22,13 @@ export default function CommunityPage() {
         ]);
 
         const loadedEvents = await eventsRes.json();
-        setEvents(Array.isArray(loadedEvents) ? loadedEvents.filter((event: { id?: string; date?: string }) => !String(event.id ?? '').startsWith('ev-') && typeof event.date === 'string' && event.date >= new Date().toISOString().slice(0, 10)) : []);
+        setEvents(Array.isArray(loadedEvents) ? loadedEvents.filter((event: { published?: boolean; date?: string }) => event.published === true && typeof event.date === 'string' && event.date >= new Date().toISOString().slice(0, 10)) : []);
         const loadedMembers = await membersRes.json();
-        setMembers(Array.isArray(loadedMembers) ? loadedMembers.filter((member: { id?: string }) => !['user-alice', 'user-bob', 'user-claire'].includes(String(member.id ?? ''))) : []);
+        setMembers(Array.isArray(loadedMembers) ? loadedMembers.filter((member: { published?: boolean }) => member.published === true) : []);
         const loadedResources = await resourcesRes.json();
-        setResources(Array.isArray(loadedResources) ? loadedResources.filter((item: { url?: string }) => Boolean(item.url) && item.url !== '#') : []);
+        setResources(Array.isArray(loadedResources) ? loadedResources.filter((item: { published?: boolean; url?: string }) => item.published === true && Boolean(item.url) && item.url !== '#') : []);
         const loadedCalls = await callsRes.json();
-        setOpenCalls(Array.isArray(loadedCalls) ? loadedCalls.filter((call: { id?: string }) => !['call-1', 'call-2'].includes(String(call.id ?? ''))) : []);
+        setOpenCalls(Array.isArray(loadedCalls) ? loadedCalls.filter((call: { published?: boolean }) => call.published === true) : []);
       } catch (error) {
         console.error("Failed to load community data", error);
       } finally {
@@ -52,11 +52,13 @@ export default function CommunityPage() {
       quote: "Les fondements scientifiques, contrats et tests d'acceptation sont publiés dans le dépôt tllib-specs.",
       author: "tllib-specs",
       role: "Spécifications",
+      href: "https://github.com/Tradition-Learning-Community/tllib-specs",
     },
     {
       quote: "Le moteur C++20 et les interfaces C++ et Python sont en développement dans le dépôt tllib.",
       author: "tllib",
       role: "Bibliothèque",
+      href: "https://github.com/Tradition-Learning-Community/tllib",
     },
   ];
 
@@ -83,7 +85,7 @@ export default function CommunityPage() {
       {/* Statistiques */}
       <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
-          Nos quatre axes
+          Repères du projet
         </h2>
         <div className="grid gap-4 md:grid-cols-4">
           {stats.map((stat, i) => (
@@ -129,9 +131,9 @@ export default function CommunityPage() {
               Les dépôts officiels permettent de suivre les travaux, signaler des problèmes et contribuer.
             </p>
             <div className="content-chip-row">
-              <span className="content-chip">Discord</span>
-              <span className="content-chip">Slack</span>
-              <span className="content-chip">GitHub Discussions</span>
+              <a className="content-chip" href="https://github.com/Tradition-Learning-Community/tllib">tllib</a>
+              <a className="content-chip" href="https://github.com/Tradition-Learning-Community/tllib-specs">tllib-specs</a>
+              <a className="content-chip" href="https://github.com/Tradition-Learning-Community/TLC">TLC</a>
             </div>
           </article>
         </div>
@@ -242,7 +244,7 @@ export default function CommunityPage() {
       {/* Profils référencés */}
       <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
-          Membres en vedette
+          Profils publiés
         </h2>
         <div className="grid gap-4 md:grid-cols-3">
           {members.length === 0 && <p className="content-panel-copy">Les profils seront présentés après validation de leur provenance.</p>}
@@ -293,7 +295,7 @@ export default function CommunityPage() {
       <section className="mt-12">
         <div className="rounded-3xl border border-[rgba(11,61,145,0.12)] bg-white p-6 dark:border-white/10 dark:bg-[rgba(7,24,51,0.8)] md:p-8">
           <h2 className="text-xl font-semibold text-[#062147] dark:text-white">
-            Code de conduite
+            Principes de collaboration
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
             La collaboration repose sur le respect, la traçabilité et la qualité des contributions.
@@ -305,7 +307,7 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Sources officielles, pas de témoignages simulés */}
       <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold text-[#062147] dark:text-white">
           Sources des travaux
@@ -327,6 +329,7 @@ export default function CommunityPage() {
                   <p className="text-xs text-slate-500 dark:text-slate-400">
                     {testimonial.role}
                   </p>
+                  <a className="mt-2 inline-block text-xs font-medium underline text-[#0b3d91] dark:text-[#d4af37]" href={testimonial.href} target="_blank" rel="noopener noreferrer">Consulter le dépôt</a>
                 </div>
               </div>
             </div>
