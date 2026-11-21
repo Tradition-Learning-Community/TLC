@@ -5,7 +5,7 @@ import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 import type { Contributor } from "@/lib/types";
 
 export async function GET() {
-  return NextResponse.json(readCollection<Contributor>("contributors"));
+  return NextResponse.json(await readCollection<Contributor>("contributors"));
 }
 
 export async function POST(request: Request) {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   if (!body || typeof body.name !== "string" || typeof body.github !== "string") {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
-  const contributor = appendRecord<Contributor>("contributors", {
+  const contributor = await appendRecord<Contributor>("contributors", {
     id: randomUUID(),
     name: body.name.trim(),
     github: body.github.trim(),
@@ -29,10 +29,10 @@ export async function PUT(request: Request) {
   if (!body || typeof body.id !== "string") {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
-  const current = readCollection<Contributor>("contributors").find((item) => item.id === body.id);
+  const current = (await readCollection<Contributor>("contributors")).find((item) => item.id === body.id);
   if (!current) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const updated = { ...current, ...body } as Contributor;
-  updateRecord("contributors", updated);
+  await updateRecord("contributors", updated);
   return NextResponse.json(updated);
 }
 
@@ -40,6 +40,6 @@ export async function DELETE(request: Request) {
   if (!isAdminRequest(request)) return unauthorizedResponse();
   const id = new URL(request.url).searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
-  deleteRecord("contributors", id);
+  await deleteRecord("contributors", id);
   return NextResponse.json({ success: true });
 }

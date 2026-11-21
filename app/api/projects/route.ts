@@ -3,7 +3,7 @@ import { getProjects, saveProject, type Project } from "@/lib/project-store";
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 
 export async function GET() {
-  return NextResponse.json(getProjects());
+  return NextResponse.json(await getProjects());
 }
 
 export async function POST(request: Request) {
@@ -18,6 +18,6 @@ export async function POST(request: Request) {
     members: Array.isArray(body.members) ? body.members : [],
     tasks: Array.isArray(body.tasks) ? body.tasks : [],
   };
-  const created = saveProject(project);
+  const created = await saveProject(project);
   return NextResponse.json(created, { status: 201 });
 }

@@ -6,7 +6,7 @@ type Context = { params: Promise<{ id: string }> };
 
 export async function GET(_request: Request, context: Context) {
   const { id } = await context.params;
-  const project = getProject(id);
+  const project = await getProject(id);
   if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(project);
 }
@@ -14,21 +14,21 @@ export async function GET(_request: Request, context: Context) {
 export async function PUT(request: Request, context: Context) {
   if (!isAdminRequest(request)) return unauthorizedResponse();
   const { id } = await context.params;
-  const current = getProject(id);
+  const current = await getProject(id);
   if (!current) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
-  const updated = saveProject({ ...current, ...body, id });
+  const updated = await saveProject({ ...current, ...body, id });
   return NextResponse.json(updated);
 }
 
 export async function DELETE(request: Request, context: Context) {
   if (!isAdminRequest(request)) return unauthorizedResponse();
   const { id } = await context.params;
-  const project = getProject(id);
+  const project = await getProject(id);
   if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  removeProject(id);
+  await removeProject(id);
   return NextResponse.json({ removed: project });
 }
