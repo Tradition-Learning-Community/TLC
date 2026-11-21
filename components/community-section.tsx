@@ -4,12 +4,12 @@ const CommunitySection = () => {
       {/* Texte centré au-dessus */}
       <div className="mx-auto max-w-3xl text-center px-4 mb-12 lg:mb-20 z-10 relative">
         <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-          TLC — une communauté scientifique ouverte
+          Une communauté née en Afrique, ouverte au monde
         </h2>
         <p className="text-lg text-slate-300 leading-relaxed">
-          Depuis l'Afrique et ouverte au monde, TLC réunit les personnes qui
-          étudient Tradition Learning, produisent ses spécifications et
-          développent la bibliothèque tllib.
+          Étudiants, chercheurs, informaticiens, bénévoles et partenaires peuvent
+          unir leurs expériences pour faire progresser cette recherche et
+          explorer ses applications possibles.
         </p>
       </div>
 

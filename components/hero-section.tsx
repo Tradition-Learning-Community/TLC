@@ -3,13 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Github, ShieldCheck, Sparkles, Slack, Telescope, Brain, Book } from "lucide-react";
 import HeroEcosystem from "@/components/hero-ecosystem";
 
-type HeroStats = {
-  domains: number;
-  packages: number;
-  interfaces: number;
-};
-
-export default function HeroSection({ stats }: { stats: HeroStats }) {
+export default function HeroSection() {
   return (
     <main id="home-hero" className="overflow-x-hidden ">
       <section className="relative isolate flex min-h-[calc(100vh-var(--header-offset))] items-center justify-center overflow-hidden bg-gradient-to-b from-[#06142d] via-[#0a1f2e] to-[#06142d] border-b border-[#d4af37]/20 pt-40 pb-15">
@@ -30,14 +24,14 @@ export default function HeroSection({ stats }: { stats: HeroStats }) {
               </h1>
 
               <p className="mx-auto mt-6 max-w-3xl text-lg md:text-xl text-slate-300 leading-relaxed pt-2">
-                Tradition Learning : une recherche sur l’apprentissage, la transmission et l’évolution d’une Tradition.
+                Depuis l’Afrique, Tradition Learning explore une autre façon d’apprendre pour les intelligences artificielles : transmettre, transformer et faire évoluer une Tradition, y compris lorsque les données sont limitées.
               </p>
 
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button asChild size="lg" className="rounded-xl bg-gradient-to-r from-[#0b3d91] to-[#1a5fb7] px-8 py-3 text-white font-semibold transition-all duration-300 hover:scale-105 border border-[#0b3d91]/50 hover:border-[#d4af37]/50">
                   <Link href="/about#what-is" className="inline-flex items-center gap-2">
                     <Telescope className="h-5 w-5" />
-                    Comprendre TL
+                    Découvrir TL
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
@@ -45,23 +39,23 @@ export default function HeroSection({ stats }: { stats: HeroStats }) {
                 <Button asChild size="lg" className="rounded-xl border-2 border-[#d4af37]/60 px-8 py-3 text-white font-semibold bg-[rgba(212,175,55,0.05)] hover:bg-[#d4af37]/15 transition-all duration-300 hover:scale-105 hover:border-[#d4af37]">
                   <Link href="/community" className="inline-flex items-center gap-2">
                     <Slack className="h-5 w-5" />
-                    Communauté
+                    Rejoindre TLC
                   </Link>
                 </Button>
               </div>
 
               <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto ">
                 {[
-                  { label: "Domaines", value: String(stats.domains), note: "spécifiés" },
-                  { label: "Fiches TLC-FC", value: String(stats.packages), note: "publiées" },
-                  { label: "Interfaces", value: String(stats.interfaces), note: "C++ et Python" }
+                  { label: "LE DÉFI", value: "Comprendre", note: "Explorer d’autres voies d’apprentissage" },
+                  { label: "LE TRAVAIL", value: "Construire", note: "Faire avancer la recherche ensemble" },
+                  { label: "L’OUVERTURE", value: "Participer", note: "Apporter ses idées, compétences ou moyens" }
                 ].map((stat, i) => (
                   <div
                     key={i}
                     className="group p-4 rounded-xl border border-[#d4af37]/30 bg-gradient-to-br from-[#0b3d91]/10 to-transparent hover:border-[#d4af37]/60 hover:bg-[#d4af37]/10 hover:-translate-y-1 transition-all duration-300 backdrop-blur-md cursor-default animate-fade-in"
                     style={{ animationDelay: `${i * 0.08}s` }}
                   >
-                    <div className="text-3xl font-bold text-[#d4af37] group-hover:text-[#f0d87f] transition-colors">{stat.value}</div>
+                    <div className="text-xl md:text-2xl font-bold text-[#d4af37] group-hover:text-[#f0d87f] transition-colors">{stat.value}</div>
                     <div className="text-xs text-slate-400 uppercase tracking-wider mt-1">{stat.label}</div>
                     <div className="text-xs text-slate-500 mt-1">{stat.note}</div>
                   </div>

@@ -4,7 +4,8 @@ import CommunitySection from "@/components/community-section"
 import ContributorsSection from "@/components/contributors-section"
 import { readCollection } from "@/lib/database"
 import type { Contributor } from "@/lib/types"
-import { BookOpen, Code2, GitBranchPlus, Microscope } from "lucide-react"
+import Link from "next/link"
+import { BookOpen, Handshake, Lightbulb, UsersRound } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
@@ -12,13 +13,7 @@ const HomePage = async () => {
   const contributors = await readCollection<Contributor>("contributors")
   return (
     <div className="home-hero-bg">
-      <HeroSection
-        stats={{
-          domains: 36,
-          packages: 694,
-          interfaces: 2,
-        }}
-      />
+      <HeroSection />
 
       <CommunityVision />
 
@@ -28,37 +23,38 @@ const HomePage = async () => {
 
       <section className="content-shell pb-20 pt-16">
         <div className="content-header text-left md:text-center">
-          <span className="content-kicker">Travaux scientifiques et techniques</span>
+          <span className="content-kicker">Une recherche, des personnes, un avenir à construire</span>
           <h2 className="content-title">
-            De la théorie à la bibliothèque tllib
+            Pourquoi TLC existe et comment avancer ensemble
           </h2>
           <p className="content-lead">
-            TLC relie la théorie Tradition Learning, les spécifications,
-            l'implémentation de tllib et la validation scientifique.
+            Nous réunissons des personnes de différents horizons pour explorer une nouvelle approche
+            de l’apprentissage des intelligences artificielles, construire des outils
+            et confronter les idées à l’expérience.
           </p>
         </div>
 
         <div className="mt-8 grid gap-5 animate-stagger lg:grid-cols-4">
           {[
             {
-              icon: <Microscope className="h-5 w-5 text-[#d4af37]" />,
-              title: "Tradition Learning",
-              text: "Étudier la transmission, la transformation et l'évolution d'une Tradition.",
+              icon: <Lightbulb className="h-5 w-5 text-[#d4af37]" />,
+              title: "Le problème",
+              text: "La création d’IA utiles se heurte parfois au manque de données et aux difficultés d’adaptation. TL explore d’autres mécanismes d’apprentissage.",
             },
             {
               icon: <BookOpen className="h-5 w-5 text-[#d4af37]" />,
-              title: "Spécifications",
-              text: "Publier les contrats scientifiques, les invariants et les tests d'acceptation.",
+              title: "L’idée scientifique",
+              text: "Tradition Learning étudie comment des systèmes peuvent apprendre par transmission, transformation et évolution d’une Tradition.",
             },
             {
-              icon: <Code2 className="h-5 w-5 text-[#d4af37]" />,
-              title: "Bibliothèque tllib",
-              text: "Développer le moteur C++20, les interfaces C++ et Python et le runtime.",
+              icon: <UsersRound className="h-5 w-5 text-[#d4af37]" />,
+              title: "Le travail collectif",
+              text: "TLC réunit recherche, développement, expérimentation et partage. Sa bibliothèque tllib est en cours de développement.",
             },
             {
-              icon: <GitBranchPlus className="h-5 w-5 text-[#d4af37]" />,
-              title: "Conformité et expérimentation",
-              text: "Distinguer les contrats, les hypothèses et les résultats vérifiés.",
+              icon: <Handshake className="h-5 w-5 text-[#d4af37]" />,
+              title: "Votre place",
+              text: "Étudier, contribuer, proposer une application, partager des ressources ou soutenir les travaux : plusieurs formes de participation sont possibles.",
             },
           ].map((item) => (
             <article
@@ -76,6 +72,11 @@ const HomePage = async () => {
               </p>
             </article>
           ))}
+        </div>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Link href="/about#what-is" className="content-api-link">Comprendre l’approche</Link>
+          <Link href="/community" className="content-api-link">Participer à TLC</Link>
+          <Link href="/contact" className="content-api-link">Proposer un partenariat ou un soutien</Link>
         </div>
       </section>
     </div>

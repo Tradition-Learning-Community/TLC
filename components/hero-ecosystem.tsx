@@ -2,8 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import Image from "next/image";
-import { FaPython } from "react-icons/fa";
-import { SiCplusplus, SiGithub } from "react-icons/si";
+import { BookOpen, Lightbulb, UsersRound } from "lucide-react";
 import { useState, type CSSProperties } from "react";
 
 const connections = [
@@ -39,8 +38,8 @@ const particles = [
 ];
 
 const floatingCards = [
-  { className: "hero-code-card hero-code-card-top", label: "GITHUB / TLLIB", code: "core: C++20" },
-  { className: "hero-code-card hero-code-card-bottom", label: "TLLIB-SPECS", code: "contrats scientifiques" },
+  { className: "hero-code-card hero-code-card-top", label: "TRADITION LEARNING", code: "Apprendre autrement" },
+  { className: "hero-code-card hero-code-card-bottom", label: "COMMUNAUTÉ TLC", code: "Construire ensemble" },
 ];
 
 export default function HeroEcosystem() {
@@ -77,8 +76,8 @@ export default function HeroEcosystem() {
       <motion.div className="hero-ecosystem-panel" style={{ x: mapX, y: mapY }}>
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.28em] text-[#67e8f9]/75">Africa / Open Source</p>
-            <p className="mt-2 text-base font-semibold text-white">Écosystème connecté</p>
+            <p className="text-[10px] uppercase tracking-[0.28em] text-[#67e8f9]/75">Recherche / Afrique & monde</p>
+            <p className="mt-2 text-base font-semibold text-white">Des idées qui se transmettent</p>
           </div>
           <div className="flex items-center gap-2 rounded-full border border-[#67e8f9]/25 bg-[#67e8f9]/10 px-2.5 py-1 text-[11px] font-semibold text-[#a5f3fc]">
             <span className="h-2 w-2 rounded-full bg-[#67e8f9] shadow-[0_0_12px_#67e8f9]" />
@@ -132,9 +131,9 @@ export default function HeroEcosystem() {
             ))}
           </motion.svg>
 
-          <div className="hero-map-label hero-map-label-python" title="Python"><FaPython aria-hidden="true" /><span className="sr-only">Python</span></div>
-          <div className="hero-map-label hero-map-label-js" title="C++20"><SiCplusplus aria-hidden="true" /><span className="sr-only">C++20</span></div>
-          <div className="hero-map-label hero-map-label-php" title="GitHub"><SiGithub aria-hidden="true" /><span className="sr-only">GitHub</span></div>
+          <div className="hero-map-label hero-map-label-python" title="Recherche"><Lightbulb aria-hidden="true" /><span className="sr-only">Recherche</span></div>
+          <div className="hero-map-label hero-map-label-js" title="Transmission"><BookOpen aria-hidden="true" /><span className="sr-only">Transmission</span></div>
+          <div className="hero-map-label hero-map-label-php" title="Communauté"><UsersRound aria-hidden="true" /><span className="sr-only">Communauté</span></div>
         </div>
 
         {floatingCards.map((card) => (
