@@ -1,82 +1,96 @@
-import Link from "next/link";
-
 export const metadata = {
-  title: "Ressources et documentation — TLC",
-  description: "Consulter les sources scientifiques, les contrats de tllib et la documentation du projet Tradition Learning.",
+  title: "Ressources — TLC",
+  description:
+    "Sources officielles et documentation de Tradition Learning, tllib-specs et tllib.",
 };
 
-const references = [
-  {
-    title: "tllib-specs",
-    description: "Spécifications mathématiques, algorithmiques et techniques de la bibliothèque, avec contrats, traçabilité et tests d’acceptation.",
-    href: "https://github.com/Tradition-Learning-Community/tllib-specs",
-    action: "Consulter les spécifications",
-  },
-  {
-    title: "tllib",
-    description: "Bibliothèque en développement : moteur C++20, runtime, interfaces C++ et Python, documentation et état de la V1.",
-    href: "https://github.com/Tradition-Learning-Community/tllib",
-    action: "Consulter la bibliothèque",
-  },
-  {
-    title: "TLC",
-    description: "Code et documentation du site de la communauté scientifique Tradition Learning.",
-    href: "https://github.com/Tradition-Learning-Community/TLC",
-    action: "Consulter le dépôt du site",
-  },
-];
-
-export default function ResourcesPage() {
+const RessourcesPage = () => {
   return (
     <section className="content-shell pt-40">
       <header className="content-header">
-        <span className="content-kicker">Sources de référence</span>
+        <span className="content-kicker">Base de connaissances</span>
         <h1 className="content-title">Ressources</h1>
         <p className="content-lead">
-          Accédez aux documents et dépôts actuellement disponibles. Les sources
-          scientifiques, les contrats de la bibliothèque et le produit logiciel
-          sont distincts et ne remplissent pas les mêmes fonctions.
+          Retrouvez les sources scientifiques, les spécifications et la bibliothèque
+          actuellement disponibles. Chaque document a un rôle distinct.
         </p>
       </header>
+
       <div className="content-grid">
-        {references.map((resource) => (
-          <article className="content-panel" key={resource.title}>
-            <h2 className="content-panel-title">{resource.title}</h2>
-            <p className="content-panel-copy">{resource.description}</p>
-            <Link className="content-api-link mt-4" href={resource.href} target="_blank" rel="noopener noreferrer">
-              {resource.action}
-            </Link>
-          </article>
-        ))}
         <article className="content-panel">
-          <h2 className="content-panel-title">Le manuscrit Tradition Learning</h2>
-          <p className="content-panel-copy">
-            Le manuscrit constitue la source scientifique de la théorie.
-            Son édition publique de référence et son mode de diffusion doivent être
-            confirmés avant d’ajouter un document téléchargeable sur ce site.
-          </p>
-          <Link className="content-api-link mt-4" href="/contact">Contacter TLC</Link>
+          <h2 className="content-panel-title">Guides</h2>
+          <ul className="content-list">
+            <li className="content-list-item"><a href="/about#what-is">Introduction à Tradition Learning</a></li>
+            <li className="content-list-item"><a href="https://github.com/Tradition-Learning-Community/tllib-specs">Spécifications tllib-specs</a></li>
+            <li className="content-list-item"><a href="https://github.com/Tradition-Learning-Community/tllib">Bibliothèque tllib</a></li>
+          </ul>
+        </article>
+
+        <article className="content-panel">
+          <h2 className="content-panel-title">Documentation technique</h2>
+          <ul className="content-list">
+            <li className="content-list-item"><a href="https://github.com/Tradition-Learning-Community/tllib/blob/main/README.md">État et architecture de tllib</a></li>
+            <li className="content-list-item"><a href="https://github.com/Tradition-Learning-Community/tllib-specs/blob/main/README.md">Sources contractuelles</a></li>
+          </ul>
         </article>
       </div>
 
-      <article className="content-panel mt-5" id="securite">
-        <h2 className="content-panel-title">Traçabilité et publication</h2>
-        <p className="content-panel-copy">
-          Les spécifications ne prouvent pas à elles seules l’exécution scientifique :
-          les implémentations, les tests et les résultats expérimentaux possèdent
-          leurs propres critères de validation.
-        </p>
+      <article className="content-panel mt-5">
+        <h2 className="content-panel-title">Liens utiles</h2>
+        <div className="content-chip-row">
+          <a href="https://github.com/Tradition-Learning-Community/tllib" className="content-chip">Dépôt tllib</a>
+          <a href="https://github.com/Tradition-Learning-Community/tllib-specs" className="content-chip">Dépôt tllib-specs</a>
+        </div>
       </article>
-      <article className="content-panel mt-5" id="statuts-asbl">
-        <h2 className="content-panel-title">Documents institutionnels</h2>
-        <p className="content-panel-copy">
-          Les statuts, règles de confidentialité, charte et autres documents
-          institutionnels ne sont pas publiés ici tant que leurs versions
-          officielles ne sont pas disponibles.
-        </p>
-        <div id="charte-communautaire" /><div id="politique-confidentialite" /><div id="cookies" /><div id="licence-open-source" />
-        <Link className="content-api-link mt-4" href="/contact">Demander une information</Link>
+
+      <article className="content-panel mt-5">
+        <h2 className="content-panel-title">Légal & Transparence</h2>
+        <div className="content-list">
+          <div id="statuts-asbl" className="content-list-item">
+            <strong>Statuts ASBL</strong>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+              Document officiel à publier après validation institutionnelle.
+            </p>
+          </div>
+
+          <div id="charte-communautaire" className="content-list-item">
+            <strong>Charte communautaire</strong>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+              Les règles officielles de contribution sont accessibles dans les dépôts GitHub.
+            </p>
+          </div>
+
+          <div id="politique-confidentialite" className="content-list-item">
+            <strong>Politique de confidentialité</strong>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+              Politique officielle à formaliser et publier avant de la présenter comme un document adopté.
+            </p>
+          </div>
+
+          <div id="cookies" className="content-list-item">
+            <strong>Cookies</strong>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+              L'information définitive dépend des traitements et outils réellement utilisés.
+            </p>
+          </div>
+
+          <div id="licence-open-source" className="content-list-item">
+            <strong>Licence open-source</strong>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+              Le code du site TLC est publié sous licence MIT ; les autres dépôts ont leurs propres licences.
+            </p>
+          </div>
+
+          <div id="securite" className="content-list-item">
+            <strong>Sécurité</strong>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+              Les informations de signalement officielles sont disponibles dans les dépôts concernés.
+            </p>
+          </div>
+        </div>
       </article>
     </section>
-  );
+  )
 }
+
+export default RessourcesPage
