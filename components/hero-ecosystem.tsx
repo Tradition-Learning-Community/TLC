@@ -2,7 +2,8 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import Image from "next/image";
-import { FaJsSquare, FaPhp, FaPython } from "react-icons/fa";
+import { FaPython } from "react-icons/fa";
+import { SiCplusplus, SiGithub } from "react-icons/si";
 import { useState, type CSSProperties } from "react";
 
 const connections = [
@@ -38,8 +39,8 @@ const particles = [
 ];
 
 const floatingCards = [
-  { className: "hero-code-card hero-code-card-top", label: "npm / tlc-africa", code: "import { community }" },
-  { className: "hero-code-card hero-code-card-bottom", label: "API / OPEN SOURCE", code: "connect({ future: true })" },
+  { className: "hero-code-card hero-code-card-top", label: "GITHUB / TLLIB", code: "core: C++20" },
+  { className: "hero-code-card hero-code-card-bottom", label: "TLLIB-SPECS", code: "contrats scientifiques" },
 ];
 
 export default function HeroEcosystem() {
@@ -81,7 +82,7 @@ export default function HeroEcosystem() {
           </div>
           <div className="flex items-center gap-2 rounded-full border border-[#67e8f9]/25 bg-[#67e8f9]/10 px-2.5 py-1 text-[11px] font-semibold text-[#a5f3fc]">
             <span className="h-2 w-2 rounded-full bg-[#67e8f9] shadow-[0_0_12px_#67e8f9]" />
-            Live
+            Open source
           </div>
         </div>
 
@@ -132,8 +133,8 @@ export default function HeroEcosystem() {
           </motion.svg>
 
           <div className="hero-map-label hero-map-label-python" title="Python"><FaPython aria-hidden="true" /><span className="sr-only">Python</span></div>
-          <div className="hero-map-label hero-map-label-js" title="JavaScript"><FaJsSquare aria-hidden="true" /><span className="sr-only">JavaScript</span></div>
-          <div className="hero-map-label hero-map-label-php" title="PHP"><FaPhp aria-hidden="true" /><span className="sr-only">PHP</span></div>
+          <div className="hero-map-label hero-map-label-js" title="C++20"><SiCplusplus aria-hidden="true" /><span className="sr-only">C++20</span></div>
+          <div className="hero-map-label hero-map-label-php" title="GitHub"><SiGithub aria-hidden="true" /><span className="sr-only">GitHub</span></div>
         </div>
 
         {floatingCards.map((card) => (
@@ -144,7 +145,7 @@ export default function HeroEcosystem() {
         ))}
 
         <div className="mt-4 border-b border-white/15 bg-white/5 p-3.5 text-sm text-slate-200">
-          Des bibliothèques africaines pour créer des solutions adaptées à nos vécus.
+          Une recherche née en Afrique, ouverte à des applications universelles.
         </div>
       </motion.div>
     </motion.div>
