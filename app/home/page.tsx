@@ -4,9 +4,7 @@ import CommunitySection from "@/components/community-section"
 import ContributorsSection from "@/components/contributors-section"
 import { readCollection } from "@/lib/database"
 import type { Contributor } from "@/lib/types"
-import { Bot, ChartSpline, GitBranchPlus, Radar } from "lucide-react"
-import experiments from "@/data/experiments.json"
-import resources from "@/data/resources.json"
+import { BookOpen, Code2, GitBranchPlus, Microscope } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
@@ -16,9 +14,9 @@ const HomePage = async () => {
     <div className="home-hero-bg">
       <HeroSection
         stats={{
-          experiments: experiments.length,
-          contributors: contributors.length,
-          resources: resources.length,
+          domains: 36,
+          packages: 694,
+          interfaces: 2,
         }}
       />
 
@@ -30,37 +28,37 @@ const HomePage = async () => {
 
       <section className="content-shell pb-20 pt-16">
         <div className="content-header text-left md:text-center">
-          <span className="content-kicker">Plateforme augmentée</span>
+          <span className="content-kicker">Travaux scientifiques et techniques</span>
           <h2 className="content-title">
-            Des éléments innovants pour créer, tester et publier plus vite
+            De la théorie à la bibliothèque tllib
           </h2>
           <p className="content-lead">
-            TLC peut devenir un véritable cockpit de recherche pour piloter l'innovation en IA
-            de manière claire, structurée et collaborative.
+            TLC relie la théorie Tradition Learning, les spécifications,
+            l'implémentation de tllib et la validation scientifique.
           </p>
         </div>
 
         <div className="mt-8 grid gap-5 animate-stagger lg:grid-cols-4">
           {[
             {
-              icon: <Radar className="h-5 w-5 text-[#d4af37]" />,
-              title: "Radar des idées",
-              text: "Repérer les thèmes émergents, les sujets chauds et les opportunités de recherche.",
+              icon: <Microscope className="h-5 w-5 text-[#d4af37]" />,
+              title: "Tradition Learning",
+              text: "Étudier la transmission, la transformation et l'évolution d'une Tradition.",
             },
             {
-              icon: <Bot className="h-5 w-5 text-[#d4af37]" />,
-              title: "Assistant IA",
-              text: "Résumer les discussions, proposer des tâches et accélérer l'onboarding.",
+              icon: <BookOpen className="h-5 w-5 text-[#d4af37]" />,
+              title: "Spécifications",
+              text: "Publier les contrats scientifiques, les invariants et les tests d'acceptation.",
             },
             {
-              icon: <ChartSpline className="h-5 w-5 text-[#d4af37]" />,
-              title: "Tableau de bord",
-              text: "Suivre les expériences, les métriques et la progression des contributions en direct.",
+              icon: <Code2 className="h-5 w-5 text-[#d4af37]" />,
+              title: "Bibliothèque tllib",
+              text: "Développer le moteur C++20, les interfaces C++ et Python et le runtime.",
             },
             {
               icon: <GitBranchPlus className="h-5 w-5 text-[#d4af37]" />,
-              title: "Pipeline collaboratif",
-              text: "Relier projet, issue, PR et publication dans un flux de travail unique.",
+              title: "Conformité et expérimentation",
+              text: "Distinguer les contrats, les hypothèses et les résultats vérifiés.",
             },
           ].map((item) => (
             <article
