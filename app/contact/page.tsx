@@ -10,8 +10,9 @@ const ContactPage = () => {
         <span className="content-kicker">Restons en lien</span>
         <h1 className="content-title">Contact</h1>
         <p className="content-lead">
-          Pour toute question, collaboration ou contribution, contactez l'équipe
-          TLC via email ou via le dépôt GitHub.
+          Vous souhaitez découvrir TL, contribuer aux recherches, proposer une application,
+          soutenir une initiative ou construire un partenariat avec TLC ?
+          Présentez-nous votre projet ou votre question.
         </p>
       </header>
 
@@ -19,8 +20,9 @@ const ContactPage = () => {
         <article className="content-panel">
           <h2 className="content-panel-title">Email</h2>
           <p className="content-panel-copy">
-            Réponse rapide pour les partenariats, questions techniques et
-            demandes de collaboration.
+            Écrivez-nous en précisant si votre message concerne la recherche,
+            une contribution, un partenariat institutionnel, un financement
+            ou une autre forme de soutien.
           </p>
           <p className="mt-4 text-lg font-semibold text-[#062147] dark:text-white">
             <a href="mailto:tlccommunitymanager2@gmail.com" className="text-primary">
@@ -30,11 +32,13 @@ const ContactPage = () => {
         </article>
 
         <article className="content-panel">
-          <h2 className="content-panel-title">GitHub</h2>
+          <h2 className="content-panel-title">Participer autrement</h2>
           <p className="content-panel-copy">
-            Ouvrez une issue sur le dépôt pour discuter d'un sujet précis,
-            proposer une amélioration ou signaler un bug.
+            Étudiants, développeurs, bénévoles et chercheurs peuvent découvrir
+            les possibilités de contribution depuis l’espace Communauté.
+            Les questions techniques peuvent ensuite être suivies dans les dépôts du projet.
           </p>
+          <a href="/community" className="content-api-link mt-4">Découvrir les contributions</a>
         </article>
       </div>
     </section>

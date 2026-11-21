@@ -11,14 +11,15 @@ const RessourcesPage = () => {
         <span className="content-kicker">Base de connaissances</span>
         <h1 className="content-title">Ressources</h1>
         <p className="content-lead">
-          Retrouvez les sources scientifiques, les spécifications et la bibliothèque
-          actuellement disponibles. Chaque document a un rôle distinct.
+          Vous découvrez Tradition Learning ou souhaitez approfondir une question ?
+          Retrouvez d’abord une présentation accessible, puis les documents
+          scientifiques et techniques pour aller plus loin.
         </p>
       </header>
 
       <div className="content-grid">
         <article className="content-panel">
-          <h2 className="content-panel-title">Guides</h2>
+          <h2 className="content-panel-title">Découvrir Tradition Learning</h2>
           <ul className="content-list">
             <li className="content-list-item"><a href="/about#what-is">Introduction à Tradition Learning</a></li>
             <li className="content-list-item"><a href="https://github.com/Tradition-Learning-Community/tllib-specs">Spécifications tllib-specs</a></li>
@@ -27,7 +28,7 @@ const RessourcesPage = () => {
         </article>
 
         <article className="content-panel">
-          <h2 className="content-panel-title">Documentation technique</h2>
+          <h2 className="content-panel-title">Approfondir la recherche et les outils</h2>
           <ul className="content-list">
             <li className="content-list-item"><a href="https://github.com/Tradition-Learning-Community/tllib/blob/main/README.md">État et architecture de tllib</a></li>
             <li className="content-list-item"><a href="https://github.com/Tradition-Learning-Community/tllib-specs/blob/main/README.md">Sources contractuelles</a></li>

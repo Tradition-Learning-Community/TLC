@@ -2,8 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, Menu, X } from "lucide-react";
-import { SiGithub } from "react-icons/si";
+import { ArrowUpRight, HandHeart, Menu, X } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { ModeToggle } from "./ModeToggle";
 
@@ -15,7 +14,6 @@ const menuItems = [
   { name: "Contact", href: "/contact" },
 ];
 
-const githubUrl = process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/Tradition-Learning-Community";
 
 const Header = () => {
   const pathname = usePathname();
@@ -91,13 +89,11 @@ const Header = () => {
                   <ModeToggle />
 
                   <Link
-                    href={githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/contact"
                     className="group inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(11,61,145,0.16)] bg-white px-4 py-2 text-sm font-medium text-[#d4af37] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#d4af37] hover:bg-[#d4af37]/15 dark:border-white/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
                   >
-                    <SiGithub className="text-base" />
-                    <span>GitHub</span>
+                    <HandHeart className="h-4 w-4" />
+                    <span>Soutenir TLC</span>
                     <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </Link>
                 </div>

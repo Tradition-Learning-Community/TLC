@@ -7,11 +7,11 @@ import { ThemeProvider } from "@/components/theme-provider";
 export const metadata: Metadata = {
   title: "TLC — Tradition Learning",
   description:
-    "TLC — Plateforme open-source pour l'approche Tradition Learning : IA performante, interprétable et accessible.",
+    "TLC est une communauté scientifique ouverte qui développe Tradition Learning, une recherche sur de nouvelles façons d’apprendre pour les intelligences artificielles.",
   openGraph: {
     title: "TLC — Tradition Learning",
     description:
-      "Plateforme open-source pour l'approche Tradition Learning : IA performante, interprétable et accessible.",
+      "Découvrez Tradition Learning, les recherches de TLC et les façons de contribuer ou soutenir le projet.",
   },
 };
 
