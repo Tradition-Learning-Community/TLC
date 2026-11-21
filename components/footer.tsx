@@ -1,146 +1,46 @@
 import { Logo } from "@/components/logo";
 import Link from "next/link";
-import { ArrowUpRight, Github, Linkedin } from "lucide-react";
+import { ArrowUpRight, Github } from "lucide-react";
 
 const links = [
   {
-    group: "Projet",
+    group: "Découvrir",
     items: [
-      {
-        title: "Qu’est-ce que Tradition Learning ?",
-            href: "/about#what-is",
-      },
-      {
-        title: "Vision & Mission",
-            href: "/about#vision",
-      },
-      {
-        title: "Valeurs & Éthique",
-            href: "/about#values",
-      },
-      {
-        title: "L’Équipe",
-            href: "/about#team",
-      },
-      {
-        title: "Roadmap",
-            href: "/about#roadmap",
-      },
-      {
-        title: "FAQ",
-            href: "/about#faq",
-      },
+      { title: "Accueil", href: "/home" },
+      { title: "Qu'est-ce que TL ?", href: "/about#what-is" },
+      { title: "Notre mission", href: "/about#vision" },
+      { title: "À propos de TLC", href: "/about" },
     ],
   },
   {
-    group: "Bibliothèque",
+    group: "Participer",
     items: [
-      {
-        title: "tllib",
-        href: "https://github.com/Tradition-Learning-Community/tllib",
-      },
-      {
-        title: "tllib-specs",
-        href: "https://github.com/Tradition-Learning-Community/tllib-specs",
-      },
-      {
-        title: "Architecture tllib",
-        href: "https://github.com/Tradition-Learning-Community/tllib/blob/main/docs/v1/ARCHITECTURE.md",
-      },
-      {
-        title: "Contribuer à tllib",
-        href: "https://github.com/Tradition-Learning-Community/tllib",
-      },
-      {
-        title: "Développement TLC",
-        href: "https://github.com/Tradition-Learning-Community/TLC",
-      },
-      {
-        title: "Documentation",
-        href: "/resources",
-      },
-      {
-        title: "Recherche & travaux",
-        href: "/about#roadmap",
-      },
+      { title: "La communauté", href: "/community" },
+      { title: "Contribuer à la recherche", href: "/community" },
+      { title: "Proposer un partenariat", href: "/contact" },
+      { title: "Soutenir TLC", href: "/contact" },
     ],
   },
   {
-    group: "Communauté",
+    group: "Nos travaux",
     items: [
-      {
-        title: "Comment contribuer",
-        href: "/about#team",
-      },
-      {
-        title: "Événements",
-        href: "/events",
-      },
-      {
-        title: "Ressources",
-        href: "/resources",
-      },
-      {
-        title: "Projets GitHub",
-        href: "/community",
-      },
-      {
-        title: "Contributions",
-        href: "https://github.com/Tradition-Learning-Community",
-      },
-      {
-        title: "Contact TLC",
-        href: "/contact",
-      },
+      { title: "Recherche et expérimentation", href: "/about#roadmap" },
+      { title: "Bibliothèque tllib", href: "/resources" },
+      { title: "Ressources", href: "/resources" },
+      { title: "Projets open source", href: "https://github.com/Tradition-Learning-Community" },
     ],
   },
   {
-    group: "Légal & Transparence",
+    group: "Informations",
     items: [
-      {
-        title: "Statuts ASBL",
-        href: "/resources#statuts-asbl",
-      },
-      {
-        title: "Charte communautaire",
-        href: "/resources#charte-communautaire",
-      },
-      {
-        title: "Politique de confidentialité",
-        href: "/resources#politique-confidentialite",
-      },
-      {
-        title: "Cookies",
-        href: "/resources#cookies",
-      },
-      {
-        title: "Licence open-source",
-        href: "/resources#licence-open-source",
-      },
-      {
-        title: "Sécurité",
-        href: "/resources#securite",
-      },
-      {
-        title: "Contact presse",
-        href: "/contact",
-      },
-      {
-        title: "Contacter le community manager",
-        href: "mailto:tlccommunitymanager2@gmail.com",
-      },
+      { title: "Documents institutionnels", href: "/resources#statuts-asbl" },
+      { title: "Transparence et licences", href: "/resources#licence-open-source" },
+      { title: "Contact", href: "/contact" },
     ],
   },
 ];
-
 const socialLinks = [
   { label: "GitHub", href: "https://github.com/Tradition-Learning-Community", icon: Github },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/search/results/all/?keywords=Tradition%20Learning&origin=RICH_QUERY_SUGGESTION&heroEntityKey=urn%3Ali%3Aorganization%3A112040236&position=0",
-    icon: Linkedin,
-  },
-  
 ];
 
 export default function FooterSection() {
@@ -158,7 +58,7 @@ export default function FooterSection() {
             </Link>
 
             <p className="mt-5 max-w-xs text-sm leading-7 text-slate-300">
-              Tradition Learning Community : recherche sur Tradition Learning, spécifications et développement de tllib.
+              TLC rassemble des personnes et des organisations autour d’une recherche en intelligence artificielle née en Afrique et ouverte au monde.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
