@@ -1,10 +1,8 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "@/lib/neon-auth-client";
 export default function ActivateStaff() {
-  const router = useRouter();
   const [token, setToken] = useState("");
   const [existing, setExisting] = useState(false);
   const [name, setName] = useState(""); const [email, setEmail] = useState(""); const [password, setPassword] = useState("");
@@ -25,8 +23,8 @@ export default function ActivateStaff() {
         headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token }) });
       const data = await result.json().catch(() => null);
       if (!result.ok) throw new Error(data?.error || "Invitation non activée.");
-      window.history.replaceState(null, "", "/admin/activate");
-      router.replace("/admin"); router.refresh();
+      // A full navigation clears the fragment and makes the new session visible reliably.
+      window.location.replace("/admin");
     } catch (caught) { setError(caught instanceof Error ? caught.message : "Activation impossible."); }
     finally { setLoading(false); }
   }
