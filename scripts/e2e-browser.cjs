@@ -41,7 +41,6 @@ fs.mkdirSync(screenshots, {recursive:true});
    const accountsResponse = await context.request.get("/api/admin/staff");
    assert.equal(accountsResponse.status(),200);
    const accounts = await accountsResponse.json();
-   console.log("Invitations saved:", accounts.length, "Expected:", staffEmail, "Data:", JSON.stringify(accounts).slice(0,800));
    assert.ok(accounts.some(account=>account.email===staffEmail), "account was not listed after HTTP 201");
    assert.ok(accounts.every(account=>!("inviteHash" in account)));
    await context.request.post("/api/admin/logout");
@@ -56,6 +55,35 @@ fs.mkdirSync(screenshots, {recursive:true});
    const namedActor = (await nominated.json()).actor;
    assert.equal(namedActor.kind,"staff");
    assert.equal(namedActor.role,"owner");
+   // A separately invited editor can prepare drafts, but cannot publish,
+   // inspect private inquiries, or manage team accounts.
+   const editorEmail = "tlc-editor-" + Date.now() + "@example.org";
+   const editorInvite = await context.request.post("/api/admin/staff", {data:{
+     name:"TLC Editorial E2E", email:editorEmail, role:"editor",
+   }});
+   assert.equal(editorInvite.status(),201,"editor invite");
+   const editorToken = (await editorInvite.json()).invitationToken;
+   const editorCtx = await browser.newContext({baseURL:origin,viewport:{width:1080,height:760}});
+   const editorPage = await editorCtx.newPage();
+   await editorPage.goto("/admin/activate#token=" + encodeURIComponent(editorToken));
+   await editorPage.getByLabel("Nom complet").fill("TLC Editorial E2E");
+   await editorPage.getByLabel("Adresse e-mail invitée").fill(editorEmail);
+   await editorPage.getByLabel("Mot de passe").fill("TLC-Editor-e2e-Password-99!");
+   await editorPage.getByRole("button",{name:"Créer mon compte et activer"}).click();
+   await editorPage.waitForURL("**/admin",{timeout:30000});
+   const editorVerify = await editorCtx.request.get("/api/admin/verify");
+   assert.equal(editorVerify.status(),200,"editor session");
+   const editorActor = (await editorVerify.json()).actor;
+   assert.equal(editorActor.role,"editor");
+   assert.equal((await editorCtx.request.get("/api/admin/staff")).status(),403);
+   assert.equal((await editorCtx.request.get("/api/inquiries")).status(),403);
+   assert.equal((await editorCtx.request.get("/api/articles?all=1")).status(),200);
+   const draft = { title:"Brouillon TLC du test E2E",summary:"",body:"",
+     category:"Test",author:"TLC",coverImage:"",status:"draft",featured:false };
+   assert.equal((await editorCtx.request.post("/api/articles",{data:draft})).status(),201);
+   assert.equal((await editorCtx.request.post("/api/articles",
+     {data:{...draft,status:"published",summary:"Publication de test",body:"Texte de test de publication avec plus de trente caractères."}})).status(),403);
+   await editorCtx.close();
    // Visitor form writes a real inquiry and a durable alert to the test database.
    const visitor = await browser.newContext({baseURL:origin,viewport:{width:900,height:760}});
    const vpage = await visitor.newPage();
@@ -86,12 +114,21 @@ fs.mkdirSync(screenshots, {recursive:true});
       title:"Reject spoofed PNG",
    }});
    assert.equal(badImage.status(),400,"spoofed image rejected");
+   // Check the actual PostgreSQL JSONB types at the end of the browser journey.
+   const sql = require("postgres")(process.env.DATABASE_URL);
+   try {
+     const shapes = await sql`SELECT collection, jsonb_typeof(data) AS shape
+        FROM records WHERE collection IN ('staff_accounts','inquiries','notification_jobs','articles')`;
+     assert.ok(shapes.length >= 5,"expected persisted accounts, requests and alerts");
+     assert.ok(shapes.every(item=>item.shape === "object"),
+       "every newly persisted record must be a JSONB object");
+   } finally { await sql.end(); }
    // Logout clears legacy credential and protected resources are denied again.
    await page.getByRole("button",{name:"Se déconnecter"}).last().click();
    await page.waitForURL("**/admin/login",{timeout:15000});
    assert.equal((await context.request.get("/api/admin/verify")).status(),401);
    assert.equal((await context.request.get("/api/admin/staff")).status(),401);
    assert.equal(errors.length,0,"no uncaught browser JS errors: "+errors.join("; "));
-   console.log("PASS browser E2E: login, invitation, form, alert, upload rejection, logout, access control");
+   console.log("PASS browser E2E: individual owners/editors, permissions, invitation, form, alert, JSONB, upload rejection, logout");
  } finally { await context.close(); await browser.close(); }
 })().catch(e=>{console.error(e);process.exitCode=1});
