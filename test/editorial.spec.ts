@@ -13,6 +13,10 @@ describe("editorial content", () => {
     expect(validateArticle({ ...valid, coverImage: "javascript:alert(1)" }).ok).toBe(false);
     expect(validateArticle({ ...valid, status: "something" }).ok).toBe(false);
   });
+  it("allows an unfinished draft but not an empty publication", () => {
+    expect(validateArticle({ ...valid, summary: "", body: "", status: "draft" }).ok).toBe(true);
+    expect(validateArticle({ ...valid, summary: "", body: "", status: "published" }).ok).toBe(false);
+  });
   it("accepts a valid draft", () => {
     const result = validateArticle(valid);
     expect(result.ok).toBe(true);

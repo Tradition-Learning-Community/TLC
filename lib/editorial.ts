@@ -36,8 +36,9 @@ export function validateArticle(input: unknown): { ok: true; data: ArticleInput 
   const coverImage = stringField(data, "coverImage", 1000);
   const status = data.status;
   if (title.length < 5 || title.length > 180) return { ok: false, error: "Titre : 5 à 180 caractères." };
-  if (summary.length < 10 || summary.length > 600) return { ok: false, error: "Résumé : 10 à 600 caractères." };
-  if (body.length < 30 || body.length > 30000) return { ok: false, error: "Texte : 30 à 30 000 caractères." };
+  const complete = status === "published" || status === "review";
+  if (summary.length > 600 || (complete && summary.length < 10)) return { ok: false, error: "Résumé : 10 à 600 caractères pour publier ou valider." };
+  if (body.length > 30000 || (complete && body.length < 30)) return { ok: false, error: "Texte : 30 à 30 000 caractères pour publier ou valider." };
   if (category.length > 80 || author.length > 160) return { ok: false, error: "Catégorie ou auteur trop long." };
   if (coverImage && !(coverImage.startsWith("https://") || (coverImage.startsWith("/") && !coverImage.startsWith("//")))) return { ok: false, error: "L'image doit avoir une URL HTTPS ou un chemin local." };
   if (!statuses.includes(status as PublicationStatus)) return { ok: false, error: "Statut de publication invalide." };
