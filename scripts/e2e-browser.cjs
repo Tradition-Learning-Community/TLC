@@ -27,17 +27,34 @@ fs.mkdirSync(screenshots, {recursive:true});
    const actor = (await who.json()).actor;
    assert.equal(actor.role,"owner");
    assert.equal(actor.kind,"legacy");
-   // The owner can create an invitation with a role, without exposing the token in listing.
+   // The legacy owner issues a one-use invite and the invited user claims it
+   // against isolated Neon Auth, then receives an individual database-backed role.
+   const staffEmail = "tlc-browser-" + Date.now() + "@example.org";
+   const staffPassword = "TLC-e2e-Temporary-99!";
    await page.goto("/admin/staff");
    await page.getByLabel("Nom", {exact:true}).fill("Test Administration E2E");
-   await page.getByLabel("Adresse e-mail").fill("tcle2e-test@example.org");
+   await page.getByLabel("Adresse e-mail").fill(staffEmail);
    await page.getByRole("button",{name:"Créer l'invitation"}).click();
    await page.getByText("Compte invité.",{exact:false}).waitFor();
+   const link = await page.locator('input[readonly]').inputValue();
+   assert.ok(link.includes("/admin/activate#token="));
    const accountsResponse = await context.request.get("/api/admin/staff");
    assert.equal(accountsResponse.status(),200);
    const accounts = await accountsResponse.json();
-   assert.ok(accounts.some(account=>account.email==="tcle2e-test@example.org"));
+   assert.ok(accounts.some(account=>account.email===staffEmail));
    assert.ok(accounts.every(account=>!("inviteHash" in account)));
+   await context.request.post("/api/admin/logout");
+   await page.goto(link);
+   await page.getByLabel("Nom complet").fill("Test Administration E2E");
+   await page.getByLabel("Adresse e-mail invitée").fill(staffEmail);
+   await page.getByLabel("Mot de passe").fill(staffPassword);
+   await page.getByRole("button",{name:"Créer mon compte et activer"}).click();
+   await page.waitForURL("**/admin",{timeout:30000});
+   const nominated = await context.request.get("/api/admin/verify");
+   assert.equal(nominated.status(),200,"nominated staff login");
+   const namedActor = (await nominated.json()).actor;
+   assert.equal(namedActor.kind,"staff");
+   assert.equal(namedActor.role,"owner");
    // Visitor form writes a real inquiry and a durable alert to the test database.
    const visitor = await browser.newContext({baseURL:origin,viewport:{width:900,height:760}});
    const vpage = await visitor.newPage();
@@ -69,7 +86,8 @@ fs.mkdirSync(screenshots, {recursive:true});
    }});
    assert.equal(badImage.status(),400,"spoofed image rejected");
    // Logout clears legacy credential and protected resources are denied again.
-   await context.request.post("/api/admin/logout");
+   await page.getByRole("button",{name:"Se déconnecter"}).last().click();
+   await page.waitForURL("**/admin/login",{timeout:15000});
    assert.equal((await context.request.get("/api/admin/verify")).status(),401);
    assert.equal((await context.request.get("/api/admin/staff")).status(),401);
    assert.equal(errors.length,0,"no uncaught browser JS errors: "+errors.join("; "));
