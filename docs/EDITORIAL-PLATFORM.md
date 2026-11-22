@@ -1,6 +1,6 @@
 # TLC — Publication et administration
 
-Le site officiel TLC utilise **Next.js** sur Vercel et la base existante **Neon PostgreSQL**. Les données antérieures ne sont pas effacées.
+Le site officiel TLC utilise **Next.js** et la base existante **Neon PostgreSQL**. L'hébergement Vercel est réservé aux tests et n'est pas imposé à la version définitive. Les données antérieures ne sont pas effacées.
 
 ## Publications
 
@@ -19,7 +19,7 @@ L'administration de contenu existante est réutilisée : `/admin/data`. Chaque c
 
 ## Médias
 
-Le stockage des fichiers publics s'appuie sur le store Vercel Blob **tlc-media**. L'API d'import `POST /api/media/upload` exige une session d'administration, limite la taille à 4 Mo et accepte JPEG, PNG, WebP, AVIF. Neon conserve les métadonnées et l'URL, pas le contenu binaire. Les images ne deviennent visibles dans la galerie `/medias` qu'après publication.
+Le stockage des fichiers publics est configurable (Vercel Blob pour les essais ou S3 compatible pour un hébergement indépendant). La sélection de fichier sur l'appareil est prioritaire ; le lien HTTPS reste facultatif. L'API d'import `POST /api/media/upload` exige une session d'administration, limite la taille à 4 Mo et accepte JPEG, PNG, WebP, AVIF. Neon conserve les métadonnées et l'URL, pas le contenu binaire. Les images ne deviennent visibles dans la galerie `/medias` qu'après publication.
 
 ## Demandes publiques
 
@@ -46,7 +46,7 @@ L'ancien mot de passe commun reste actif uniquement pour la transition. Un **res
 
 Chaque formulaire validé crée une entrée dans `inquiries` et un événement dans `notification_jobs`. L'administration affiche le nombre de demandes **nouvelles** et permet de relancer les alertes e-mail non envoyées.
 
-L'alerte interne est **active sans prestataire de courriel**. Pour activer l'expédition e-mail, configurer dans Vercel les secrets suivants, pour les environnements requis :
+L'alerte interne est **active sans prestataire de courriel**. Pour activer l'expédition e-mail, configurer sur l'hébergeur les secrets suivants, pour les environnements requis :
 
 - `RESEND_API_KEY` — clé du fournisseur d'envoi ;
 - `TLC_ALERT_FROM` — adresse expéditrice autorisée sur un domaine vérifié ;
@@ -60,7 +60,7 @@ Le corps de l'e-mail contient **uniquement un type et une référence de demande
 - Workflow `TLC browser end-to-end` : navigateur Chromium sur Ubuntu 24.04 avec PostgreSQL 16 **jetable**. Scénario : connexion historique, invitation, activation Neon Auth isolée, demande publique, notification, refus d'image usurpée, déconnexion, contrôle des accès et preuve visuelle.
 - Tests unitaires : matrice de rôles, jetons d'invitation, validation de formats d'images, création d'un média avec mock du Blob et des écritures, notifications.
 - Les identités du test sont créées uniquement sur la branche Neon `tlc-stage4-validation`. Le site de production conserve la branche Neon principale.
-- Les images sont stockées dans Vercel Blob `tlc-media`, la base conserve les métadonnées. Les fichiers importés sont privés du catalogue tant qu'ils ne portent pas explicitement `published=true`.
+- Les images sont stockées dans le fournisseur choisi (`vercel-blob` ou `s3`), la base conserve les métadonnées. Les fichiers importés sont privés du catalogue tant qu'ils ne portent pas explicitement `published=true`.
 
 ### Limites opérationnelles à suivre
 
@@ -78,3 +78,7 @@ L'espace `/admin/login` propose désormais **Administrateur** et **Équipe TLC**
 Les comptes **Équipe TLC** restent gérés par invitations nominatives et Neon Auth. L'ancien mot de passe technique est conservé dans un panneau discret à titre transitoire, sans obligation de le connaître pour accéder au compte principal. Ne jamais publier d'identifiants `admin/admin` ou de secret initial dans un dépôt de code.
 
 La mise en place initiale est une opération unique d'administration de Neon : créer la ligne `staff_local_credentials/admin` avec un hachage scrypt et un mot de passe temporaire transmis uniquement au responsable autorisé. La CI utilise un autre compte provisoire, dans un PostgreSQL jetable, et ne copie pas les secrets de production.
+
+## Nom des produits
+
+L'administration du site est nommée **Administration TLC**. Ne pas employer « TLC Studio » ni « TL Studio » : TL Studio désigne une application distincte envisagée pour utiliser tllib au moyen d'une interface, hors du périmètre du site et non annoncée comme disponible. La route institutionnelle principale est `/tlc` et `/about` redirige vers elle.

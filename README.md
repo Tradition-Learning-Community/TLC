@@ -1,122 +1,70 @@
-# TLC — Tradition Learning Community
+# Tradition Learning Community — site officiel TLC
 
-TLC est une plateforme communautaire dédiée à la recherche et aux projets d’intelligence artificielle. Elle rassemble des contributeurs autour de projets, d’événements, de ressources et de travaux expérimentaux.
+Ce dépôt contient le **portail scientifique et institutionnel TLC** ainsi que son espace **Administration TLC**. Le site présente trois réalités distinctes : la théorie **Tradition Learning**, la bibliothèque [**tllib**](https://github.com/Tradition-Learning-Community/tllib) et l'organisation **Tradition Learning Community**. Il ne constitue pas **TL Studio**, application distincte envisagée pour utiliser tllib au moyen d'une interface.
 
-## Fonctionnalités
+## Fonctionnement actuel
 
-- Pages publiques : accueil, projets, contributeurs, événements, publications, mission et communauté.
-- Espace administrateur protégé pour gérer les contenus et les collections de données.
-- API Next.js pour consulter les contenus et effectuer les opérations d’administration autorisées.
-- Base SQLite locale alimentée à partir des fichiers JSON de `data/` lors de son initialisation.
-- Thèmes clair et sombre.
+- Site public : Tradition Learning, tllib, TLC, recherches, projets, ressources, actualités, événements, contributeurs et participation.
+- Administration privée : compte principal, invitations et comptes nominatifs via Neon Auth, permissions par rôle.
+- Actualités : brouillon, validation, publication, archivage, prévisualisation et contrôle des modifications concurrentes.
+- Formulaires de contact, contribution et partenariat : demandes enregistrées dans PostgreSQL et notifications internes.
+- Photos et médias : choix depuis téléphone/ordinateur (JPEG, PNG, WebP, AVIF ; 4 Mo) ou URL HTTPS facultative ; stockage binaire configurable dans Vercel Blob ou un système S3 compatible, métadonnées en PostgreSQL.
+- Les anciennes fiches de démonstration sont conservées ; ne pas les publier sans vérification éditoriale.
 
-## Prérequis
+**L'hébergement Vercel sert de banc de test.** Le code est une application Next.js Node.js standard : avec une base PostgreSQL accessible, Neon Auth et un stockage S3 compatible, aucune fonction de stockage n'exige Vercel.
 
-- Node.js **20.9 ou plus récent**.
-- pnpm.
+## Démarrage
 
-Vérifiez les versions installées :
-
-```bash
-node --version
-pnpm --version
-```
-
-## Démarrage local
-
-Depuis la racine du dépôt :
+Prérequis : Node.js 20.9+ (Node.js 24 en CI), pnpm et PostgreSQL persistant.
 
 ```bash
-pnpm install
-```
-
-L’interface publique peut démarrer sans fichier d’environnement. Pour activer l’accès administrateur, créez `.env.local` à la racine en copiant le modèle :
-
-```powershell
-Copy-Item .env.example .env.local
-```
-
-Renseignez les deux valeurs dans `.env.local` comme décrit dans [Variables d’environnement](#variables-denvironnement). Ne partagez pas ce fichier et ne commitez jamais ses secrets.
-
-Démarrez le serveur de développement :
-
-```bash
+pnpm install --frozen-lockfile
+cp .env.example .env.local
+# Configurer DATABASE_URL, ADMIN_SESSION_SECRET, Neon Auth et le stockage médias.
 pnpm dev
 ```
 
-Ouvrez [http://localhost:3000](http://localhost:3000). La racine redirige vers `/home`.
-
-## Variables d’environnement
-
-Le seul fichier de modèle est [`.env.example`](./.env.example). Le fichier local `.env.local` est ignoré par Git.
-
-| Variable | Obligatoire | Utilité |
-| --- | --- | --- |
-| `ADMIN_PASSWORD` | Pour se connecter à `/admin` | Mot de passe administrateur. Choisissez une valeur longue et unique. |
-| `ADMIN_SESSION_SECRET` | Recommandée | Secret distinct utilisé pour signer les sessions administrateur. S’il est vide, l’application utilise `ADMIN_PASSWORD` comme solution de repli. |
-
-Générez un secret de session aléatoire avec Node.js :
+Ouvrir `http://localhost:3000` (la racine redirige vers `/home`). Le site avec ses pages dépendant de PostgreSQL nécessite une base initialisée. La création du schéma est décrite dans [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Ne jamais enregistrer les secrets dans Git, un ticket ou une capture d'écran.
 
 ```bash
-node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"
+pnpm lint
+pnpm test
+pnpm build
+pnpm start
 ```
 
-Exemple de configuration locale — remplacez les valeurs avant de lancer l’application :
+Les tests automatisés comprennent Vitest et un scénario navigateur Chromium dans GitHub Actions avec PostgreSQL isolé. Les tests ne remplacent pas un essai de transfert de média sur le stockage réel ni un essai de livraison e-mail chez le fournisseur.
 
-```dotenv
-ADMIN_PASSWORD=votre-mot-de-passe-long-et-unique
-ADMIN_SESSION_SECRET=collez-ici-le-secret-genere
-```
+## Pages et administration
 
-Ces variables sont réservées au serveur. Ne leur donnez jamais le préfixe `NEXT_PUBLIC_`.
-
-La base de données n’a pas de variable de configuration : elle est créée dans `.data/tlc.sqlite`. Le dossier `.data/` est local et ignoré par Git.
-
-## Pages principales
-
-| Route | Contenu |
+| URL | Fonction |
 | --- | --- |
-| `/home` | Présentation de TLC et accès aux rubriques |
-| `/projects` | Liste des projets et suivi des tâches |
-| `/profiles` | Annuaire des contributeurs |
-| `/events` | Événements de la communauté |
-| `/resources` | Publications et ressources |
-| `/about` | Mission et principes de TLC |
-| `/community` | Comment participer et appels à contribution |
-| `/admin/login` | Connexion administrateur |
-| `/admin` | Gestion des données après connexion |
+| `/home` | Accueil du portail |
+| `/tradition-learning` | Théorie |
+| `/tllib` | Bibliothèque |
+| `/tlc` | Organisation (ancienne adresse `/about` conservée en redirection) |
+| `/recherche` | Travaux scientifiques |
+| `/actualites` | Articles publiés |
+| `/events` | Agenda |
+| `/resources` | Ressources |
+| `/community` et `/participer` | Communauté et participation |
+| `/contact` | Contact public |
+| `/admin/login` | Connexion à Administration TLC |
+| `/admin/publications` | Rédaction et publication |
+| `/admin/data/media` | Médiathèque |
+| `/admin/staff` | Comptes et permissions |
 
-Les opérations de création, modification et suppression des données sont protégées par la session administrateur. Les routes `GET` publiques servent les contenus affichés sur le site.
+Les comptes du public ne sont pas nécessaires pour consulter les contenus. L'administration doit se faire avec des comptes individuels. L'ancien accès partagé n'est qu'un mécanisme transitoire pouvant être désactivé depuis l'administration.
 
-## Commandes
+## Déploiement et maintenance
 
-```bash
-pnpm dev       # Serveur de développement
-pnpm build     # Compilation de production
-pnpm start     # Serveur de production (après pnpm build)
-pnpm lint      # Analyse ESLint
-pnpm test      # Tests automatisés et vérification de la base SQLite
-pnpm backup    # Sauvegarde de la base SQLite locale
-```
+- [Installation et déploiement portable](docs/DEPLOYMENT.md)
+- [Médias et stockage indépendant](docs/MEDIA-STORAGE.md)
+- [Publications, rôles et processus administratifs](docs/EDITORIAL-PLATFORM.md)
+- [État des points restant à qualifier](TODO.md)
 
-Les sauvegardes sont écrites dans `.data/backups/`. Pour une installation de production, copiez-les vers un stockage externe sécurisé.
-
-## Dépannage
-
-### pnpm indique que des scripts de dépendances ont été ignorés
-
-Si l’installation affiche `ERR_PNPM_IGNORED_BUILDS`, lancez :
-
-```bash
-pnpm approve-builds
-```
-
-Examinez les dépendances proposées avant d’autoriser leurs scripts, puis relancez `pnpm install`.
-
-### L’administration refuse la connexion
-
-Vérifiez que `ADMIN_PASSWORD` est renseigné dans `.env.local`, puis redémarrez le serveur Next.js. `ADMIN_SESSION_SECRET` peut être distinct et doit rester confidentiel.
+Le `pnpm backup` historique concerne seulement la base SQLite locale d'une ancienne version et **ne sauvegarde pas Neon PostgreSQL**. Pour la plateforme actuelle, utiliser les procédures PostgreSQL documentées. Aucune migration ni réinitialisation des données existantes ne doit être faite sans sauvegarde et contrôle préalable.
 
 ## Contribution
 
-Consultez [`CONTRIBUTING.md`](./CONTRIBUTING.md) avant d’ouvrir une pull request. Le projet est distribué sous licence [MIT](./LICENSE).
+Voir [CONTRIBUTING.md](CONTRIBUTING.md). Dépôt distribué sous licence [MIT](LICENSE).

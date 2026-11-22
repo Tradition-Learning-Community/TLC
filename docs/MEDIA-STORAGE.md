@@ -1,20 +1,17 @@
-# Médias TLC : déploiement indépendant de l’hébergeur
+# TLC — Médias indépendants de l'hébergeur
 
-L’administration accepte les images JPEG, PNG, WebP et AVIF de 4 Mo au plus depuis l’appareil connecté. L’API `POST /api/media/upload` vérifie la session, la permission `media:upload`, le type et la signature du fichier. Neon PostgreSQL conserve l’URL et les métadonnées, pas les octets.
+Dans Administration TLC, l'option principale est **« Choisir une image sur cet appareil »** (téléphone ou ordinateur). Le lien HTTPS est une alternative facultative. Le choix est utilisé par les actualités, les contributeurs, les organisations et la médiathèque.
 
-Deux fournisseurs sont pris en charge dans `lib/media-storage.ts` :
+L'API `POST /api/media/upload` exige la permission `media:upload`, limite les images à 4 Mo et vérifie le type et la signature JPEG, PNG, WebP ou AVIF. Les binaires vont au fournisseur choisi ; la fiche, l'URL, les crédits et l'état de publication vont dans PostgreSQL.
 
-| Variable | Signification |
+| Configuration | Exigences |
 | --- | --- |
-| `MEDIA_STORAGE_DRIVER` | `vercel-blob` (défaut) ou `s3` |
-| `BLOB_READ_WRITE_TOKEN` | Token requis pour `vercel-blob` |
-| `S3_BUCKET` | Bucket compatible S3 |
-| `S3_REGION` | Région S3 (selon le fournisseur) |
-| `S3_ENDPOINT` | Facultatif : endpoint S3 compatible comme MinIO, Cloudflare R2 |
-| `S3_FORCE_PATH_STYLE` | `false` si l’adressage path-style n’est pas souhaité |
-| `S3_ACCESS_KEY_ID` et `S3_SECRET_ACCESS_KEY` | Identifiants privés du fournisseur |
-| `MEDIA_PUBLIC_BASE_URL` | Base HTTPS publique du bucket ou du CDN, avant `tlc/` |
+| `MEDIA_STORAGE_DRIVER=s3` | `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `MEDIA_PUBLIC_BASE_URL` |
+| S3 compatible (R2, MinIO, etc.) | Ajouter `S3_ENDPOINT`, éventuellement `S3_FORCE_PATH_STYLE` |
+| `MEDIA_STORAGE_DRIVER=vercel-blob` | `BLOB_READ_WRITE_TOKEN` ; utilisable pour les essais Vercel |
 
-Le bucket/CDN doit permettre de consulter les fichiers publics. Un média importé a `published=false`, mais **son URL physique est publique** : ne jamais employer cet espace pour des documents confidentiels. Les comptes cloud, les domaines et l’infrastructure doivent être configurés et testés à l’installation ; aucun service Vercel n’est nécessaire si le fournisseur `s3` est configuré.
+`MEDIA_PUBLIC_BASE_URL` doit être une adresse HTTPS publique du bucket ou du CDN. Le stockage doit permettre de consulter les fichiers publics ; la création et la suppression utilisent des identifiants privés du serveur. Vérifier les règles CORS et d'accès selon le fournisseur.
 
-L’API reste identique pour le navigateur et les contenus, quel que soit l’hébergeur Next.js.
+**Sécurité et conservation :** un média nouvellement importé a `published=false` dans PostgreSQL mais son URL de stockage est physiquement publique. Ne jamais y placer de pièces privées. L'import nettoie désormais l'objet à distance si l'écriture de sa fiche PostgreSQL échoue ; un échec de nettoyage est journalisé et devra être traité par la maintenance. La suppression d'une fiche média ne supprime pas automatiquement un fichier pouvant être encore cité par un article ou un autre contenu : prévoir un inventaire des références avant toute purge physique.
+
+Aucun compte Vercel n'est nécessaire pour les fichiers si le fournisseur `s3` est configuré. Les tests unitaires vérifient la configuration et la compensation en cas d'échec de persistance ; **un transfert réel vers un bucket opérationnel reste un contrôle d'installation obligatoire**.

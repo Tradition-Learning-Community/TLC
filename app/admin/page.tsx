@@ -94,7 +94,7 @@ export default function AdminHome() {
       <div className="grid gap-px bg-white/[0.06] sm:grid-cols-2 xl:grid-cols-3">
         {loading ? <p className="col-span-full bg-[#0b1827] px-5 py-8 text-sm text-slate-400">Chargement des contributeurs…</p>
           : people.slice(0, 6).map(person => <div key={person.id} className="flex min-w-0 items-center gap-3 bg-[#0b1827] p-4">
-            <img src={person.avatar || (person.github?.startsWith("https://github.com/") ? person.github.replace(/\\/$/,"") + ".png" : "/tlc-logo-hd.png")}
+            <img src={person.avatar || (person.github?.startsWith("https://github.com/") ? person.github.replace(/\/$/,"") + ".png" : "/tlc-logo-hd.png")}
               alt="" className="h-10 w-10 rounded-full border border-white/10 object-cover"/>
             <div className="min-w-0"><div className="truncate text-sm font-medium text-slate-200">{person.name}</div>
               <div className="truncate text-xs text-slate-400">{person.github || "TLC"}</div></div>

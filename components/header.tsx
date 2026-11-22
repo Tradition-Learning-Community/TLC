@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 
 const links = [
   ["Accueil", "/home"], ["Tradition Learning", "/tradition-learning"], ["tllib", "/tllib"],
-  ["TLC", "/about"], ["Actualités", "/actualites"], ["Ressources", "/resources"],
+  ["TLC", "/tlc"], ["Actualités", "/actualites"], ["Ressources", "/resources"],
 ] as const;
 
 export default function Header() {

@@ -29,7 +29,7 @@ export default function ReferenceHome({ articles, events, contributors: people, 
   <section className="mission-intro section"><div className="container mission-grid">
     <div><span className="eyebrow">L’ORGANISATION</span><h2 className="section-title">Tradition Learning Community</h2>
       <p className="section-copy">TLC est une communauté scientifique consacrée à la recherche sur Tradition Learning, au développement de tllib et aux collaborations autour de ces travaux.</p>
-      <Link href="/about" className="text-link">Découvrir TLC et son organisation →</Link>
+      <Link href="/tlc" className="text-link">Découvrir TLC et son organisation →</Link>
     </div><div className="mission-points">
       <article className="mission-point"><span>01</span><div><h3>Recherche scientifique</h3><p>Étudier, formaliser et évaluer Tradition Learning à partir de ses fondements théoriques.</p></div></article>
       <article className="mission-point"><span>02</span><div><h3>Développement de tllib</h3><p>Concevoir, implémenter et tester une bibliothèque C++ et Python pour les systèmes TL.</p></div></article>
