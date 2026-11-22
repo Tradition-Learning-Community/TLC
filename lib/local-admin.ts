@@ -73,7 +73,7 @@ export function validNewPassword(password: string, username: string) {
     /[a-z]/.test(password) && /[A-Z]/.test(password) && /[0-9]/.test(password) &&
     password.toLowerCase() !== username.toLowerCase() && password.toLowerCase() !== "admin";
 }
-export async function changeLocalCredentials(account: LocalAdminRecord, current: string, next: string, username: string) {
+export async function changeLocalCredentials(account: LocalAdminRecord, current: string, next: string, username: string): Promise<{ok:true;account:LocalAdminRecord}|{ok:false;reason:"invalid"|"weak"|"conflict"}> {
   if (!checkLocalPassword(current, account)) return { ok:false, reason:"invalid" as const };
   if (!validUsername(username) || !validNewPassword(next, username) || next === current)
     return { ok:false, reason:"weak" as const };
