@@ -1,48 +1,11 @@
-export const metadata = {
-  title: "Contact — TLC",
-  description: "Contactez l'équipe TLC pour des collaborations, contributions ou questions.",
-};
-
-const ContactPage = () => {
-  return (
-    <section className="content-shell pt-40">
-      <header className="content-header">
-        <span className="content-kicker">Restons en lien</span>
-        <h1 className="content-title">Contact</h1>
-        <p className="content-lead">
-          Vous souhaitez découvrir TL, contribuer aux recherches, proposer une application,
-          soutenir une initiative ou construire un partenariat avec TLC ?
-          Présentez-nous votre projet ou votre question.
-        </p>
-      </header>
-
-      <div className="mt-8 space-y-5">
-        <article className="content-panel">
-          <h2 className="content-panel-title">Email</h2>
-          <p className="content-panel-copy">
-            Écrivez-nous en précisant si votre message concerne la recherche,
-            une contribution, un partenariat institutionnel, un financement
-            ou une autre forme de soutien.
-          </p>
-          <p className="mt-4 text-lg font-semibold text-[#062147] dark:text-white">
-            <a href="mailto:tlccommunitymanager2@gmail.com" className="text-primary">
-              tlccommunitymanager2@gmail.com
-            </a>
-          </p>
-        </article>
-
-        <article className="content-panel">
-          <h2 className="content-panel-title">Participer autrement</h2>
-          <p className="content-panel-copy">
-            Étudiants, développeurs, bénévoles et chercheurs peuvent découvrir
-            les possibilités de contribution depuis l’espace Communauté.
-            Les questions techniques peuvent ensuite être suivies dans les dépôts du projet.
-          </p>
-          <a href="/community" className="content-api-link mt-4">Découvrir les contributions</a>
-        </article>
-      </div>
-    </section>
-  )
+import Link from "next/link";
+import InquiryForm from "@/components/inquiry-form";
+export const metadata = { title: "Contact — TLC", description: "Contacter Tradition Learning Community." };
+export default function ContactPage() {
+  return <div className="directory-content">
+    <section className="hero-band"><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">TRADITION LEARNING COMMUNITY</span><h1>Contact</h1><p>Questions scientifiques, contributions, collaborations ou propositions institutionnelles : écrivez à TLC.</p></div><div className="hero-art"><div className="art-core">TLC</div></div></div></section>
+    <section className="section container"><div className="grid gap-10 lg:grid-cols-2"><article><h2 className="section-title">Nous écrire</h2><p className="section-copy">Votre message sera transmis à l'administration TLC.</p><InquiryForm kind="contact"/></article>
+      <aside className="card"><h3>Autres contacts</h3><p>Pour une correspondance directe : <a className="text-link break-words" href="mailto:tlccommunitymanager2@gmail.com">tlccommunitymanager2@gmail.com</a></p><p>Vous souhaitez participer à la recherche ou proposer un soutien ?</p><Link className="card-link" href="/participer">Découvrir les possibilités →</Link></aside>
+    </div></section>
+  </div>;
 }
-
-export default ContactPage
