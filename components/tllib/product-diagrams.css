@@ -97,7 +97,7 @@
 .product-availability article{border-top:1px solid var(--line);padding-top:1.3rem}
 .product-availability h3{font-size:1.4rem;margin:0 0 1rem}
 .product-availability p,.product-availability li{font-size:1rem;line-height:1.75;color:var(--muted)}
-.product-availability ul{padding-left:1.15rem}
+.product-availability ul{list-style:disc;padding-left:1.15rem;margin-top:.75rem}
 .product-availability li+li{margin-top:.5rem}
 .product-document-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
 .product-document-links a{display:flex;flex-direction:column;gap:.6rem;border:1px solid var(--line);border-radius:12px;padding:1.5rem;background:var(--card);transition:border-color .18s}
