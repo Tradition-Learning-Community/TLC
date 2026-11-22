@@ -3,6 +3,7 @@ export { tokenHash, secureTokenEqual, publicStaffAccount, sameOrigin } from "./s
 import { isAdminRequest, unauthorizedResponse } from "./admin-auth";
 import { readCollection } from "./database";
 import { neonAuth } from "./neon-auth";
+import { authorizedLocalAdmin } from "./local-admin";
 import { hasPermission, permissionsFor, type Permission, type StaffRole } from "./staff-permissions";
 
 export type StaffAccount = {
@@ -19,7 +20,8 @@ export type StaffAccount = {
   version: number;
 };
 export type StaffIdentity = {
-  kind: "legacy" | "staff";
+  kind: "legacy" | "staff" | "local";
+  mustChange?: boolean;
   id: string;
   name: string;
   email: string | null;
@@ -50,6 +52,9 @@ export async function getNeonIdentity(): Promise<StaffIdentity | null> {
 }
 
 export async function getStaffIdentity(request: Request): Promise<StaffIdentity | null> {
+  const local = await authorizedLocalAdmin(request);
+  if (local) return { kind:"local", id:local.id, name:local.name, email:null, role:"owner",
+    mustChange:local.mustChange, permissions:local.mustChange ? [] : permissionsFor("owner") };
   if (isAdminRequest(request) && await legacyLoginEnabled()) return master;
   return getNeonIdentity();
 }
@@ -59,6 +64,7 @@ export async function deniedPermission(request: Request, permission: Permission)
     return Response.json({ error: "Origine interdite." }, { status: 403 });
   const identity = await getStaffIdentity(request);
   if (!identity) return unauthorizedResponse();
+  if (identity.mustChange) return Response.json({error:"Veuillez d’abord sécuriser votre compte."},{status:403});
   if (!hasPermission(identity.role, permission))
     return Response.json({ error: "Permission insuffisante." }, { status: 403 });
   return null;

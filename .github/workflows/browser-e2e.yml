@@ -29,6 +29,7 @@ jobs:
       ADMIN_SESSION_SECRET: test-only-secret-not-for-deployment-with-enough-entropy
       BLOB_STORE_ID: test-only-signature-check
       E2E_ADMIN_PASSWORD: e2e-staff-bootstrap-only
+      E2E_LOCAL_PASSWORD: TLC-Temporary-e2e-2048
       E2E_BASE_URL: http://localhost:3000
       NEON_AUTH_BASE_URL: https://ep-aged-dream-bcb3nogf.neonauth.c-16.us-east-1.aws.neon.tech/neondb/auth
       NEON_AUTH_COOKIE_SECRET: e2e-local-session-cookie-secret-value-long-enough
@@ -51,6 +52,8 @@ jobs:
             PRIMARY KEY (collection,id)
           );
           CREATE INDEX idx_tlc_records_order ON records (collection, seq);"
+      - name: Seed isolated primary administrator
+        run: node scripts/e2e-seed-local-admin.cjs
       - name: Install real browser
         run: |
           npm install -g playwright@1.56.1

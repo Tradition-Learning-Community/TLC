@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Database, LayoutDashboard, LogOut, Mail, Newspaper, Users, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Database, LayoutDashboard, LogOut, Mail, Newspaper, Users, ShieldCheck, KeyRound } from "lucide-react";
 import { authClient } from "@/lib/neon-auth-client";
 import type { Permission } from "@/lib/staff-permissions";
 
@@ -14,8 +14,9 @@ const navigation: { href: string; label: string; icon: typeof Database; permissi
   { href: "/admin/contributors", label: "Contributeurs", icon: Users, permission: "contributors:manage" },
   { href: "/admin/data", label: "Données", icon: Database, permission: "data:manage" },
   { href: "/admin/staff", label: "Équipe & droits", icon: ShieldCheck, permission: "staff:manage" },
+  { href: "/admin/security", label: "Mon accès", icon: KeyRound },
 ];
-type Identity = { name: string; role: string; permissions: Permission[] };
+type Identity = { name: string; role: string; permissions: Permission[]; mustChange?:boolean; kind:string };
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -33,6 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         const data = await response.json();
         if (!active) return;
         setIdentity(data.actor); setChecking(false);
+        if (data.actor.mustChange && pathname !== "/admin/security") { router.replace("/admin/security"); return; }
         if (data.actor.permissions.includes("inquiries:read")) {
           fetch("/api/admin/notifications", { cache: "no-store" })
             .then(r => r.ok ? r.json() : null).then(value => { if (active && value) setUnread(value.unreadCount || 0); }).catch(() => {});
@@ -42,7 +44,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [pathname, router, publicPath]);
   if (publicPath) return <>{children}</>;
   if (checking || !identity) return <div className="min-h-screen animate-pulse bg-[#07111f]" />;
-  const links = navigation.filter(item => !item.permission || identity.permissions.includes(item.permission));
+  const links = navigation.filter(item =>
+    identity.mustChange ? item.href === "/admin/security" :
+    item.href === "/admin/security" ? identity.kind === "local" :
+    !item.permission || identity.permissions.includes(item.permission));
   async function logout() {
     try { await authClient.signOut(); } catch { /* legacy login has no Neon session */ }
     await fetch("/api/admin/logout", { method: "POST" });
