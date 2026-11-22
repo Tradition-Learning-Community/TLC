@@ -1,13 +1,18 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import type { Inquiry, InquiryStatus } from "@/lib/inquiries";
+import type { NotificationJob } from "@/lib/notifications";
 const labels: Record<InquiryStatus, string> = { new: "Nouvelle", "in-progress": "En cours", closed: "Clôturée" };
 export default function DemandesAdmin() {
-  const [items, setItems] = useState<Inquiry[]>([]); const [error, setError] = useState(""); const [busy, setBusy] = useState("");
+  const [items, setItems] = useState<Inquiry[]>([]);
+  const [jobs, setJobs] = useState<NotificationJob[]>([]);
+  const [emailConfigured, setEmailConfigured] = useState(false); const [error, setError] = useState(""); const [busy, setBusy] = useState("");
   const load = useCallback(async () => {
     const response = await fetch("/api/inquiries", { cache: "no-store" });
     if (!response.ok) throw new Error("Chargement impossible.");
     setItems(await response.json());
+    const notifications = await fetch("/api/admin/notifications", { cache: "no-store" });
+    if (notifications.ok) { const body = await notifications.json(); setJobs(body.jobs || []); setEmailConfigured(body.configured === true); }
   }, []);
   useEffect(() => { void load().catch(() => setError("Chargement impossible.")); }, [load]);
   async function change(item: Inquiry, status: InquiryStatus) {
@@ -20,10 +25,27 @@ export default function DemandesAdmin() {
     } catch { setError("Impossible de modifier cette demande."); }
     finally { setBusy(""); }
   }
+  async function retry(id: string) {
+    setBusy(id); setError("");
+    try {
+      const response = await fetch("/api/admin/notifications", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+      if (!response.ok) throw new Error("Envoi impossible.");
+      await load();
+    } catch { setError("Impossible de relancer cette notification."); }
+    finally { setBusy(""); }
+  }
   return <div className="space-y-6">
     <header><p className="text-xs uppercase tracking-widest text-[#d4af37]">Relations TLC</p><h1 className="mt-2 text-3xl text-white">Demandes reçues</h1>
     <p className="mt-2 text-sm text-slate-400">Candidatures, partenariats, soutien et contacts — accès réservé à l'administration.</p></header>
     {error && <p role="alert" className="text-red-300">{error}</p>}
+    <section className="rounded-xl border border-white/10 bg-[#0b1827] p-4">
+      <h2 className="font-semibold text-white">Alertes de réception</h2>
+      <p className="mt-2 text-sm text-slate-400">Nouvelles demandes : {items.filter(x => x.status === "new").length} · E-mail : {emailConfigured ? "configuré" : "non configuré (notifications internes actives)"}</p>
+      {jobs.filter(x => x.status !== "sent").slice(0,10).map(job=><div key={job.id} className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-300">
+        <span>{job.kind} · {job.createdAt.slice(0,10)} · {job.status === "failed" ? "Envoi échoué" : "En attente d'e-mail"}</span>
+        {emailConfigured && <button disabled={busy === job.id} onClick={() => void retry(job.id)} className="rounded-lg border border-white/20 px-2 py-1 text-[#d4af37]">Réessayer</button>}
+      </div>)}
+    </section>
     {items.length === 0 ? <div className="rounded-2xl border border-white/10 p-8 text-slate-400">Aucune demande reçue.</div> :
       <div className="space-y-3">{items.map(item => <article key={item.id} className="rounded-xl border border-white/10 bg-[#0b1827] p-5">
         <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-medium text-white">{item.name}</h2><p className="text-xs text-slate-400">{item.kind} · {new Date(item.createdAt).toLocaleDateString("fr-FR")} · {labels[item.status]}</p></div>

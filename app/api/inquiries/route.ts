@@ -1,12 +1,13 @@
 import { createHmac } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { appendRecord, readCollection, recordPublicRequestAttempt, updateRecord } from "@/lib/database";
-import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { deniedPermission } from "@/lib/staff-auth";
+import { attemptDelivery, queueNotification } from "@/lib/notifications";
 import { newInquiry, validateInquiry, type Inquiry } from "@/lib/inquiries";
 
 export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "inquiries:read"); if (denied) return denied;
   const data = await readCollection<Inquiry>("inquiries");
   return NextResponse.json(data.sort((a,b) => b.createdAt.localeCompare(a.createdAt)), { headers: { "Cache-Control": "no-store" } });
 }
@@ -28,6 +29,9 @@ export async function POST(request: NextRequest) {
   if (!(await recordPublicRequestAttempt(key, 5, 15 * 60 * 1000))) return NextResponse.json({ error: "Trop de demandes. Réessayez plus tard." }, { status: 429 });
   const record = newInquiry(validation);
   await appendRecord("inquiries", record, "request");
+  // The visitor's successful submission never depends on the optional email provider.
+  try { const job = await queueNotification(record); await attemptDelivery(job); }
+  catch (error) { console.error("Notification queued delivery error", error instanceof Error ? error.message : "Unknown"); }
   return NextResponse.json({ ok: true, reference: record.id }, { status: 201 });
 }
 export async function PATCH(request: NextRequest) {
