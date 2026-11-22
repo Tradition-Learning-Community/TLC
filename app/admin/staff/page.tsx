@@ -46,7 +46,7 @@ export default function StaffPage() {
     } catch (caught) { setError(caught instanceof Error ? caught.message : "Erreur."); }
   }
   async function toggleLegacy() {
-    if (!legacyEnabled || actorKind !== "staff") return;
+    if (!legacyEnabled || !["staff","local"].includes(actorKind)) return;
     if (!confirm("Désactiver l'ancien mot de passe commun ? Confirmez d'abord que votre compte nominatif fonctionne.")) return;
     const response = await fetch("/api/admin/legacy", { method: "PATCH", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ enabled: false }) });
