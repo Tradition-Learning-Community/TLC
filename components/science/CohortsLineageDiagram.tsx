@@ -19,7 +19,8 @@ function transmissionPath(id: string, parentId: string, geometry: DiagramGeometr
     const lane = Math.min(geometry.width - 4, Math.max(...["d2", "d3", "d6"].flatMap((node) => geometry.nodes[node] ? [geometry.nodes[node].right] : [])) + 12);
     points = [[a.right + 2, a.cy], [lane, a.cy], [lane, targetApproach], [b.cx, targetApproach], [b.cx, b.top - 2]];
   } else if (id === "d5") {
-    const lane = (a.right + (geometry.nodes.d2?.left ?? geometry.width * .65)) / 2;
+    const rightEdge = Math.max(a.right, geometry.nodes.d4?.right ?? a.right);
+    const lane = rightEdge + ((geometry.nodes.m?.cx ?? geometry.width * .5) - rightEdge) * .4;
     points = [[a.right + 2, a.cy], [lane, a.cy], [lane, targetApproach], [b.cx, targetApproach], [b.cx, b.top - 2]];
   } else if (id === "d3") {
     points = [[a.cx, a.bottom + 2], [a.cx, targetApproach], [b.cx, targetApproach], [b.cx, b.top - 2]];

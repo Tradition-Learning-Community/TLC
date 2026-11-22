@@ -55,7 +55,7 @@ export function cohortsAt(snapshot: number): readonly { id: string; label: strin
   if (snapshot < 2) return [{ id: "a", label: "Cohorte A", members: snapshot === 0 ? ["d1", "d2"] : ["d1", "d2", "d3"], x: 6, y: 20, width: 88, height: snapshot === 0 ? 23 : 48 }];
   return [
     { id: "a", label: "Cohorte A", members: ["d1", "d4"], x: 6, y: 20, width: 34, height: 51 },
-    { id: "b", label: "Cohorte B", members: snapshot === 2 ? ["d2", "d3", "d6"] : ["d2", "d6"], x: 62, y: 20, width: 33, height: 74 },
+    { id: "b", label: "Cohorte B", members: snapshot === 2 ? ["d2", "d3", "d6"] : ["d2", "d6"], x: 60, y: 20, width: 35, height: 74 },
     ...(snapshot >= 3 ? [{ id: "c", label: "Cohorte C", members: ["d5", "d7"], x: 5, y: 74, width: 53, height: 22 }] : []),
   ];
 }

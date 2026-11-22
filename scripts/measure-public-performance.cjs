@@ -112,7 +112,12 @@ function installObservers() {
       windowLast = entry.startTime;
       observations.cls = Math.max(observations.cls, windowScore);
       observations.unexpectedShiftCount += 1;
-      observations.shifts.push({ startTimeMs: entry.startTime, value: entry.value });
+      const rectangle = rect => ({ x: rect.x, y: rect.y, width: rect.width, height: rect.height });
+      observations.shifts.push({ startTimeMs: entry.startTime, value: entry.value, sources: (entry.sources || []).map(source => ({
+        tag: source.node?.tagName || null, id: source.node?.id || null,
+        className: typeof source.node?.className === "string" ? source.node.className : null,
+        previousRect: rectangle(source.previousRect), currentRect: rectangle(source.currentRect),
+      })) });
     }
   };
   const eventEntries = entries => {
@@ -163,6 +168,9 @@ function installObservers() {
       return { ...observations, durationMs: performance.now(), interactionCountReportedByBrowser: typeof performance.interactionCount === "number" ? performance.interactionCount : null, interactions: grouped, maxObservedInteractionLatencyMs: grouped.length ? Math.max(...grouped.map(entry => entry.durationMs)) : null,
         navigation: navigation ? { ttfbMs: navigation.responseStart, domContentLoadedMs: navigation.domContentLoadedEventEnd, loadEventEndMs: navigation.loadEventEnd, transferSize: navigation.transferSize, type: navigation.type } : null,
         firstContentfulPaintMs: paints.find(entry => entry.name === "first-contentful-paint")?.startTime ?? null,
+        fontResources: performance.getEntriesByType("resource").filter(entry => /\.(woff2?|ttf)(?:[?#]|$)|fonts\.(googleapis|gstatic)\.com/.test(entry.name)).map(entry => ({
+          url: new URL(entry.name).origin + new URL(entry.name).pathname, startTimeMs: entry.startTime, responseEndMs: entry.responseEnd, durationMs: entry.duration,
+        })),
         browser: { userAgent: navigator.userAgent, hardwareConcurrency: navigator.hardwareConcurrency, devicePixelRatio: devicePixelRatio, viewport: { width: innerWidth, height: innerHeight }, fontsStatus: document.fonts?.status || "unavailable" },
       };
     },

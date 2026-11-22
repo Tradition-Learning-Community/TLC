@@ -418,11 +418,14 @@ async function cleanupFixtures() {
     await check("focused 360px object relations and evolving lineage screenshots", async () => {
       await page.setViewportSize({ width: 360, height: 844 });
       await visit("/tradition-learning");
+      // Keep fixed navigation outside these section-only exports, including
+      // elements off-screen in the viewport but inside a tall screenshot clip.
+      const sectionScreenshotStyle = ".site-header,.skip-link,.back-top{visibility:hidden!important}";
       const objects = page.locator("#objets");
       await active(objects.getByRole("button", { name: "Relations documentées", exact: true }), "Enter");
       await active(objects.locator(".object-node").filter({ has: page.getByText("Pratique", { exact: true }) }).first(), "Enter");
       const objectCapture = "scientific-objects-pratique-relations-360.png";
-      await objects.screenshot({ path: path.join(output, objectCapture), animations: "disabled" });
+      await objects.screenshot({ path: path.join(output, objectCapture), animations: "disabled", style: sectionScreenshotStyle });
       summary.screenshots.push(objectCapture);
       const lineage = page.locator("#filiations");
       await active(lineage.getByRole("group", { name: "Vue des cohortes et filiations", exact: true }).getByRole("button", { name: "Évolution", exact: true }), "Enter");
@@ -430,7 +433,7 @@ async function cleanupFixtures() {
       for (const [name, suffix] of [["Relais reconnus", "relays"], ["Nouvelle cohorte", "new-cohort"]]) {
         await active(snapshots.getByRole("button", { name, exact: true }), "Enter");
         const filename = `scientific-lineage-${suffix}-360.png`;
-        await lineage.screenshot({ path: path.join(output, filename), animations: "disabled" });
+        await lineage.screenshot({ path: path.join(output, filename), animations: "disabled", style: sectionScreenshotStyle });
         summary.screenshots.push(filename);
       }
     });
@@ -522,15 +525,21 @@ async function cleanupFixtures() {
       }
     });
 
-    await check("participation choices preserve the filled inquiry without submitting it", async () => {
+    await check("participation preserves fields and scopes a locally mocked success to its choice", async () => {
       await visit("/participer");
       const options = page.getByRole("group", { name: "Choisir le type de participation", exact: true });
       assert.equal(await options.getByRole("button").count(), 4);
       let inquiryRequests = 0;
+      let allowMockSubmission = false;
+      let submittedPayload = null;
       const guardInquiry = async route => {
         if (!["GET", "HEAD", "OPTIONS"].includes(route.request().method())) {
           inquiryRequests += 1;
-          await route.abort("blockedbyclient");
+          if (allowMockSubmission && route.request().method() === "POST" && inquiryRequests === 1) {
+            allowMockSubmission = false;
+            submittedPayload = route.request().postDataJSON();
+            await route.fulfill({ status: 201, contentType: "application/json", body: JSON.stringify({ ok: true }) });
+          } else await route.abort("blockedbyclient");
         } else await route.continue();
       };
       await page.route("**/api/inquiries", guardInquiry);
@@ -553,6 +562,19 @@ async function cleanupFixtures() {
           assert.equal(inquiryRequests, 0, "changing participation never submits the inquiry");
         }
         assert.equal(await page.getByRole("button", { name: "Envoyer ma demande", exact: true }).count(), 1);
+        allowMockSubmission = true;
+        await page.getByRole("button", { name: "Envoyer ma demande", exact: true }).click();
+        const notice = page.locator(".participation-form").getByRole("status");
+        await notice.waitFor({ state: "visible" });
+        assert.equal(inquiryRequests, 1, "only the controlled locally fulfilled request was attempted");
+        assert.equal(submittedPayload?.kind, "support", "submission uses the current participation choice");
+        assert.equal(await notice.innerText(), "Votre demande a été transmise à TLC. Merci pour votre intérêt.");
+        await active(options.getByRole("button", { name: /^Rejoindre TLC/ }), "Enter");
+        await page.locator(".participation-form form").waitFor({ state: "visible" });
+        assert.equal(await notice.count(), 0, "success for support does not appear on a different participation choice");
+        for (const [label, value] of fields) assert.equal(await page.getByLabel(label, { exact: true }).inputValue(), value, `${label} survives switching after the mocked success`);
+        assert.equal(await page.getByRole("checkbox").isChecked(), true);
+        assert.equal(inquiryRequests, 1, "switching after success does not submit another inquiry");
       } finally { await page.unroute("**/api/inquiries", guardInquiry); }
       summary.skipped.push({ scenario: "Live inquiry submission", reason: "Public recipe does not send messages; existing authenticated E2E covers persistence in the isolated database." });
     });

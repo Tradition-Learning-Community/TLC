@@ -7,7 +7,8 @@ export default function InquiryForm({ kind = "join", context = "", onSent, compa
   const [profile, setProfile] = useState(""); const [message, setMessage] = useState("");
   const [consent, setConsent] = useState(false);
   const [website, setWebsite] = useState("");
-  const [busy, setBusy] = useState(false); const [error, setError] = useState(""); const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false); const [error, setError] = useState("");
+  const [sent, setSent] = useState<{ kind: InquiryKind; context: string } | null>(null);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setError("");
     try {
@@ -15,11 +16,11 @@ export default function InquiryForm({ kind = "join", context = "", onSent, compa
         body: JSON.stringify({ kind, context, name, email, profile, message, consent, website }) });
       const result = await response.json().catch(() => null);
       if (!response.ok) throw new Error(result?.error || "Impossible d'envoyer votre demande.");
-      setSent(true); onSent?.();
+      setSent({ kind, context }); onSent?.();
     } catch (caught) { setError(caught instanceof Error ? caught.message : "Erreur d'envoi."); }
     finally { setBusy(false); }
   }
-  if (sent) return <p className="notice" role="status">Votre demande a été transmise à TLC. Merci pour votre intérêt.</p>;
+  if (sent && sent.kind === kind && sent.context === context) return <p className="notice" role="status">Votre demande a été transmise à TLC. Merci pour votre intérêt.</p>;
   return <form onSubmit={(event) => void submit(event)} className={compact ? "inquiry-form" : "inquiry-form space-y-4"} aria-busy={busy}>
     <div className="field"><label htmlFor={`${idPrefix}-name`}>Nom complet</label><input id={`${idPrefix}-name`} required minLength={2} maxLength={140} autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Votre nom" /></div>
     <div className="field"><label htmlFor={`${idPrefix}-email`}>Adresse e-mail</label><input id={`${idPrefix}-email`} required type="email" maxLength={254} autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@exemple.org" /></div>
