@@ -7,10 +7,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "TLC — Tradition Learning Community",
-  description: "Recherche ouverte pour une intelligence artificielle sobre, accessible et utile.",
+  description: "Site officiel de Tradition Learning Community : théorie Tradition Learning, bibliothèque tllib, recherche, publications et participation.",
   openGraph: {
     title: "TLC — Tradition Learning Community",
-    description: "Recherche ouverte pour une intelligence artificielle sobre, accessible et utile.",
+    description: "Tradition Learning, tllib et la communauté scientifique TLC : ressources et travaux publics.",
   },
 };
 
