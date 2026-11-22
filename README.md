@@ -68,3 +68,12 @@ Le `pnpm backup` historique concerne seulement la base SQLite locale d'une ancie
 ## Contribution
 
 Voir [CONTRIBUTING.md](CONTRIBUTING.md). Dépôt distribué sous licence [MIT](LICENSE).
+
+## Frontend scientifique TLC 2027
+
+Le portail propose six visualisations interactives, des lectures textuelles et un catalogue de ressources filtrable. Les contenus scientifiques et leurs références sont séparés de la présentation dans `lib/scientific-content/`.
+
+- [Spécification et critères de réception](docs/frontend/TLC-2027-FRONTEND-SPEC.md)
+- [Sources et règles de représentation scientifique](docs/frontend/SCIENTIFIC-VISUALIZATION-RULES.md)
+- `test/scientific-visualizations.spec.ts` : invariants des contenus et scénarios.
+- `scripts/e2e-scientific.cjs` : recette navigateur des huit pages, six largeurs, thèmes, clavier et filtres. Exécutée avec PostgreSQL isolé dans le workflow navigateur.

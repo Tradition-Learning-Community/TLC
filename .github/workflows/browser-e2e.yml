@@ -69,6 +69,10 @@ jobs:
           exit 1
       - name: Browser E2E — login, permissions, contact, alerts and media validation
         run: NODE_PATH="$(npm root -g)" node scripts/e2e-browser.cjs
+      - name: Scientific portal — responsive pages, interactions and published content
+        run: NODE_PATH="$(npm root -g)" node scripts/e2e-scientific.cjs
+        env:
+          E2E_SEED_PUBLIC: "true"
       - if: failure()
         run: if test -f /tmp/tlc-e2e-server.log; then tail -n 120 /tmp/tlc-e2e-server.log; fi
       - uses: actions/upload-artifact@v4
