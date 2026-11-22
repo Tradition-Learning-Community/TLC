@@ -1,11 +1,12 @@
 import { deniedPermission } from "@/lib/staff-auth";
 import { hasValidImageSignature, mediaMimeTypes } from "@/lib/media-validation";
 import { storeMedia } from "@/lib/media-store";
+import { mediaStorageConfigured } from "@/lib/media-storage";
 
 export const runtime = "nodejs";
 export async function POST(request: Request) {
   const denied = await deniedPermission(request, "media:upload"); if (denied) return denied;
-  if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID)
+  if (!mediaStorageConfigured())
     return Response.json({ error: "Stockage des médias non configuré." }, { status: 503 });
   const contentLength = Number(request.headers.get("content-length") || 0);
   if (contentLength > 4_200_000) return Response.json({ error: "Fichier trop volumineux (4 Mo maximum)." }, { status: 413 });
