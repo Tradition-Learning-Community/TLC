@@ -1,0 +1,74 @@
+name: TLC browser end-to-end
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: tlc
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: tlc
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U tlc"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://tlc:testpassword@localhost:5432/tlc
+      ADMIN_PASSWORD: e2e-staff-bootstrap-only
+      ADMIN_SESSION_SECRET: test-only-secret-not-for-deployment-with-enough-entropy
+      BLOB_STORE_ID: test-only-signature-check
+      E2E_ADMIN_PASSWORD: e2e-staff-bootstrap-only
+      E2E_BASE_URL: http://127.0.0.1:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 24}
+      - run: npm install -g pnpm@10.33.2
+      - run: pnpm install --frozen-lockfile
+      - name: Initialize isolated PostgreSQL schema
+        run: |
+          PGPASSWORD=testpassword psql -h localhost -U tlc -d tlc -c "
+          CREATE TABLE records (
+            collection text NOT NULL,
+            id text NOT NULL,
+            data jsonb NOT NULL,
+            seq bigint GENERATED ALWAYS AS IDENTITY,
+            created_at timestamptz NOT NULL DEFAULT now(),
+            updated_at timestamptz NOT NULL DEFAULT now(),
+            PRIMARY KEY (collection,id)
+          );
+          CREATE INDEX idx_tlc_records_order ON records (collection, seq);"
+      - name: Install real browser
+        run: |
+          npm install -g playwright@1.56.1
+          playwright install --with-deps chromium
+      - name: Start TLC server
+        run: |
+          pnpm dev --hostname 127.0.0.1 > /tmp/tlc-e2e-server.log 2>&1 &
+          for i in $(seq 1 45); do
+            if curl -sf http://127.0.0.1:3000/admin/login >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/tlc-e2e-server.log
+          exit 1
+      - name: Browser E2E — login, permissions, contact, alerts and media validation
+        run: NODE_PATH="$(npm root -g)" node scripts/e2e-browser.cjs
+      - if: failure()
+        run: tail -n 120 /tmp/tlc-e2e-server.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tlc-browser-screenshots
+          path: test-results/
+          if-no-files-found: ignore
