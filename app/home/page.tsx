@@ -11,7 +11,8 @@ export const metadata = {
 export default async function HomePage() {
   const [articles, events, people, organizations] = await Promise.all([
     publicArticles().catch(() => []), upcomingEvents().catch(() => []),
-    readCollection<Contributor>("contributors").catch(() => []), publishedOrganizations().catch(() => []),
+    readCollection<Contributor>("contributors").then(rows => rows.filter(row => row.published !== false)).catch(() => []),
+    publishedOrganizations().catch(() => []),
   ]);
   const contributors = people.map((person) => ({
     id: person.id,

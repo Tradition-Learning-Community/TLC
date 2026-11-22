@@ -8,7 +8,7 @@ type RecordItem = { id?: string; title?: string; name?: string; [key: string]: u
 type Field = { key: string; label: string; type?: "text" | "url" | "date" | "number" | "textarea" | "list" | "select" | "checkbox"; options?: string[]; placeholder?: string };
 
 const TEMPLATES: Record<string, { title: string; expected: string; tips: string[]; template: RecordItem }> = {
-  contributors: { title: "Contributeurs", expected: "Nom et URL GitHub requis. L’image est facultative.", tips: ["Utilisez une URL GitHub complète."], template: { name: "", github: "https://github.com/username", avatar: "" } },
+  contributors: { title: "Contributeurs", expected: "Nom et URL GitHub requis. L’image est facultative.", tips: ["Utilisez une URL GitHub complète."], template: { name: "", github: "https://github.com/username", avatar: "", roles: ["Contributeur"], published: true } },
   profiles: { title: "Profils communauté", expected: "Nom et rôle requis.", tips: ["Ajoutez les compétences une par ligne."], template: { name: "", role: "", skills: [], points: 0, projects: 0, published: false } },
   projects: { title: "Projets", expected: "Nom du projet requis.", tips: ["Ajoutez les membres et tâches dans les sections dédiées."], template: { title: "", description: "", members: [], tasks: [], published: false } },
   events: { title: "Événements", expected: "Publiez uniquement les événements confirmés.", tips: ["La publication rend l'événement visible dans l'agenda."], template: { title: "", date: "", type: "Atelier", time: "", location: "", registrationUrl: "", description: "", published: false } },
@@ -25,6 +25,8 @@ const FIELDS: Record<string, Field[]> = {
     { key: "name", label: "Nom affiché", placeholder: "Ex. Alex Martin" },
     { key: "github", label: "Profil GitHub", type: "url", placeholder: "https://github.com/username" },
     { key: "avatar", label: "Lien de l’image (facultatif)", type: "url", placeholder: "https://… ou /images/photo.jpg" },
+    { key: "roles", label: "Participation / rôles publics", type: "list", placeholder: "Contributeur, Bénévole, Membre, Responsable..." },
+    { key: "published", label: "Afficher publiquement", type: "checkbox" },
   ],
   profiles: [
     { key: "name", label: "Nom" }, { key: "role", label: "Rôle" },

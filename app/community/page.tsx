@@ -5,7 +5,7 @@ import type { Contributor } from "@/lib/types";
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Communauté — TLC", description: "Contributeurs, bénévolat, partenaires et vie de Tradition Learning Community." };
 export default async function CommunityPage() {
-  const [people, organizations] = await Promise.all([readCollection<Contributor>("contributors"), publishedOrganizations()]);
+  const [people, organizations] = await Promise.all([readCollection<Contributor>("contributors").then(rows => rows.filter(row => row.published !== false)), publishedOrganizations()]);
   return <div className="directory-content">
     <section className="hero-band"><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">TRADITION LEARNING COMMUNITY</span><h1>La communauté</h1><p>Les personnes et les structures qui contribuent à faire avancer la recherche, le développement et les activités de TLC.</p><div className="hero-actions"><Link href="/participer" className="button button-gold">Participer à TLC ↗</Link></div></div><div className="hero-art"><div className="art-core">TLC</div></div></div></section>
     <section className="section container"><div className="section-head"><h2 className="section-title">Contributeurs référencés</h2><p className="section-copy">Ces profils représentent des contributions référencées, pas nécessairement des fonctions institutionnelles ou des adhésions officielles.</p></div>

@@ -13,6 +13,8 @@ export type Contributor = {
   name: string;
   github: string;
   avatar?: string;
+  roles?: string[];
+  published?: boolean;
 };
 
 export type Profile = {
