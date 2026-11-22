@@ -8,6 +8,14 @@ describe("server validation", () => {
     expect(result.ok).toBe(false);
   });
 
+  it("validates optional published event image URLs", () => {
+    const event = {title:"TLC workshop",date:"2026-12-01",type:"Atelier"};
+    expect(validateDataRecord("events", {...event,image:"https://cdn.example.org/tlc/event.jpg"}).ok).toBe(true);
+    expect(validateDataRecord("events", {...event,image:"/images/event.png"}).ok).toBe(true);
+    expect(validateDataRecord("events", {...event,image:"javascript:alert(1)"}).ok).toBe(false);
+    expect(validateDataRecord("events", {...event,image:"//untrusted.example/image.jpg"}).ok).toBe(false);
+  });
+
   it("accepts a valid project", () => {
     const result = validateDataRecord("projects", {
       title: "TLC project",
