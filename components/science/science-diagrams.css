@@ -1,0 +1,75 @@
+.theory-diagram{--science-edge-color:#257d94}
+.dark .theory-diagram{--science-edge-color:#4dbcd5}
+.theory-diagram .diagram-node strong,.theory-diagram .diagram-node span{overflow-wrap:anywhere}
+.theory-diagram .diagram-legend{padding:1rem clamp(1.25rem,3vw,1.75rem);margin:0;line-height:1.7}
+.science-connections{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--science-edge-color,#257d94)}
+.science-edge{fill:none;stroke:var(--science-edge-color,#257d94);stroke-width:2;opacity:.2;transition:opacity .2s,stroke .2s;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+.science-edge.is-active{opacity:.85;stroke-width:2.5}
+.entities-canvas{position:relative;min-height:25rem}
+.entities-canvas .entity-node{position:absolute;transform:translate(-50%,-50%);width:42%;max-width:13rem;min-height:8.5rem;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.55rem;text-align:center;padding:1rem .6rem}
+.entity-node strong,.object-node strong{display:block;font-size:1rem;line-height:1.35;font-weight:650}
+.entity-node span,.object-node span{display:block;font-size:.8125rem;line-height:1.5;color:var(--muted)}
+.entity-node svg{color:var(--science-edge-color,#257d94)}
+.entities-center-label{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);font-size:.7rem;letter-spacing:.15em;color:var(--muted);white-space:nowrap}
+.science-function-list{list-style:none;padding:0;margin:1.25rem 0;display:grid;gap:.8rem}
+.science-function-list li{padding-left:1rem;border-left:2px solid var(--gold);line-height:1.65;font-size:.9375rem}
+.entity-relationships{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;margin:0;padding:1rem clamp(1.25rem,3vw,1.75rem) 1.75rem}
+.entity-relationship{padding:1.3rem 0 0;border-top:1px solid var(--line)}
+.entity-relationship h3{font:650 1rem/1.5 var(--font-sans);margin:0 0 .55rem}
+.entity-relationship p{font-size:.9375rem;line-height:1.65;color:var(--muted);margin:.5rem 0}
+.entity-relationship .science-reference-text{font-size:.8125rem}
+.scientific-diagram .objects-canvas{position:relative;padding:0;min-height:32.5rem;overflow:hidden}
+.objects-node-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,1fr);min-height:32.5rem;gap:0;align-items:center;justify-items:center;position:relative;z-index:1}
+.objects-node-grid .object-node{width:calc(100% - 1.5rem);max-width:14rem;min-height:6.5rem;display:flex;align-items:flex-start;justify-content:center;flex-direction:column;gap:.3rem;padding:.8rem 1rem;text-align:left;transition:border-color .2s,box-shadow .2s,background .2s}
+.object-node svg{color:var(--science-edge-color,#257d94)}
+.object-node.is-related{border-color:var(--science-edge-color,#257d94)}
+.object-relations h4{font:650 .9375rem/1.5 var(--font-sans);margin:1.4rem 0 .5rem}
+.object-relations article{border-top:1px solid var(--line);padding:.75rem 0;display:grid;gap:.4rem}
+.object-relations article p{margin:0;font-size:.9375rem}
+.object-relations .diagram-source{font-size:.8125rem}
+.object-structure{padding:.8rem 0;margin:.5rem 0 1rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.9375rem;line-height:1.65}
+.object-structure summary{cursor:pointer;font-weight:600}
+.object-structure ul{padding-left:1.25rem;margin:.75rem 0 0;display:grid;gap:.35rem;color:var(--muted)}
+.science-inline-button{border:0;background:none;padding:.25rem 0;color:var(--ink);font:650 .875rem/1.5 var(--font-sans);text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:.2rem;width:fit-content}
+.science-static-reading{margin-top:1.3rem;border-top:1px solid var(--line);padding:1.1rem clamp(1.25rem,3vw,1.75rem);font-size:.9375rem;line-height:1.7}
+.science-static-reading summary{cursor:pointer;font-weight:600;padding:.35rem 0}
+.science-static-reading a{text-decoration:underline;text-underline-offset:.2rem}
+.science-static-reading li{margin:.8rem 0}
+.lineage-view-description{max-width:60rem;color:var(--muted);line-height:1.7;font-size:1rem;margin:1.25rem 0 .75rem;padding-inline:clamp(1.25rem,3vw,1.75rem)}
+.lineage-snapshot-context{color:var(--muted);font-size:.875rem;line-height:1.5;margin:0 0 1.25rem;padding-inline:clamp(1.25rem,3vw,1.75rem)}
+.lineage-snapshots{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 clamp(1.25rem,3vw,1.75rem) 1.5rem;padding:1rem;border:1px solid var(--line);border-radius:1rem}
+.lineage-canvas{position:relative;min-height:35rem;isolation:isolate}
+.lineage-canvas .lineage-node{position:absolute;transform:translate(-50%,-50%);min-width:5rem;max-width:9rem;width:21%;min-height:4.4rem;display:grid;align-content:center;gap:.2rem;padding:.55rem .35rem;text-align:center;z-index:2}
+.lineage-node strong{font-size:1rem;line-height:1.25}
+.lineage-node span{font-size:.75rem;color:var(--muted);line-height:1.3}
+.lineage-node.is-transmitter{border-style:double;border-width:3px}
+.cohort-outline{fill:color-mix(in srgb,var(--science-edge-color,#257d94) 5%,transparent);stroke:var(--science-edge-color,#257d94);stroke-width:1;stroke-dasharray:5 5;opacity:.8;vector-effect:non-scaling-stroke}
+.cohort-outline.cohort-b{fill:color-mix(in srgb,var(--gold) 5%,transparent);stroke:var(--gold-ink,#785b12)}
+.lineage-cohort-label{position:absolute;color:var(--muted);font-size:.75rem;line-height:1.4;z-index:1;padding:.12rem .3rem;background:var(--card);border-radius:.3rem}
+.lineage-edge{stroke-width:1.8}
+.lineage-edge.is-active{stroke-width:2}
+.lineage-edge.is-branch-b{stroke:var(--gold-ink,#785b12);color:var(--gold-ink,#785b12)}
+.lineage-facts{display:grid;gap:1rem;margin:1.4rem 0}
+.lineage-facts div{border-top:1px solid var(--line);padding-top:.8rem}
+.lineage-facts dt{color:var(--muted);font-size:.8125rem}
+.lineage-facts dd{margin:.3rem 0 0;font-size:.9375rem;line-height:1.6;font-weight:550;overflow-wrap:anywhere}
+.lineage-legend{display:flex;flex-wrap:wrap;gap:.7rem 1.2rem}
+.lineage-legend span{display:inline-flex;align-items:center;gap:.5rem}
+.legend-line{display:inline-block;width:1.25rem;height:2px;background:var(--science-edge-color,#257d94)}
+.legend-line.branch-b{background:var(--gold-ink,#785b12)}
+.lineage-event{margin:1.25rem clamp(1.25rem,3vw,1.75rem) 0;border-left:3px solid var(--gold);padding:.25rem 0 .25rem 1.25rem}
+.lineage-event h3{font:650 1rem/1.5 var(--font-sans);margin:0 0 .5rem}
+.lineage-event p{font-size:1rem;line-height:1.7;color:var(--muted);margin:0}
+.theory-navigation{display:flex;gap:.75rem 1.5rem;flex-wrap:wrap;padding:1.25rem 0;border-bottom:1px solid var(--line);font-size:.9375rem}
+.theory-navigation a{text-decoration:underline;text-underline-offset:.3rem;text-decoration-color:var(--gold)}
+.theory-introduction{display:grid;grid-template-columns:.8fr 1.2fr;gap:3rem}
+.theory-introduction .section-title{margin-top:0}
+.theory-body p{font-size:1rem;line-height:1.85;color:var(--muted);margin:0 0 1rem}
+.theory-quote{border-left:3px solid var(--gold);padding-left:1.5rem;font-size:clamp(1.25rem,2.2vw,1.7rem);line-height:1.55;margin:0 0 1.5rem;color:var(--ink)}
+.theory-reading{background:var(--muted-background);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.theory-reading-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.theory-reading h3{font:650 1.125rem/1.5 var(--font-sans)}
+.theory-reading p{font-size:1rem;line-height:1.8;color:var(--muted)}
+.theory-reading a{font-size:.9375rem;text-decoration:underline;text-underline-offset:.25rem}
+@media(max-width:700px){.entity-relationships,.theory-introduction,.theory-reading-grid{grid-template-columns:1fr;gap:1.25rem}.entities-canvas{min-height:25rem}.entities-canvas .entity-node{min-height:8.4rem;padding:.75rem .4rem}.entity-node strong{font-size:.9375rem}.entity-node span{font-size:.8125rem}.objects-node-grid .object-node{width:calc(100% - .75rem);padding:.8rem .65rem;min-height:7rem}.objects-node-grid,.objects-canvas{min-height:34rem}.object-node strong{font-size:.9375rem}.object-node span{font-size:.8125rem}.lineage-canvas{min-height:34rem}.lineage-canvas .lineage-node{min-width:0;width:23%;max-width:7rem;min-height:4.5rem;padding:.45rem .25rem}.lineage-node strong{font-size:.875rem}.lineage-node span{font-size:.75rem}.lineage-cohort-label{font-size:.75rem}.entities-center-label{font-size:.7rem}.theory-navigation{font-size:.875rem}}
+@media(prefers-reduced-motion:reduce){.science-edge,.object-node{transition:none}}

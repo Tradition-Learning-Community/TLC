@@ -1,21 +1,68 @@
 import Link from "next/link";
-export const metadata = { title: "tllib — Bibliothèque Tradition Learning", description: "La bibliothèque tllib : constitution et fonctionnement de systèmes Tradition Learning." };
+import { BookOpen, Code, Cpu, GitBranch, Layers, Network, Package, ShieldCheck } from "lucide-react";
+import EditorialSection from "@/components/editorial/EditorialSection";
+import RevealOnScroll from "@/components/motion/RevealOnScroll";
+import SystemConstitutionDiagram from "@/components/tllib/SystemConstitutionDiagram";
+import TllibArchitectureDiagram from "@/components/tllib/TllibArchitectureDiagram";
+import { tllibRepository } from "@/lib/scientific-content/product";
+
+export const metadata = {
+  title: "tllib — Bibliothèque Tradition Learning",
+  description: "Constituer, faire fonctionner et poursuivre des systèmes TL : explorez la constitution, le moteur C++20, les API C++ et Python et l’état de développement de tllib.",
+};
+
+const documentation = [
+  { title: "Comprendre le produit", description: "Périmètre, responsabilités des interfaces et conditions de publication de V1.", path: "docs/v1/PRODUCT-CONTRACT.md", icon: BookOpen },
+  { title: "Construire et contribuer", description: "Environnement de développement, compilation et accès aux outils C++ et Python.", path: "docs/v1/CONTRIBUTOR-QUICKSTART.md", icon: Code },
+  { title: "Choisir un composant", description: "Noyau, bindings, données, conformité, performance, distribution ou documentation.", path: "docs/v1/COMPONENTS-AND-CONTRIBUTION.md", icon: Package },
+];
+
 export default function TllibPage() {
- return <div className="directory-content">
-  <section className="hero-band"><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">LE PRODUIT SCIENTIFIQUE</span><h1>tllib</h1><p>La bibliothèque destinée à constituer, faire fonctionner et poursuivre des systèmes Tradition Learning.</p><div className="hero-actions"><a className="button button-gold" href="#fonctionnement">Comment fonctionne-t-elle ? ↓</a><a className="button button-outline" href="https://github.com/Tradition-Learning-Community/tllib" target="_blank" rel="noopener noreferrer">Code et documentation ↗</a></div></div><div className="hero-art"><div className="art-core">TL</div></div></div></section>
-  <section className="section container" id="fonctionnement"><div className="section-head"><h2 className="section-title">De la théorie à la pratique</h2></div>
-    <p className="section-copy">tllib fournit des structures et des opérations pour que les développeurs constituent des systèmes TL à partir d'une mission, d'un problème, de ressources, de capacités et de conditions scientifiques. Elle ne remplace pas les autres logiciels de l'application qui l'utilise.</p>
-    <div className="grid-3">{[
-      ["Constituer","Définir la mission et le problème, inventorier les ressources et constituer les rôles initiaux selon les contrats disponibles."],
-      ["Faire fonctionner","Mobiliser des capacités et des opérations scientifiques dans les conditions établies par la théorie et les spécifications."],
-      ["Poursuivre","Permettre de reprendre des systèmes existants et de réutiliser une Tradition sans les confondre avec l'héritage interne d'un système."],
-    ].map(([name,text])=><article className="card" key={name}><h3>{name}</h3><p>{text}</p></article>)}</div>
-  </section>
-  <section className="section container"><div className="section-head"><h2 className="section-title">État du développement</h2></div>
-    <p className="section-copy">Les fondations techniques reposent sur un moteur C++20, un runtime, des interfaces C++ et Python et des providers explicites. La V1 scientifique complète est encore en développement : une structure déclarative ne constitue pas à elle seule une exécution scientifique validée.</p>
-    <div className="grid-3"><article className="card"><h3>Bibliothèque</h3><p>Code, architecture, tests et documentation du produit.</p><a className="card-link" href="https://github.com/Tradition-Learning-Community/tllib" target="_blank" rel="noopener noreferrer">Accéder à tllib ↗</a></article>
-    <article className="card"><h3>Spécifications</h3><p>Contrats formalisés et critères de conformité des différentes fonctionnalités.</p><a className="card-link" href="https://github.com/Tradition-Learning-Community/tllib-specs" target="_blank" rel="noopener noreferrer">Accéder à tllib-specs ↗</a></article>
-    <article className="card"><h3>Recherche</h3><p>Études et évaluations destinées à vérifier les résultats des systèmes TL.</p><Link className="card-link" href="/recherche">Explorer les travaux →</Link></article></div>
-  </section>
- </div>;
+  return <div className="directory-content product-page">
+    <section className="hero-band product-hero">
+      <div className="hero-inner">
+        <div className="hero-copy">
+          <span className="eyebrow">Le produit scientifique</span>
+          <h1>tllib</h1>
+          <p>La bibliothèque pour constituer, faire fonctionner et poursuivre des systèmes Tradition Learning, depuis C++ ou Python.</p>
+          <div className="hero-actions">
+            <a className="button button-gold" href="#constitution">Explorer le fonctionnement</a>
+            <a className="button button-outline" href={tllibRepository} target="_blank" rel="noopener noreferrer">Code et documentation<span className="sr-only"> (nouvel onglet)</span></a>
+          </div>
+        </div>
+        <div className="product-hero-art" aria-hidden="true">
+          <div className="product-hero-interfaces"><span>C++</span><span>Python</span></div>
+          <svg className="product-hero-wire" viewBox="0 0 240 48"><path d="M60 0v20h120V0M120 20v28"/></svg>
+          <div className="product-hero-engine"><Cpu size={36}/><div><strong>Moteur C++20</strong><span>Une implémentation scientifique</span></div></div>
+          <p>Contrats · runtime · providers · conformité</p>
+        </div>
+      </div>
+    </section>
+
+    <div className="container"><div className="product-status"><strong>V1 en développement</strong><p>Les fondations techniques sont en place. Les fonctionnalités scientifiques des domaines restent à réaliser et à valider.</p></div></div>
+
+    <EditorialSection id="fonctionnement" eyebrow="Les usages de la bibliothèque" title="Donner une fondation à un système TL" description="Le développeur apporte une formulation, des ressources, des capacités et les conditions nécessaires. tllib organise les structures permises par les contrats et s’intègre à l’application qui l’utilise.">
+      <div className="product-uses">
+        <article className="product-use"><Network size={25} aria-hidden="true"/><h3>Fonder un système</h3><p>Constituer une base initiale adaptée à la mission. Les participants, les acquis et les contenus peuvent ensuite évoluer selon les conditions scientifiques.</p></article>
+        <article className="product-use"><Layers size={25} aria-hidden="true"/><h3>Réutiliser une Tradition</h3><p>Mobiliser un héritage existant dans un nouveau contexte, en vérifiant les conditions de sa réutilisation. La Tradition conserve sa signification scientifique.</p></article>
+        <article className="product-use"><GitBranch size={25} aria-hidden="true"/><h3>Poursuivre un système</h3><p>Continuer le développement d’un système déjà constitué. Ce mode se distingue de la fondation et de l’héritage interne entre générations.</p></article>
+      </div>
+    </EditorialSection>
+
+    <div className="container product-diagram-section"><RevealOnScroll><SystemConstitutionDiagram/></RevealOnScroll></div>
+    <div className="container product-diagram-section"><RevealOnScroll><TllibArchitectureDiagram/></RevealOnScroll></div>
+
+    <EditorialSection id="developpement" eyebrow="État du produit" title="Une V1 construite avec des preuves" tone="muted" description="Les possibilités de la bibliothèque dépendent des fonctionnalités réellement implémentées, des providers disponibles et de leurs vérifications.">
+      <div className="product-availability">
+        <article><h3>Les fondations disponibles</h3><p>Le dépôt documente le noyau natif, le runtime, les providers, l’intégration Python et les outils de conformité.</p><ul><li>Une architecture commune en C++20, exposée en C++ et Python.</li><li>Des interfaces numériques et des providers explicites.</li><li>Un snapshot scientifique verrouillé et une traçabilité des contrats.</li></ul></article>
+        <article><h3>La qualification scientifique</h3><p>La V1 scientifique complète reste en développement. Sa publication exige la qualification de tout le catalogue visé.</p><ul><li>Comportements exécutables implémentés et vérifiés.</li><li>Fonctionnalités conditionnelles reliées à leurs providers.</li><li>Structures présentées avec leur niveau réel de support.</li><li>Interfaces installables, documentation et contrôles de release satisfaits.</li></ul></article>
+      </div>
+      <p className="product-source-note">État documenté dans le <a href={`${tllibRepository}/blob/main/README.md`} target="_blank" rel="noopener noreferrer">README de tllib</a> et critères du <a href={`${tllibRepository}/blob/main/docs/v1/PRODUCT-CONTRACT.md#fin-de-v1`} target="_blank" rel="noopener noreferrer">contrat produit</a>.</p>
+    </EditorialSection>
+
+    <EditorialSection id="documentation" eyebrow="Travailler avec tllib" title="Du contrat au code" description="Les références du projet donnent le périmètre, les commandes applicables et les parcours de contribution.">
+      <div className="product-document-links">{documentation.map(item => <a key={item.path} href={`${tllibRepository}/blob/main/${item.path}`} target="_blank" rel="noopener noreferrer"><item.icon size={24} aria-hidden="true"/><strong>{item.title}</strong><span>{item.description}</span><span className="sr-only">Ouvrir dans un nouvel onglet</span></a>)}</div>
+      <p className="product-source-note"><ShieldCheck size={16} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }}/><a href="https://github.com/Tradition-Learning-Community/tllib-specs" target="_blank" rel="noopener noreferrer">Les spécifications scientifiques</a> définissent les contrats de conformité. <Link href="/recherche">Les travaux de recherche</Link> présentent les études et évaluations publiées.</p>
+    </EditorialSection>
+  </div>;
 }

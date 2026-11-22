@@ -1,24 +1,33 @@
 import Link from "next/link";
+import { BookOpen, Code2, FlaskConical, LibraryBig, NotebookText } from "lucide-react";
+import EditorialSection from "@/components/editorial/EditorialSection";
+import ResourceExplorer from "@/components/editorial/ResourceExplorer";
 import { publishedResources } from "@/lib/public-content";
+import "@/components/editorial/editorial-pages.css";
+
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Ressources — TLC", description: "Sources scientifiques, bibliothèque, guides et ressources de Tradition Learning." };
+export const metadata = { title: "Ressources — TLC", description: "Sources scientifiques, bibliothèque, guides et ressources de Tradition Learning. Recherchez les publications de TLC par sujet et catégorie." };
+
 export default async function ResourcesPage() {
-  const resources = await publishedResources();
-  return <div className="directory-content">
-    <section className="hero-band"><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">APPRENDRE · APPROFONDIR</span><h1>Ressources</h1><p>Tradition Learning, les travaux scientifiques et les outils de TLC.</p></div><div className="hero-art"><div className="art-core">TL</div></div></div></section>
-    <section className="section container"><div className="section-head"><h2 className="section-title">Commencer par l'essentiel</h2></div><div className="grid-3">
-      <article className="card"><span className="eyebrow">THÉORIE</span><h3>Découvrir Tradition Learning</h3><p>Origine, problème scientifique, entités, objets fondamentaux et fonctionnement.</p><Link className="card-link" href="/tradition-learning">Comprendre TL →</Link></article>
-      <article className="card"><span className="eyebrow">BIBLIOTHÈQUE</span><h3>La bibliothèque tllib</h3><p>Les fonctionnalités disponibles, les fondations techniques et la documentation du produit.</p><Link className="card-link" href="/tllib">Découvrir tllib →</Link></article>
-      <article className="card"><span className="eyebrow">RECHERCHE</span><h3>Les travaux de TLC</h3><p>Projets et expérimentations, avec un état et des résultats documentés.</p><Link className="card-link" href="/recherche">Explorer les travaux →</Link></article>
-    </div></section>
-    <section className="section container"><div className="section-head"><h2 className="section-title">Documentation technique</h2><p className="section-copy">Ces dépôts fournissent les textes de référence et le code de développement.</p></div>
-      <div className="grid-3">
-        <article className="card"><h3>tllib</h3><p>Bibliothèque de Tradition Learning, interfaces et documentation.</p><a className="card-link" href="https://github.com/Tradition-Learning-Community/tllib" target="_blank" rel="noopener noreferrer">Voir la documentation ↗</a></article>
-        <article className="card"><h3>tllib-specs</h3><p>Contrats, spécifications et références de conformité.</p><a className="card-link" href="https://github.com/Tradition-Learning-Community/tllib-specs" target="_blank" rel="noopener noreferrer">Consulter les spécifications ↗</a></article>
+  // Only these public fields may cross the server/client boundary.
+  const resources = (await publishedResources()).map(({ id, title, category, url, description }) => ({
+    id, title, category, url, description, published: true,
+  }));
+  return <div className="directory-content editorial-page">
+    <section className="hero-band editorial-hero"><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">LIRE · EXPLORER · APPROFONDIR</span><h1>Ressources</h1><p>Les textes, les outils et les publications pour comprendre Tradition Learning et suivre son développement.</p><div className="hero-actions"><a href="#catalogue" className="button button-gold">Explorer le catalogue</a></div></div><div className="editorial-hero-summary"><LibraryBig size={34} aria-hidden="true" /><p>Une entrée vers les fondements scientifiques, les contrats et la documentation de tllib.</p></div></div></section>
+    <EditorialSection eyebrow="S’ORIENTER" title="Commencer par l’essentiel" description="Choisissez votre point d’entrée selon ce que vous souhaitez comprendre.">
+      <div className="resource-entry-grid">
+        <Link className="resource-entry" href="/tradition-learning"><BookOpen aria-hidden="true" /><h3>Comprendre la théorie</h3><p>Les entités, les huit objets, les relations et la transmission.</p><span>Tradition Learning</span></Link>
+        <Link className="resource-entry" href="/tllib"><Code2 aria-hidden="true" /><h3>Explorer la bibliothèque</h3><p>La constitution d’un système TL, son architecture et ses interfaces.</p><span>tllib</span></Link>
+        <Link className="resource-entry" href="/recherche"><FlaskConical aria-hidden="true" /><h3>Suivre les travaux</h3><p>Les projets et les expérimentations publiés par la communauté.</p><span>Recherche</span></Link>
       </div>
-    </section>
-    {resources.length > 0 && <section className="section container"><div className="section-head"><h2 className="section-title">Ressources publiées</h2></div><div className="grid-3">{resources.map(item=>
-      <article className="card" key={item.id}><span className="eyebrow">{item.category}</span><h3>{item.title}</h3><p>{item.description}</p><a className="card-link" href={item.url} target="_blank" rel="noopener noreferrer">Consulter ↗</a></article>
-    )}</div></section>}
+    </EditorialSection>
+    <EditorialSection tone="muted" eyebrow="SOURCES DE RÉFÉRENCE" title="Documentation technique" description="Les dépôts rassemblent les contrats scientifiques et le code du produit.">
+      <div className="resource-reference-list">
+        <article><span className="editorial-icon"><NotebookText aria-hidden="true" /></span><div><h3>Spécifications scientifiques</h3><p>Domaines, contrats, registre et références de conformité de tllib-specs.</p><a className="text-link" href="https://github.com/Tradition-Learning-Community/tllib-specs" target="_blank" rel="noopener noreferrer">Consulter tllib-specs<span className="sr-only"> (nouvel onglet)</span></a></div></article>
+        <article><span className="editorial-icon"><Code2 aria-hidden="true" /></span><div><h3>Code et documentation de tllib</h3><p>Architecture C++ et Python, contrat produit et parcours de contribution.</p><a className="text-link" href="https://github.com/Tradition-Learning-Community/tllib" target="_blank" rel="noopener noreferrer">Consulter tllib<span className="sr-only"> (nouvel onglet)</span></a></div></article>
+      </div>
+    </EditorialSection>
+    <EditorialSection id="catalogue" eyebrow="CATALOGUE" title="Ressources publiées" description="Recherchez un titre, un sujet ou une catégorie dans les ressources rendues publiques par TLC."><ResourceExplorer resources={resources} /></EditorialSection>
   </div>;
 }

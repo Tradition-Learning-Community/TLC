@@ -19,7 +19,7 @@ export default function BackToTop() {
       aria-label="Retour en haut de page"
       aria-hidden={!visible}
       tabIndex={visible ? 0 : -1}
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })}
       style={{ borderRadius: 9999 }}
     >
       <span

@@ -58,9 +58,11 @@ jobs:
         run: |
           npm install -g playwright@1.56.1
           playwright install --with-deps chromium
+      - name: Build the production frontend for browser verification
+        run: pnpm build
       - name: Start TLC server
         run: |
-          pnpm dev --hostname localhost > /tmp/tlc-e2e-server.log 2>&1 &
+          pnpm start --hostname localhost > /tmp/tlc-e2e-server.log 2>&1 &
           for i in $(seq 1 45); do
             if curl -sf http://localhost:3000/admin/login >/dev/null; then exit 0; fi
             sleep 2
@@ -69,6 +71,12 @@ jobs:
           exit 1
       - name: Browser E2E — login, permissions, contact, alerts and media validation
         run: NODE_PATH="$(npm root -g)" node scripts/e2e-browser.cjs
+      - name: Scientific portal — responsive pages, interactions and published content
+        run: NODE_PATH="$(npm root -g)" node scripts/e2e-scientific.cjs
+        env:
+          E2E_SEED_PUBLIC: "true"
+      - name: Public frontend — laboratory performance measurements
+        run: NODE_PATH="$(npm root -g)" node scripts/measure-public-performance.cjs
       - if: failure()
         run: if test -f /tmp/tlc-e2e-server.log; then tail -n 120 /tmp/tlc-e2e-server.log; fi
       - uses: actions/upload-artifact@v4
