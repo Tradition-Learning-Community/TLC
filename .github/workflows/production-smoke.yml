@@ -20,13 +20,14 @@ jobs:
           const base = process.env.TLC_URL;
           const routes = [
             ['/home', 'html'],
-            ['/api/projects', 'array', 1],
-            ['/api/contributors', 'array', 10],
-            ['/api/profiles', 'array', 4],
-            ['/api/data/events', 'array', 4],
-            ['/api/community/members', 'array', 4],
-            ['/api/discussions', 'array', 1],
-            ['/api/experiments', 'array', 1]
+            ['/actualites', 'html'],
+            ['/tradition-learning', 'html'],
+            ['/tllib', 'html'],
+            ['/events', 'html'],
+            ['/api/articles', 'array', 0],
+            ['/api/events', 'array', 0],
+            ['/api/projects', 'array', 0],
+            ['/api/contributors', 'array', 0],
           ];
           async function retry(url, init, expectedStatus = 200) {
             let last = '';
@@ -58,6 +59,9 @@ jobs:
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({title:'unauthorized-smoke'})
             }, 401);
-            console.log('Unauthorized write: 401 OK');
+            await retry(base + '/api/data/events', {}, 401);
+            await retry(base + '/api/inquiries', {}, 401);
+            await retry(base + '/api/articles?all=1', {}, 401);
+            console.log('Unauthorized read/write: 401 OK');
           })().catch(error => { console.error(error); process.exitCode = 1; });
           NODE

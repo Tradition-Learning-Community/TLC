@@ -1,22 +1,13 @@
-export default function DiscussionsPage(){
-  return (
-    <section className="content-shell pt-40">
-      <header className="content-header">
-        <span className="content-kicker">Forum technique</span>
-        <h1 className="content-title">Discussions</h1>
-        <p className="content-lead">
-          Espace de discussion pour les threads communautaires, questions de
-          recherche et retours sur les projets.
-        </p>
-      </header>
-
-      <article className="content-panel mt-8">
-        <h2 className="content-panel-title">Accès API</h2>
-        <p className="content-panel-copy">Consultez la liste des discussions via l'endpoint dédié.</p>
-        <div className="mt-4">
-          <a href="/api/discussions" className="content-api-link">/api/discussions</a>
-        </div>
-      </article>
-    </section>
-  )
+import Link from "next/link";
+import { readCollection } from "@/lib/database";
+export const dynamic = "force-dynamic";
+export const metadata = { title: "Discussions — TLC", description: "Échanges et travaux communautaires de TLC." };
+type Topic = { id: string; title: string; published?: boolean; summary?: string };
+export default async function DiscussionsPage() {
+  const topics = (await readCollection<Topic>("discussions")).filter(item => item.published === true);
+  return <div className="directory-content"><section className="hero-band"><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">COMMUNAUTÉ</span><h1>Discussions</h1><p>Questions et échanges liés aux travaux de Tradition Learning.</p></div><div className="hero-art"><div className="art-core">TLC</div></div></div></section>
+    <section className="section container">{topics.length === 0 ? <p className="section-copy">Aucune discussion publique pour le moment. Vous pouvez contacter la communauté pour proposer un sujet.</p> :
+      <div className="grid-3">{topics.map(item=><article key={item.id} className="card"><h3>{item.title}</h3><p>{item.summary}</p></article>)}</div>}
+    <p className="mt-8"><Link href="/participer" className="button button-dark">Participer aux échanges →</Link></p></section>
+  </div>;
 }

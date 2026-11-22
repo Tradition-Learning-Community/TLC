@@ -1,0 +1,33 @@
+"use client";
+import { useState, type FormEvent } from "react";
+import type { InquiryKind } from "@/lib/inquiries";
+export default function InquiryForm({ kind = "join", context = "", onSent, compact = false }:
+  { kind?: InquiryKind; context?: string; onSent?: () => void; compact?: boolean }) {
+  const [name, setName] = useState(""); const [email, setEmail] = useState("");
+  const [profile, setProfile] = useState(""); const [message, setMessage] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [website, setWebsite] = useState("");
+  const [busy, setBusy] = useState(false); const [error, setError] = useState(""); const [sent, setSent] = useState(false);
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setError("");
+    try {
+      const response = await fetch("/api/inquiries", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kind, context, name, email, profile, message, consent, website }) });
+      const result = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(result?.error || "Impossible d'envoyer votre demande.");
+      setSent(true); onSent?.();
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "Erreur d'envoi."); }
+    finally { setBusy(false); }
+  }
+  if (sent) return <p className="notice" role="status">Votre demande a été transmise à TLC. Merci pour votre intérêt.</p>;
+  return <form onSubmit={(event) => void submit(event)} className={compact ? "" : "space-y-4"}>
+    <div className="field"><label htmlFor="request-name">Nom complet</label><input id="request-name" required minLength={2} maxLength={140} autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Votre nom" /></div>
+    <div className="field"><label htmlFor="request-email">Adresse e-mail</label><input id="request-email" required type="email" maxLength={254} autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@exemple.org" /></div>
+    <div className="field"><label htmlFor="request-profile">Profil / organisation (facultatif)</label><input id="request-profile" maxLength={120} value={profile} onChange={(e) => setProfile(e.target.value)} placeholder="Étudiant, chercheur, entreprise..." /></div>
+    <div className="field"><label htmlFor="request-message">{kind === "event" ? "Message (facultatif)" : "Votre message"}</label><textarea id="request-message" required={kind !== "event"} minLength={kind === "event" ? 0 : 10} maxLength={3000} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Votre projet, motivation ou proposition..." /></div>
+    <div aria-hidden="true" className="hidden"><label htmlFor="request-website">Site internet</label><input tabIndex={-1} id="request-website" autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} /></div>
+    <label className="flex items-start gap-2 text-xs"><input type="checkbox" required checked={consent} onChange={(e) => setConsent(e.target.checked)} /> J'accepte que TLC utilise ces informations uniquement pour donner suite à ma demande.</label>
+    {error && <p role="alert" className="text-sm text-red-600 dark:text-red-300">{error}</p>}
+    <button disabled={busy} type="submit" className="button button-gold">{busy ? "Envoi..." : kind === "event" ? "Envoyer mon inscription" : "Envoyer ma demande"}</button>
+  </form>;
+}

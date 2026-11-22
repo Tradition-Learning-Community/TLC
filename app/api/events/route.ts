@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { readCollection } from "@/lib/database";
-
+import { publishedEvents } from "@/lib/public-content";
+export const dynamic = "force-dynamic";
 export async function GET() {
-  return NextResponse.json(await readCollection("events"));
+  return NextResponse.json(await publishedEvents(), { headers: { "Cache-Control": "no-store" } });
 }

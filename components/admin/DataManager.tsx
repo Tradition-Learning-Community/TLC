@@ -2,19 +2,22 @@
 
 import { useEffect, useState } from "react";
 import ImportButton from "@/components/admin/ImportButton";
+import MediaUploader from "@/components/admin/MediaUploader";
 
 type RecordItem = { id?: string; title?: string; name?: string; [key: string]: unknown };
-type Field = { key: string; label: string; type?: "text" | "url" | "date" | "number" | "textarea" | "list" | "select"; options?: string[]; placeholder?: string };
+type Field = { key: string; label: string; type?: "text" | "url" | "date" | "number" | "textarea" | "list" | "select" | "checkbox"; options?: string[]; placeholder?: string };
 
 const TEMPLATES: Record<string, { title: string; expected: string; tips: string[]; template: RecordItem }> = {
-  contributors: { title: "Contributeurs", expected: "Nom et URL GitHub requis. L’image est facultative.", tips: ["Utilisez une URL GitHub complète."], template: { name: "", github: "https://github.com/username", avatar: "" } },
-  profiles: { title: "Profils communauté", expected: "Nom et rôle requis.", tips: ["Ajoutez les compétences une par ligne."], template: { name: "", role: "", skills: [], points: 0, projects: 0 } },
-  projects: { title: "Projets", expected: "Nom du projet requis.", tips: ["Ajoutez les membres et tâches dans les sections dédiées."], template: { title: "", description: "", members: [], tasks: [] } },
-  events: { title: "Événements", expected: "Titre, date et type requis.", tips: ["La date s’affiche au format année-mois-jour."], template: { title: "", date: "", type: "Atelier", description: "" } },
-  resources: { title: "Ressources", expected: "Titre et catégorie requis.", tips: ["Ajoutez un lien complet commençant par https://."], template: { title: "", category: "Documentation", url: "" } },
-  experiments: { title: "Expériences", expected: "Titre requis.", tips: ["Décrivez le contexte et les résultats dans les notes."], template: { title: "", notes: "" } },
-  "open-calls": { title: "Appels ouverts", expected: "Titre et description requis.", tips: ["Choisissez un niveau d’urgence."], template: { title: "", description: "", urgency: "medium" } },
-  discussions: { title: "Discussions", expected: "Sujet requis.", tips: ["Les messages initiaux sont facultatifs."], template: { title: "", messages: [] } },
+  contributors: { title: "Contributeurs", expected: "Nom et URL GitHub requis. L’image est facultative.", tips: ["Utilisez une URL GitHub complète."], template: { name: "", github: "https://github.com/username", avatar: "", roles: ["Contributeur"], published: true } },
+  profiles: { title: "Profils communauté", expected: "Nom et rôle requis.", tips: ["Ajoutez les compétences une par ligne."], template: { name: "", role: "", skills: [], points: 0, projects: 0, published: false } },
+  projects: { title: "Projets", expected: "Nom du projet requis.", tips: ["Ajoutez les membres et tâches dans les sections dédiées."], template: { title: "", description: "", members: [], tasks: [], published: false } },
+  events: { title: "Événements", expected: "Publiez uniquement les événements confirmés.", tips: ["La publication rend l'événement visible dans l'agenda."], template: { title: "", date: "", type: "Atelier", time: "", location: "", registrationUrl: "", description: "", published: false } },
+  resources: { title: "Ressources", expected: "Titre et catégorie requis.", tips: ["Un élément reste privé tant qu'il n'est pas publié."], template: { title: "", category: "Documentation", url: "", description: "", published: false } },
+  organizations: { title: "Organisations", expected: "Nommez une organisation et sa relation confirmée avec TLC.", tips: ["Affichage public uniquement si publié."], template: { name: "", category: "Partenaire", logo: "", url: "", description: "", published: false } },
+  media: { title: "Médiathèque", expected: "URL et titre du média requis.", tips: ["Utiliser un chemin interne ou une URL HTTPS autorisée."], template: { title: "", url: "", alt: "", credit: "", published: false } },
+  experiments: { title: "Expériences", expected: "Titre requis.", tips: ["Décrivez le contexte et les résultats dans les notes."], template: { title: "", notes: "", published: false } },
+  "open-calls": { title: "Appels ouverts", expected: "Titre et description requis.", tips: ["Choisissez un niveau d’urgence."], template: { title: "", description: "", urgency: "medium", published: false } },
+  discussions: { title: "Discussions", expected: "Sujet requis.", tips: ["Les messages initiaux sont facultatifs."], template: { title: "", messages: [], published: false } },
 };
 
 const FIELDS: Record<string, Field[]> = {
@@ -22,35 +25,43 @@ const FIELDS: Record<string, Field[]> = {
     { key: "name", label: "Nom affiché", placeholder: "Ex. Alex Martin" },
     { key: "github", label: "Profil GitHub", type: "url", placeholder: "https://github.com/username" },
     { key: "avatar", label: "Lien de l’image (facultatif)", type: "url", placeholder: "https://… ou /images/photo.jpg" },
+    { key: "roles", label: "Participation / rôles publics", type: "list", placeholder: "Contributeur, Bénévole, Membre, Responsable..." },
+    { key: "published", label: "Afficher publiquement", type: "checkbox" },
   ],
   profiles: [
     { key: "name", label: "Nom" }, { key: "role", label: "Rôle" },
     { key: "skills", label: "Compétences", type: "list", placeholder: "Une compétence par ligne" },
     { key: "points", label: "Points", type: "number" }, { key: "projects", label: "Projets réalisés", type: "number" },
+    { key: "published", label: "Afficher publiquement", type: "checkbox" },
   ],
   projects: [
     { key: "title", label: "Nom du projet" }, { key: "description", label: "Description", type: "textarea" },
-    { key: "members", label: "Membres", type: "list", placeholder: "Un nom ou identifiant par ligne" },
+    { key: "members", label: "Membres", type: "list", placeholder: "Un nom ou identifiant par ligne" }, { key: "published", label: "Afficher publiquement", type: "checkbox" },
   ],
   events: [
     { key: "title", label: "Nom de l’événement" }, { key: "date", label: "Date", type: "date" },
-    { key: "type", label: "Type", placeholder: "Atelier, webinaire…" }, { key: "description", label: "Description", type: "textarea" },
+    { key: "type", label: "Type", placeholder: "Atelier, webinaire…" }, { key: "time", label: "Heure / période" }, { key: "location", label: "Lieu ou modalité" },
+    { key: "registrationUrl", label: "Lien d'inscription", type: "url" }, { key: "description", label: "Description", type: "textarea" }, { key: "published", label: "Publier sur le site", type: "checkbox" },
   ],
   resources: [
     { key: "title", label: "Titre" }, { key: "category", label: "Catégorie", placeholder: "Documentation, code…" },
-    { key: "url", label: "Lien", type: "url", placeholder: "https://…" },
+    { key: "url", label: "Lien", type: "url", placeholder: "https://…" }, { key: "description", label: "Description", type: "textarea" }, { key: "published", label: "Publier sur le site", type: "checkbox" },
   ],
-  experiments: [{ key: "title", label: "Titre" }, { key: "notes", label: "Notes", type: "textarea" }],
+  organizations: [{ key: "name", label: "Nom" }, { key: "category", label: "Relation", type: "select", options: ["Partenaire","Sponsor","Donateur","Institution"] }, { key: "url", label: "Site internet", type: "url" }, { key: "logo", label: "Logo (URL)", type: "url" }, { key: "description", label: "Présentation", type: "textarea" }, { key: "published", label: "Afficher publiquement", type: "checkbox" }],
+  media: [{ key: "title", label: "Nom du média" }, { key: "url", label: "Adresse du fichier", type: "url" }, { key: "alt", label: "Description de l'image" }, { key: "credit", label: "Crédit / provenance" }, { key: "published", label: "Visible publiquement", type: "checkbox" }],
+  experiments: [{ key: "title", label: "Titre" }, { key: "notes", label: "Notes", type: "textarea" }, { key: "published", label: "Afficher publiquement", type: "checkbox" }],
   "open-calls": [
     { key: "title", label: "Titre" }, { key: "description", label: "Description", type: "textarea" },
     { key: "urgency", label: "Urgence", type: "select", options: ["low", "medium", "high"] },
+    { key: "published", label: "Afficher publiquement", type: "checkbox" },
   ],
-  discussions: [{ key: "title", label: "Sujet" }],
+  discussions: [{ key: "title", label: "Sujet" }, { key: "published", label: "Afficher publiquement", type: "checkbox" }],
 };
 
 const REQUIRED_FIELDS: Record<string, string[]> = {
   contributors: ["name", "github"], profiles: ["name", "role"], projects: ["title"],
   events: ["title", "date", "type"], resources: ["title", "category"],
+  organizations: ["name", "category"], media: ["title", "url"],
   experiments: ["title"], "open-calls": ["title", "description"], discussions: ["title"],
 };
 
@@ -190,6 +201,8 @@ export default function DataManager({ type }: { type: string }) {
 
       <div className="rounded-2xl border border-white/[0.08] bg-[#0b1827] p-4 sm:p-5"><div className="text-sm font-semibold text-white">À propos des champs</div><p className="mt-1 text-sm text-slate-400">{help.expected}</p>{help.tips.length > 0 && <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-slate-500">{help.tips.map((tip) => <li key={tip}>{tip}</li>)}</ul>}</div>
 
+      {type === "media" && <MediaUploader onUploaded={fetchItems} />}
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <section className="md:col-span-2 rounded-2xl border border-white/[0.08] bg-[#0b1827] p-4 sm:p-5">
           <div className="mb-5 flex items-start justify-between gap-3"><div><h3 className="text-base font-semibold text-white">{editing ? "Modifier les informations" : "Informations de l’élément"}</h3><p className="mt-1 text-xs text-slate-500">Remplissez les champs ci-dessous. Les champs obligatoires sont marqués d’un astérisque.</p></div><span className="shrink-0 rounded-full bg-white/[0.05] px-2.5 py-1 text-[11px] text-slate-400">{editing ? "Modification" : "Nouvel élément"}</span></div>
@@ -199,7 +212,8 @@ export default function DataManager({ type }: { type: string }) {
             const wide = field.type === "textarea" || field.type === "list";
             const required = (REQUIRED_FIELDS[type] ?? []).includes(field.key);
             return <label key={field.key} className={`block text-xs font-medium text-slate-400 ${wide ? "sm:col-span-2" : ""}`}>{field.label}{required ? " *" : ""}
-              {field.type === "textarea" || field.type === "list" ? <textarea rows={field.type === "list" ? 3 : 4} required={required} value={field.type === "list" ? (Array.isArray(value) ? value.join("\n") : "") : String(value ?? "")} onChange={(event) => updateField(field.key, field.type === "list" ? event.target.value.split(/[\n,]/).map((entry) => entry.trim()).filter(Boolean) : event.target.value)} placeholder={field.placeholder || (field.type === "list" ? "Un élément par ligne" : "")} className={inputClass} />
+              {field.type === "checkbox" ? <input type="checkbox" checked={value === true} onChange={(event) => updateField(field.key, event.target.checked)} className="h-5 w-5 accent-[#d4af37]" />
+                : field.type === "textarea" || field.type === "list" ? <textarea rows={field.type === "list" ? 3 : 4} required={required} value={field.type === "list" ? (Array.isArray(value) ? value.join("\n") : "") : String(value ?? "")} onChange={(event) => updateField(field.key, field.type === "list" ? event.target.value.split(/[\n,]/).map((entry) => entry.trim()).filter(Boolean) : event.target.value)} placeholder={field.placeholder || (field.type === "list" ? "Un élément par ligne" : "")} className={inputClass} />
                 : field.type === "select" ? <select value={String(value ?? field.options?.[0] ?? "")} onChange={(event) => updateField(field.key, event.target.value)} className={inputClass}>{field.options?.map((option) => <option key={option} value={option} className="bg-[#0b1827]">{option}</option>)}</select>
                   : <input type={field.type || "text"} required={required} value={String(value ?? "")} onChange={(event) => updateField(field.key, field.type === "number" ? (event.target.value === "" ? "" : Number(event.target.value)) : event.target.value)} placeholder={field.placeholder} className={inputClass} />}
             </label>;

@@ -3,6 +3,7 @@ import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 
 type CallItem = {
   id?: string;
+  published?: boolean;
   title: string;
   description: string;
   urgency?: "low" | "medium" | "high";
@@ -11,7 +12,7 @@ type CallItem = {
 export async function GET() {
   try {
     const calls = await readJsonArray<CallItem>("open-calls.json");
-    return Response.json(calls);
+    return Response.json(calls.filter(item => item.published === true));
   } catch {
     return Response.json({ error: "Failed to load open calls" }, { status: 500 });
   }

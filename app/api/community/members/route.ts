@@ -3,6 +3,7 @@ import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 
 type MemberItem = {
   id?: string;
+  published?: boolean;
   name: string;
   role: string;
   skills?: string[];
@@ -13,7 +14,7 @@ type MemberItem = {
 export async function GET() {
   try {
     const members = await readJsonArray<MemberItem>("profiles.json");
-    return Response.json(members);
+    return Response.json(members.filter(item => item.published === true));
   } catch {
     return Response.json({ error: "Failed to load members" }, { status: 500 });
   }

@@ -3,7 +3,7 @@ import { getProjects, saveProject, type Project } from "@/lib/project-store";
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 
 export async function GET() {
-  return NextResponse.json(await getProjects());
+  return NextResponse.json((await getProjects()).filter(item => (item as Project & { published?: boolean }).published === true));
 }
 
 export async function POST(request: Request) {

@@ -5,7 +5,7 @@ import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 import type { Contributor } from "@/lib/types";
 
 export async function GET() {
-  return NextResponse.json(await readCollection<Contributor>("contributors"));
+  return NextResponse.json((await readCollection<Contributor>("contributors")).filter(item => item.published !== false));
 }
 
 export async function POST(request: Request) {
@@ -19,6 +19,8 @@ export async function POST(request: Request) {
     name: body.name.trim(),
     github: body.github.trim(),
     avatar: typeof body.avatar === "string" ? body.avatar : undefined,
+    roles: Array.isArray(body.roles) ? body.roles.filter((role: unknown) => typeof role === "string").slice(0, 8) : ["Contributeur"],
+    published: body.published !== false,
   }, "contributor");
   return NextResponse.json(contributor, { status: 201 });
 }

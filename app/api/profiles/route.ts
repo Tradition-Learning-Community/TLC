@@ -4,7 +4,7 @@ import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 import type { Profile } from "@/lib/types";
 
 export async function GET() {
-  return NextResponse.json(await readCollection<Profile>("profiles"));
+  return NextResponse.json((await readCollection<Profile>("profiles")).filter(item => item.published === true));
 }
 
 export async function PATCH(request: Request) {
