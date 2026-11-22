@@ -1,9 +1,12 @@
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { adminCookieHeader } from "@/lib/admin-auth";
+import { legacyLoginEnabled, sameOrigin } from "@/lib/staff-auth";
 import { recordPublicRequestAttempt } from "@/lib/database";
 
 export async function POST(request: Request) {
+  if (!sameOrigin(request)) return NextResponse.json({ error: "Origine interdite." }, { status: 403 });
+  if (!await legacyLoginEnabled()) return NextResponse.json({ error: "Ancien accès désactivé." }, { status: 410 });
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
   const secret = process.env.ADMIN_SESSION_SECRET || "";
   if (!ADMIN_PASSWORD || !secret) return NextResponse.json({ ok: false }, { status: 503 });
