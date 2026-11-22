@@ -9,7 +9,7 @@ const valid = {
 describe("editorial content", () => {
   it("rejects invalid article fields", () => {
     expect(validateArticle({ ...valid, title: "" }).ok).toBe(false);
-    expect(validateArticle({ ...valid, body: "Court" }).ok).toBe(false);
+    expect(validateArticle({ ...valid, body: "Court", status: "published" }).ok).toBe(false);
     expect(validateArticle({ ...valid, coverImage: "javascript:alert(1)" }).ok).toBe(false);
     expect(validateArticle({ ...valid, status: "something" }).ok).toBe(false);
   });
