@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { permissionsFor, hasPermission, isStaffRole } from "../lib/staff-permissions";
-import { tokenHash, secureTokenEqual, publicStaffAccount, sameOrigin } from "../lib/staff-auth";
+import { tokenHash, secureTokenEqual, publicStaffAccount, sameOrigin } from "../lib/staff-utils";
 
 describe("staff permissions", () => {
   it("restricts privileges by role", () => {
