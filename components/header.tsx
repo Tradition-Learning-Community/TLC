@@ -24,7 +24,7 @@ export default function Header() {
       </Link>
       <button className="menu-toggle" aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button>
       <div className={`nav-content${open ? " is-open" : ""}`}>
-        <div className="nav-links">{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)} className={path === href || (href === "/projects" && path?.startsWith("/projects/")) ? "active" : ""}>{label}</Link>)}</div>
+        <div className="nav-links">{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)} className={path === href || (path?.startsWith(href + "/") ?? false) ? "active" : ""}>{label}</Link>)}</div>
         <div className="nav-actions">
           <button className="theme-switch" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}>{theme === "dark" ? <Sun/> : <Moon/>}</button>
           <Link className="button button-gold nav-cta" href="/participer">Participer <span aria-hidden>↗</span></Link>
