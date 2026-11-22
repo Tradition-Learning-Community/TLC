@@ -13,7 +13,9 @@ export default async function EventsPage() {
       {upcoming.length === 0 ? <p className="section-copy">Aucun événement annoncé pour le moment.</p> : upcoming.map((event) =>
         <article className="list-row" key={event.id}>
           <div style={{ width: 160, flexShrink: 0 }}><span className="eyebrow">{new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" }).format(new Date(event.date + "T12:00:00Z"))}</span><p className="text-4xl">{event.date.slice(-2)}</p></div>
-          <div style={{ flex: 1 }}><span className="chip">{event.type}</span><h3>{event.title}</h3>{event.description && <p>{event.description}</p>}<p>{[event.time,event.location].filter(Boolean).join(" · ")}</p></div>
+          <div style={{ flex: 1 }}>{event.image && (event.image.startsWith("https://") || (event.image.startsWith("/") && !event.image.startsWith("//"))) &&
+            <img src={event.image} alt={`Illustration de l'événement : ${event.title}`} loading="lazy" className="mb-4 w-full max-w-80 rounded-xl object-cover" style={{aspectRatio:"16 / 9"}}/>}
+            <span className="chip">{event.type}</span><h3>{event.title}</h3>{event.description && <p>{event.description}</p>}<p>{[event.time,event.location].filter(Boolean).join(" · ")}</p></div>
           {event.registrationUrl && <a className="button button-dark" href={event.registrationUrl} target="_blank" rel="noopener noreferrer">Informations / inscription ↗</a>}
         </article>)}
     </section>

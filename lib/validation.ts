@@ -23,11 +23,20 @@ function validateProject(value: DataRecord) {
   return null;
 }
 
+function optionalImageUrl(value: unknown): string | null {
+  if (value === undefined || value === "") return null;
+  if (typeof value !== "string" || value.length > 1200 ||
+      !(value.startsWith("https://") || (value.startsWith("/") && !value.startsWith("//")))) {
+    return "Image URL must use HTTPS or a local path";
+  }
+  return null;
+}
+
 const validators: Record<string, (value: DataRecord) => string | null> = {
   contributors: (value) => requiredString(value.name, "name", 160) || requiredString(value.github, "github", 500),
   profiles: (value) => requiredString(value.name, "name", 160) || requiredString(value.role, "role", 160),
   projects: validateProject,
-  events: (value) => requiredString(value.title, "title", 160) || requiredString(value.date, "date", 40) || requiredString(value.type, "type", 80),
+  events: (value) => requiredString(value.title, "title", 160) || requiredString(value.date, "date", 40) || requiredString(value.type, "type", 80) || optionalImageUrl(value.image),
   resources: (value) => requiredString(value.title, "title", 160) || requiredString(value.category, "category", 80),
   experiments: (value) => requiredString(value.title, "title", 160),
   "open-calls": (value) => requiredString(value.title, "title", 160) || requiredString(value.description, "description", 2000),

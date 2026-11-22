@@ -92,6 +92,9 @@ fs.mkdirSync(screenshots, {recursive:true});
    await page.goto("/admin/data/media");
    await page.getByRole("heading",{name:"Médiathèque"}).waitFor();
    assert.equal(await page.getByLabel("Sélectionner une image sur cet appareil").count(),1);
+   await page.goto("/admin/data/events");
+   await page.getByRole("heading",{name:"Événements"}).waitFor();
+   assert.equal(await page.getByLabel("Choisir une image pour Image de l'événement").count(),1);
    // Mobile administration must be navigable without a clipped horizontal menu.
    await page.setViewportSize({width:390,height:844});
    await page.goto("/admin");
