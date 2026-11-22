@@ -8,6 +8,10 @@ const password = process.env.E2E_ADMIN_PASSWORD;
 if (!password) throw new Error("E2E_ADMIN_PASSWORD is required");
 const screenshots = "test-results";
 fs.mkdirSync(screenshots, {recursive:true});
+const testSecrets = [password, process.env.E2E_LOCAL_PASSWORD, "TLCAccessUpdated#2048", "TLC-e2e-Temporary-99!", "TLC-Editor-e2e-Password-99!"].filter(Boolean);
+function redact(value) {
+ return testSecrets.reduce((text, secret) => text.replaceAll(secret, "[redacted]"), String(value));
+}
 
 (async () => {
  const browser = await chromium.launch({headless:true, args:["--no-sandbox"]});
@@ -26,18 +30,27 @@ fs.mkdirSync(screenshots, {recursive:true});
    assert.equal(initialActor.kind,"local");
    assert.equal(initialActor.mustChange,true);
    assert.equal((await context.request.get("/api/admin/staff")).status(),403);
+   // This alert appears only after the initial security GET has populated the form.
+   await page.getByRole("alert").filter({hasText:"Première connexion :"}).waitFor({state:"visible",timeout:15000});
    await page.getByLabel("Identifiant").fill("tleadministrator");
    await page.getByLabel("Mot de passe actuel").fill(process.env.E2E_LOCAL_PASSWORD);
    await page.locator('input[autocomplete="new-password"]').first().fill("TLCAccessUpdated#2048");
    await page.locator('input[autocomplete="new-password"]').last().fill("TLCAccessUpdated#2048");
    await page.getByRole("button",{name:"Enregistrer mes nouveaux accès"}).click();
    await page.waitForURL("**/admin",{timeout:15000});
+   const updatedSecurity = await context.request.get("/api/admin/security");
+   assert.equal(updatedSecurity.status(),200,"updated local credentials remain accessible");
+   assert.equal((await updatedSecurity.json()).username,"tleadministrator","the new username was persisted before logout");
    assert.equal((await context.request.get("/api/admin/staff")).status(),200);
    await context.request.post("/api/admin/logout");
    await page.goto("/admin/login");
    await page.getByLabel("Identifiant").fill("tleadministrator");
    await page.getByLabel("Mot de passe").fill("TLCAccessUpdated#2048");
-   await page.getByRole("button",{name:"Se connecter"}).click();
+   const [reloginResponse] = await Promise.all([
+     page.waitForResponse(response => new URL(response.url()).pathname === "/api/admin/login" && response.request().method() === "POST",{timeout:15000}),
+     page.getByRole("button",{name:"Se connecter"}).click(),
+   ]);
+   assert.equal(reloginResponse.status(),200,"reconnection with the updated local credentials succeeds");
    await page.waitForURL("**/admin",{timeout:15000});
    assert.equal((await context.request.get("/api/admin/verify")).status(),200);
    await context.request.post("/api/admin/logout");
@@ -180,5 +193,17 @@ fs.mkdirSync(screenshots, {recursive:true});
    assert.equal((await context.request.get("/api/admin/staff")).status(),401);
    assert.equal(errors.length,0,"no uncaught browser JS errors: "+errors.join("; "));
    console.log("PASS browser E2E: individual owners/editors, permissions, invitation, form, alert, JSONB, upload rejection, logout");
+ } catch(error) {
+   const diagnostic = {
+     pathname: new URL(page.url()).pathname,
+     alerts: (await page.getByRole("alert").allTextContents().catch(() => [])).map(redact),
+     javascriptErrors: errors.map(redact),
+     screenshot: null,
+   };
+   const failureScreenshot = screenshots + "/browser-failure.png";
+   await page.screenshot({path:failureScreenshot,fullPage:true,mask:[page.locator("input, textarea")],timeout:10000})
+     .then(() => { diagnostic.screenshot = failureScreenshot; }).catch(() => {});
+   fs.writeFileSync(screenshots + "/browser-failure.json",JSON.stringify(diagnostic,null,2) + "\n");
+   throw error;
  } finally { await context.close(); await browser.close(); }
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{console.error(redact(e?.stack || e));process.exitCode=1});
