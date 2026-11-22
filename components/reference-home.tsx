@@ -25,7 +25,7 @@ export default function ReferenceHome({ articles, events, contributors, organiza
           <div className="hero-footnote"><span>Recherche ouverte</span><span>C++ & Python</span><span>Communauté scientifique</span></div>
         </div>
         <figure className="hero-visual">
-          <div className="hero-image-frame"><Image src="/Réseau néon de l’Afrique futuriste.png" alt="Illustration artistique de l’Afrique parcourue de connexions lumineuses" fill priority sizes="(max-width: 700px) 92vw, (max-width: 1100px) 44vw, 520px"/></div>
+          <div className="hero-image-frame"><Image src="/tl-africa-network.png" alt="Illustration artistique de l’Afrique parcourue de connexions lumineuses" fill priority sizes="(max-width: 700px) 92vw, (max-width: 1100px) 44vw, 520px"/></div>
           <figcaption><span className="hero-visual-mark" aria-hidden="true"><GitBranch size={19}/></span><span>Tradition Learning<small>Explorer une intelligence qui se transmet et évolue.</small></span></figcaption>
         </figure>
       </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import "./frontend.css";
 import Header from "@/components/header";
@@ -7,22 +7,31 @@ import FooterSection from "@/components/footer";
 import BackToTop from "@/components/back-to-top";
 import { ThemeProvider } from "@/components/theme-provider";
 
-// Let next/font generate metric-adjusted fallbacks; the CSS tokens retain generic alternatives.
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+// Load the checked-in Latin subsets and generate metric-adjusted fallbacks.
+const inter = localFont({
+  src: [
+    { path: "../public/fonts/inter-latin.woff2", weight: "400" },
+    { path: "../public/fonts/inter-latin.woff2", weight: "500" },
+    { path: "../public/fonts/inter-latin.woff2", weight: "600" },
+    { path: "../public/fonts/inter-latin.woff2", weight: "700" },
+  ],
+  style: "normal",
   display: "swap",
   variable: "--font-inter",
-  adjustFontFallback: true,
+  adjustFontFallback: "Arial",
   preload: true,
 });
 
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+const playfairDisplay = localFont({
+  src: [
+    { path: "../public/fonts/playfair-display-latin.woff2", weight: "500" },
+    { path: "../public/fonts/playfair-display-latin.woff2", weight: "600" },
+    { path: "../public/fonts/playfair-display-latin.woff2", weight: "700" },
+  ],
+  style: "normal",
   display: "swap",
   variable: "--font-playfair-display",
-  adjustFontFallback: true,
+  adjustFontFallback: "Times New Roman",
   preload: true,
 });
 
