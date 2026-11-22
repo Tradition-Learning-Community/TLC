@@ -41,7 +41,7 @@ fs.mkdirSync(screenshots, {recursive:true});
    const accountsResponse = await context.request.get("/api/admin/staff");
    assert.equal(accountsResponse.status(),200);
    const accounts = await accountsResponse.json();
-   console.log("Invitations saved:", accounts.length, "Expected:", staffEmail, "Found:", accounts.map(account=>account.email).join(","));
+   console.log("Invitations saved:", accounts.length, "Expected:", staffEmail, "Data:", JSON.stringify(accounts).slice(0,800));
    assert.ok(accounts.some(account=>account.email===staffEmail), "account was not listed after HTTP 201");
    assert.ok(accounts.every(account=>!("inviteHash" in account)));
    await context.request.post("/api/admin/logout");
