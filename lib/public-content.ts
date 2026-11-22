@@ -33,3 +33,10 @@ export async function publishedOrganizations(): Promise<TLCOrganization[]> {
 export async function publishedProjects(): Promise<TLCProject[]> {
   return (await readCollection<TLCProject>("projects")).filter(item => item.published === true);
 }
+
+export type TLCMedia = { id: string; title: string; alt?: string; credit?: string; url: string; published?: boolean; createdAt?: string };
+export async function publishedMedia(): Promise<TLCMedia[]> {
+  return (await readCollection<TLCMedia>("media"))
+    .filter(item => item.published === true && typeof item.url === "string" &&
+      (item.url.startsWith("https://") || (item.url.startsWith("/") && !item.url.startsWith("//"))));
+}

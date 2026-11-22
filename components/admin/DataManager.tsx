@@ -9,15 +9,15 @@ type Field = { key: string; label: string; type?: "text" | "url" | "date" | "num
 
 const TEMPLATES: Record<string, { title: string; expected: string; tips: string[]; template: RecordItem }> = {
   contributors: { title: "Contributeurs", expected: "Nom et URL GitHub requis. L’image est facultative.", tips: ["Utilisez une URL GitHub complète."], template: { name: "", github: "https://github.com/username", avatar: "" } },
-  profiles: { title: "Profils communauté", expected: "Nom et rôle requis.", tips: ["Ajoutez les compétences une par ligne."], template: { name: "", role: "", skills: [], points: 0, projects: 0 } },
+  profiles: { title: "Profils communauté", expected: "Nom et rôle requis.", tips: ["Ajoutez les compétences une par ligne."], template: { name: "", role: "", skills: [], points: 0, projects: 0, published: false } },
   projects: { title: "Projets", expected: "Nom du projet requis.", tips: ["Ajoutez les membres et tâches dans les sections dédiées."], template: { title: "", description: "", members: [], tasks: [], published: false } },
   events: { title: "Événements", expected: "Publiez uniquement les événements confirmés.", tips: ["La publication rend l'événement visible dans l'agenda."], template: { title: "", date: "", type: "Atelier", time: "", location: "", registrationUrl: "", description: "", published: false } },
   resources: { title: "Ressources", expected: "Titre et catégorie requis.", tips: ["Un élément reste privé tant qu'il n'est pas publié."], template: { title: "", category: "Documentation", url: "", description: "", published: false } },
   organizations: { title: "Organisations", expected: "Nommez une organisation et sa relation confirmée avec TLC.", tips: ["Affichage public uniquement si publié."], template: { name: "", category: "Partenaire", logo: "", url: "", description: "", published: false } },
   media: { title: "Médiathèque", expected: "URL et titre du média requis.", tips: ["Utiliser un chemin interne ou une URL HTTPS autorisée."], template: { title: "", url: "", alt: "", credit: "", published: false } },
   experiments: { title: "Expériences", expected: "Titre requis.", tips: ["Décrivez le contexte et les résultats dans les notes."], template: { title: "", notes: "", published: false } },
-  "open-calls": { title: "Appels ouverts", expected: "Titre et description requis.", tips: ["Choisissez un niveau d’urgence."], template: { title: "", description: "", urgency: "medium" } },
-  discussions: { title: "Discussions", expected: "Sujet requis.", tips: ["Les messages initiaux sont facultatifs."], template: { title: "", messages: [] } },
+  "open-calls": { title: "Appels ouverts", expected: "Titre et description requis.", tips: ["Choisissez un niveau d’urgence."], template: { title: "", description: "", urgency: "medium", published: false } },
+  discussions: { title: "Discussions", expected: "Sujet requis.", tips: ["Les messages initiaux sont facultatifs."], template: { title: "", messages: [], published: false } },
 };
 
 const FIELDS: Record<string, Field[]> = {
@@ -30,6 +30,7 @@ const FIELDS: Record<string, Field[]> = {
     { key: "name", label: "Nom" }, { key: "role", label: "Rôle" },
     { key: "skills", label: "Compétences", type: "list", placeholder: "Une compétence par ligne" },
     { key: "points", label: "Points", type: "number" }, { key: "projects", label: "Projets réalisés", type: "number" },
+    { key: "published", label: "Afficher publiquement", type: "checkbox" },
   ],
   projects: [
     { key: "title", label: "Nom du projet" }, { key: "description", label: "Description", type: "textarea" },
@@ -50,8 +51,9 @@ const FIELDS: Record<string, Field[]> = {
   "open-calls": [
     { key: "title", label: "Titre" }, { key: "description", label: "Description", type: "textarea" },
     { key: "urgency", label: "Urgence", type: "select", options: ["low", "medium", "high"] },
+    { key: "published", label: "Afficher publiquement", type: "checkbox" },
   ],
-  discussions: [{ key: "title", label: "Sujet" }],
+  discussions: [{ key: "title", label: "Sujet" }, { key: "published", label: "Afficher publiquement", type: "checkbox" }],
 };
 
 const REQUIRED_FIELDS: Record<string, string[]> = {
