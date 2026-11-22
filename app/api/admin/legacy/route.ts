@@ -9,7 +9,7 @@ export async function PATCH(request: Request) {
   if (!sameOrigin(request)) return Response.json({ error: "Origine interdite." }, { status: 403 });
   const actor = await getStaffIdentity(request);
   // The legacy password must never be able to disable its own recovery route.
-  if (actor?.kind !== "staff" || actor.role !== "owner")
+  if (!actor || actor.kind === "legacy" || actor.role !== "owner" || actor.mustChange)
     return Response.json({ error: "Connectez-vous avec le compte nominatif responsable." }, { status: 403 });
   const body = await request.json().catch(() => null);
   if (typeof body?.enabled !== "boolean") return Response.json({ error: "Valeur invalide." }, { status: 400 });
