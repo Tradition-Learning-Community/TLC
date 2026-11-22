@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { readCollection, updateRecord } from "@/lib/database";
-import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { deniedPermission } from "@/lib/staff-auth";
 import type { Profile } from "@/lib/types";
 
 export async function GET() {
@@ -8,7 +8,7 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   const body = await request.json().catch(() => null);
   if (!body || typeof body.id !== "string") {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });

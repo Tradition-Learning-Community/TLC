@@ -13,7 +13,14 @@ function getClient() {
 
 export async function readCollection<T>(collection: string): Promise<T[]> {
   const rows = await getClient()`SELECT data FROM records WHERE collection = ${collection} ORDER BY seq`;
-  return rows.map((row) => row.data as T);
+  return rows.map((row) => {
+    const value: unknown = row.data;
+    if (typeof value === "string") {
+      try { return JSON.parse(value) as T; }
+      catch { throw new Error("Malformed JSONB record in " + collection); }
+    }
+    return value as T;
+  });
 }
 
 export async function appendRecord<T extends { id?: string }>(
@@ -24,7 +31,7 @@ export async function appendRecord<T extends { id?: string }>(
   const id = item.id ?? `${idPrefix}-${randomUUID()}`;
   const record = { ...item, id } as T & { id: string };
   await getClient()`INSERT INTO records (collection, id, data)
-    VALUES (${collection}, ${id}, ${JSON.stringify(record)}::jsonb)`;
+    VALUES (${collection}, ${id}, ${getClient().json(record)})`;
   return record;
 }
 
@@ -33,10 +40,9 @@ export async function appendRecords<T extends { id: string }>(
   items: T[],
 ): Promise<number> {
   if (!items.length) return 0;
-  const payload = JSON.stringify(items);
   const rows = await getClient()`INSERT INTO records (collection, id, data)
     SELECT ${collection}, item->>'id', item
-    FROM jsonb_array_elements(${payload}::jsonb) AS item
+    FROM jsonb_array_elements(${getClient().json(items)}) AS item
     RETURNING id`;
   return rows.length;
 }
@@ -46,7 +52,7 @@ export async function updateRecord<T extends { id: string }>(
   item: T,
 ): Promise<boolean> {
   const rows = await getClient()`UPDATE records
-    SET data = ${JSON.stringify(item)}::jsonb, updated_at = NOW()
+    SET data = ${getClient().json(item)}, updated_at = NOW()
     WHERE collection = ${collection} AND id = ${item.id}
     RETURNING id`;
   return rows.length > 0;
@@ -66,7 +72,7 @@ export async function replaceRecordIfVersion<T extends { id: string; version: nu
   collection: string, item: T, expectedVersion: number,
 ): Promise<boolean> {
   const rows = await getClient()`UPDATE records
-    SET data = ${JSON.stringify(item)}::jsonb, updated_at = NOW()
+    SET data = ${getClient().json(item)}, updated_at = NOW()
     WHERE collection = ${collection} AND id = ${item.id}
     AND COALESCE((data->>'version')::integer, 1) = ${expectedVersion}
     RETURNING id`;

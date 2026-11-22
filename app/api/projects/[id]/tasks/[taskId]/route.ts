@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getProject, saveProject } from "@/lib/project-store";
-import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { deniedPermission } from "@/lib/staff-auth";
 
 type Context = { params: Promise<{ id: string; taskId: string }> };
 
 export async function PUT(request: Request, context: Context) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   const { id, taskId } = await context.params;
   const project = await getProject(id);
   if (!project) return NextResponse.json({ error: "Project not found" }, { status: 404 });
@@ -19,7 +19,7 @@ export async function PUT(request: Request, context: Context) {
 }
 
 export async function DELETE(request: Request, context: Context) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   const { id, taskId } = await context.params;
   const project = await getProject(id);
   if (!project) return NextResponse.json({ error: "Project not found" }, { status: 404 });

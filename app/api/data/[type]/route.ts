@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { appendRecord, appendRecords, deleteRecord, readCollection, updateRecord } from "@/lib/database";
-import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { deniedPermission } from "@/lib/staff-auth";
 import { validateDataRecord, type DataRecord } from "@/lib/validation";
 
 const ALLOWED_TYPES = new Set([
@@ -17,14 +17,14 @@ async function resolveType(context: RouteContext) {
 export async function GET(request: NextRequest, context: RouteContext) {
   const type = await resolveType(context);
   if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   return NextResponse.json(await readCollection<DataRecord>(type));
 }
 
 export async function POST(request: NextRequest, context: RouteContext) {
   const type = await resolveType(context);
   if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   const body = await request.json().catch(() => null);
   if (Array.isArray(body)) {
     if (!body.length) return NextResponse.json({ error: "The import file is empty" }, { status: 400 });
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
 export async function PUT(request: NextRequest, context: RouteContext) {
   const type = await resolveType(context);
   if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   const body = await request.json().catch(() => null);
   const validation = validateDataRecord(type, body);
   if (!validation.ok) return NextResponse.json({ error: validation.error }, { status: 400 });
@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 export async function DELETE(request: NextRequest, context: RouteContext) {
   const type = await resolveType(context);
   if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   const id = new URL(request.url).searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
   if (!await deleteRecord(type, id)) return NextResponse.json({ error: "Not found" }, { status: 404 });

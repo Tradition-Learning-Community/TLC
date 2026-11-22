@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProject, removeProject, saveProject } from "@/lib/project-store";
-import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { deniedPermission } from "@/lib/staff-auth";
 
 type Context = { params: Promise<{ id: string }> };
 
@@ -8,12 +8,12 @@ export async function GET(_request: Request, context: Context) {
   const { id } = await context.params;
   const project = await getProject(id);
   if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if ((project as typeof project & { published?: boolean }).published !== true && !isAdminRequest(_request)) return unauthorizedResponse();
+  if ((project as typeof project & { published?: boolean }).published !== true) { const denied = await deniedPermission(_request, "data:manage"); if (denied) return denied; }
   return NextResponse.json(project);
 }
 
 export async function PUT(request: Request, context: Context) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   const { id } = await context.params;
   const current = await getProject(id);
   if (!current) return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -26,7 +26,7 @@ export async function PUT(request: Request, context: Context) {
 }
 
 export async function DELETE(request: Request, context: Context) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   const { id } = await context.params;
   const project = await getProject(id);
   if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });

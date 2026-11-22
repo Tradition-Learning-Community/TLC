@@ -24,6 +24,10 @@ jobs:
             ['/tradition-learning', 'html'],
             ['/tllib', 'html'],
             ['/events', 'html'],
+            ['/contact', 'html'],
+            ['/participer', 'html'],
+            ['/admin/login', 'html'],
+            ['/admin/activate', 'html'],
             ['/api/articles', 'array', 0],
             ['/api/events', 'array', 0],
             ['/api/projects', 'array', 0],
@@ -62,6 +66,10 @@ jobs:
             await retry(base + '/api/data/events', {}, 401);
             await retry(base + '/api/inquiries', {}, 401);
             await retry(base + '/api/articles?all=1', {}, 401);
+            await retry(base + '/api/admin/staff', {}, 401);
+            await retry(base + '/api/admin/notifications', {}, 401);
+            await retry(base + '/api/admin/verify', {}, 401);
+            await retry(base + '/api/media/upload', {method: 'POST'}, 401);
             console.log('Unauthorized read/write: 401 OK');
           })().catch(error => { console.error(error); process.exitCode = 1; });
           NODE
