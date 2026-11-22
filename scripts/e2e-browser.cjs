@@ -87,7 +87,7 @@ fs.mkdirSync(screenshots, {recursive:true});
    await page.getByRole("button",{name:"Utiliser un lien"}).click();
    assert.equal(await page.getByPlaceholder("https://exemple.org/photo.jpg").count(),1);
    await page.goto("/admin/contributors");
-   await page.getByRole("heading",{name:"Contributeurs",exact:true}).waitFor();
+   await page.getByLabel("Choisir une image pour Photo du contributeur").waitFor();
    assert.equal(await page.getByLabel("Choisir une image pour Photo du contributeur").count(),1);
    await page.goto("/admin/data/media");
    await page.getByRole("heading",{name:"Médiathèque"}).waitFor();
