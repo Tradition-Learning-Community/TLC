@@ -22,7 +22,7 @@ describe("media storage end-to-end logic", () => {
     await expect(storeMedia(file, {title:"TLC",alt:"",credit:""}, upload, persist, cleanup))
       .rejects.toThrow("database unavailable");
     expect(cleanup).toHaveBeenCalledOnce();
-    expect(cleanup.mock.calls[0][0]).toMatch(/^tlc\\/.+\\.jpg$/);
+    expect(cleanup.mock.calls[0][0]).toMatch(/^tlc\/.+\.jpg$/);
     expect(cleanup.mock.calls[0][1]).toBe("https://cdn.example.org/tlc/orphan.jpg");
   });
   it("preserves the original error even when remote cleanup also fails", async () => {
