@@ -11,7 +11,7 @@ type ResourceItem = {
 export async function GET() {
   try {
     const resources = await readJsonArray<ResourceItem>("resources.json");
-    return Response.json(resources);
+    return Response.json(resources.filter((item: { published?: boolean }) => item.published === true));
   } catch {
     return Response.json({ error: "Failed to load resources" }, { status: 500 });
   }

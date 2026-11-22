@@ -12,7 +12,7 @@ type EventItem = {
 export async function GET() {
   try {
     const events = await readJsonArray<EventItem>("events.json");
-    return Response.json(events);
+    return Response.json(events.filter((item: { published?: boolean }) => item.published === true));
   } catch {
     return Response.json({ error: "Failed to load events" }, { status: 500 });
   }

@@ -8,6 +8,7 @@ export async function GET(_request: Request, context: Context) {
   const { id } = await context.params;
   const project = await getProject(id);
   if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if ((project as typeof project & { published?: boolean }).published !== true && !isAdminRequest(_request)) return unauthorizedResponse();
   return NextResponse.json(project);
 }
 

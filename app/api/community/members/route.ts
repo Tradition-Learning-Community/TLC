@@ -13,7 +13,7 @@ type MemberItem = {
 export async function GET() {
   try {
     const members = await readJsonArray<MemberItem>("profiles.json");
-    return Response.json(members);
+    return Response.json(members.filter((item: { published?: boolean }) => item.published === true));
   } catch {
     return Response.json({ error: "Failed to load members" }, { status: 500 });
   }

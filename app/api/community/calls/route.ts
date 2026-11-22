@@ -11,7 +11,7 @@ type CallItem = {
 export async function GET() {
   try {
     const calls = await readJsonArray<CallItem>("open-calls.json");
-    return Response.json(calls);
+    return Response.json(calls.filter((item: { published?: boolean }) => item.published === true));
   } catch {
     return Response.json({ error: "Failed to load open calls" }, { status: 500 });
   }

@@ -14,9 +14,10 @@ async function resolveType(context: RouteContext) {
   return ALLOWED_TYPES.has(type) ? type : null;
 }
 
-export async function GET(_request: NextRequest, context: RouteContext) {
+export async function GET(request: NextRequest, context: RouteContext) {
   const type = await resolveType(context);
   if (!type) return NextResponse.json({ error: "Unknown data type" }, { status: 404 });
+  if (!isAdminRequest(request)) return unauthorizedResponse();
   return NextResponse.json(await readCollection<DataRecord>(type));
 }
 
