@@ -1,36 +1,23 @@
-import { NextResponse } from 'next/server'
-import { adminCookieHeader } from '@/lib/admin-auth'
-import { checkRateLimit, clearRateLimit, recordRateLimitFailure } from '@/lib/rate-limit'
-
-const LOGIN_LIMIT = { limit: 5, windowMs: 15 * 60 * 1000 }
-
-function clientKey(request: Request) {
-  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    || request.headers.get('x-real-ip')
-    || 'unknown'
-}
+import { createHash, createHmac, timingSafeEqual } from "node:crypto";
+import { NextResponse } from "next/server";
+import { adminCookieHeader } from "@/lib/admin-auth";
+import { recordPublicRequestAttempt } from "@/lib/database";
 
 export async function POST(request: Request) {
-  const key = `admin-login:${clientKey(request)}`
-  const rate = checkRateLimit(key, LOGIN_LIMIT)
-  if (!rate.allowed) {
-    return NextResponse.json(
-      { ok: false, error: 'Too many login attempts' },
-      { status: 429, headers: { 'Retry-After': String(rate.retryAfterSeconds) } },
-    )
-  }
-
-  const body = await request.json().catch(() => null)
-  const password = typeof body?.password === 'string' ? body.password : ''
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ''
-
-  if (!ADMIN_PASSWORD || !password || password !== ADMIN_PASSWORD) {
-    recordRateLimitFailure(key, LOGIN_LIMIT)
-    return NextResponse.json({ ok: false }, { status: 401 })
-  }
-
-  clearRateLimit(key)
-  const res = NextResponse.json({ ok: true })
-  res.headers.set('Set-Cookie', adminCookieHeader())
-  return res
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
+  const secret = process.env.ADMIN_SESSION_SECRET || "";
+  if (!ADMIN_PASSWORD || !secret) return NextResponse.json({ ok: false }, { status: 503 });
+  const client = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const key = createHmac("sha256", secret).update("tlc-admin:" + client).digest("hex");
+  // Shared across serverless instances; limits both successful and failed attempts.
+  const allowed = await recordPublicRequestAttempt("admin:" + key, 10, 15 * 60 * 1000);
+  if (!allowed) return NextResponse.json({ ok: false, error: "Too many attempts." }, { status: 429, headers: { "Retry-After": "900" } });
+  const body = await request.json().catch(() => null);
+  const password = typeof body?.password === "string" ? body.password : "";
+  const expected = createHash("sha256").update(ADMIN_PASSWORD).digest();
+  const provided = createHash("sha256").update(password).digest();
+  if (!password || !timingSafeEqual(expected, provided)) return NextResponse.json({ ok: false }, { status: 401 });
+  const response = NextResponse.json({ ok: true });
+  response.headers.set("Set-Cookie", adminCookieHeader());
+  return response;
 }
