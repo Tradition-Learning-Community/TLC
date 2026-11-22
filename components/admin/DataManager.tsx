@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ImportButton from "@/components/admin/ImportButton";
 import MediaUploader from "@/components/admin/MediaUploader";
+import ImageField from "@/components/admin/ImageField";
 
 type RecordItem = { id?: string; title?: string; name?: string; [key: string]: unknown };
 type Field = { key: string; label: string; type?: "text" | "url" | "date" | "number" | "textarea" | "list" | "select" | "checkbox"; options?: string[]; placeholder?: string };
@@ -14,7 +15,7 @@ const TEMPLATES: Record<string, { title: string; expected: string; tips: string[
   events: { title: "Événements", expected: "Publiez uniquement les événements confirmés.", tips: ["La publication rend l'événement visible dans l'agenda."], template: { title: "", date: "", type: "Atelier", time: "", location: "", registrationUrl: "", description: "", published: false } },
   resources: { title: "Ressources", expected: "Titre et catégorie requis.", tips: ["Un élément reste privé tant qu'il n'est pas publié."], template: { title: "", category: "Documentation", url: "", description: "", published: false } },
   organizations: { title: "Organisations", expected: "Nommez une organisation et sa relation confirmée avec TLC.", tips: ["Affichage public uniquement si publié."], template: { name: "", category: "Partenaire", logo: "", url: "", description: "", published: false } },
-  media: { title: "Médiathèque", expected: "URL et titre du média requis.", tips: ["Utiliser un chemin interne ou une URL HTTPS autorisée."], template: { title: "", url: "", alt: "", credit: "", published: false } },
+  media: { title: "Médiathèque", expected: "Choisissez une image sur votre appareil ou ajoutez un lien si nécessaire.", tips: ["Les nouvelles images restent non publiées avant validation."], template: { title: "", url: "", alt: "", credit: "", published: false } },
   experiments: { title: "Expériences", expected: "Titre requis.", tips: ["Décrivez le contexte et les résultats dans les notes."], template: { title: "", notes: "", published: false } },
   "open-calls": { title: "Appels ouverts", expected: "Titre et description requis.", tips: ["Choisissez un niveau d’urgence."], template: { title: "", description: "", urgency: "medium", published: false } },
   discussions: { title: "Discussions", expected: "Sujet requis.", tips: ["Les messages initiaux sont facultatifs."], template: { title: "", messages: [], published: false } },
@@ -24,7 +25,7 @@ const FIELDS: Record<string, Field[]> = {
   contributors: [
     { key: "name", label: "Nom affiché", placeholder: "Ex. Alex Martin" },
     { key: "github", label: "Profil GitHub", type: "url", placeholder: "https://github.com/username" },
-    { key: "avatar", label: "Lien de l’image (facultatif)", type: "url", placeholder: "https://… ou /images/photo.jpg" },
+
     { key: "roles", label: "Participation / rôles publics", type: "list", placeholder: "Contributeur, Bénévole, Membre, Responsable..." },
     { key: "published", label: "Afficher publiquement", type: "checkbox" },
   ],
@@ -47,8 +48,8 @@ const FIELDS: Record<string, Field[]> = {
     { key: "title", label: "Titre" }, { key: "category", label: "Catégorie", placeholder: "Documentation, code…" },
     { key: "url", label: "Lien", type: "url", placeholder: "https://…" }, { key: "description", label: "Description", type: "textarea" }, { key: "published", label: "Publier sur le site", type: "checkbox" },
   ],
-  organizations: [{ key: "name", label: "Nom" }, { key: "category", label: "Relation", type: "select", options: ["Partenaire","Sponsor","Donateur","Institution"] }, { key: "url", label: "Site internet", type: "url" }, { key: "logo", label: "Logo (URL)", type: "url" }, { key: "description", label: "Présentation", type: "textarea" }, { key: "published", label: "Afficher publiquement", type: "checkbox" }],
-  media: [{ key: "title", label: "Nom du média" }, { key: "url", label: "Adresse du fichier", type: "url" }, { key: "alt", label: "Description de l'image" }, { key: "credit", label: "Crédit / provenance" }, { key: "published", label: "Visible publiquement", type: "checkbox" }],
+  organizations: [{ key: "name", label: "Nom" }, { key: "category", label: "Relation", type: "select", options: ["Partenaire","Sponsor","Donateur","Institution"] }, { key: "url", label: "Site internet", type: "url" }, { key: "description", label: "Présentation", type: "textarea" }, { key: "published", label: "Afficher publiquement", type: "checkbox" }],
+  media: [{ key: "title", label: "Nom du média" }, { key: "alt", label: "Description de l'image" }, { key: "credit", label: "Crédit / provenance" }, { key: "published", label: "Visible publiquement", type: "checkbox" }],
   experiments: [{ key: "title", label: "Titre" }, { key: "notes", label: "Notes", type: "textarea" }, { key: "published", label: "Afficher publiquement", type: "checkbox" }],
   "open-calls": [
     { key: "title", label: "Titre" }, { key: "description", label: "Description", type: "textarea" },
@@ -218,6 +219,13 @@ export default function DataManager({ type }: { type: string }) {
                   : <input type={field.type || "text"} required={required} value={String(value ?? "")} onChange={(event) => updateField(field.key, field.type === "number" ? (event.target.value === "" ? "" : Number(event.target.value)) : event.target.value)} placeholder={field.placeholder} className={inputClass} />}
             </label>;
           })}</div> : <p className="rounded-xl border border-amber-300/15 bg-amber-300/[0.04] p-3 text-sm text-amber-100">Aucun formulaire standard n’est défini pour cette collection. Utilisez le JSON dans les options avancées.</p>}
+
+          {type === "contributors" && <div className="mt-5"><ImageField label="Photo ou avatar" value={String(form.avatar||"")}
+            title={String(form.name||"")} onChange={url=>updateField("avatar",url)} disabled={loading}/></div>}
+          {type === "organizations" && <div className="mt-5"><ImageField label="Logo de l'organisation" value={String(form.logo||"")}
+            title={String(form.name||"")} onChange={url=>updateField("logo",url)} disabled={loading}/></div>}
+          {type === "media" && <div className="mt-5"><ImageField label="Image du média" value={String(form.url||"")}
+            title={String(form.title||"")} onChange={url=>updateField("url",url)} disabled={loading}/></div>}
 
           {type === "projects" && <div className="mt-5 rounded-xl border border-white/[0.07] p-4"><div className="mb-3 flex items-center justify-between"><div><h4 className="text-sm font-medium text-slate-200">Tâches du projet</h4><p className="mt-1 text-xs text-slate-500">Ajoutez les tâches et cochez celles qui sont terminées.</p></div><button type="button" onClick={() => addNested("tasks")} className="rounded-lg border border-white/10 px-3 py-1.5 text-xs text-slate-300 hover:bg-white/5">Ajouter une tâche</button></div>
             {nestedRows("tasks").map((task, index) => <div key={String(task.id ?? index)} className="mb-2 flex items-center gap-2"><input aria-label="Titre de la tâche" value={String(task.title ?? "")} onChange={(event) => updateNested("tasks", index, "title", event.target.value)} placeholder="Description de la tâche" className={`${inputClass} mt-0`} /><label className="flex shrink-0 items-center gap-2 text-xs text-slate-400"><input type="checkbox" checked={Boolean(task.done)} onChange={(event) => updateNested("tasks", index, "done", event.target.checked)} className="accent-[#d4af37]" />Terminée</label><button type="button" aria-label="Retirer la tâche" onClick={() => removeNested("tasks", index)} className="rounded-lg px-2 py-2 text-slate-500 hover:bg-red-400/10 hover:text-red-300">×</button></div>)}
