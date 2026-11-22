@@ -3,6 +3,7 @@ import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
 
 type ResourceItem = {
   id?: string;
+  published?: boolean;
   title: string;
   category: string;
   url?: string;
@@ -11,7 +12,7 @@ type ResourceItem = {
 export async function GET() {
   try {
     const resources = await readJsonArray<ResourceItem>("resources.json");
-    return Response.json(resources.filter((item: { published?: boolean }) => item.published === true));
+    return Response.json(resources.filter(item => item.published === true));
   } catch {
     return Response.json({ error: "Failed to load resources" }, { status: 500 });
   }
