@@ -1,8 +1,6 @@
-import { randomUUID } from "node:crypto";
-import { put } from "@vercel/blob";
-import { appendRecord } from "@/lib/database";
 import { deniedPermission } from "@/lib/staff-auth";
 import { hasValidImageSignature, mediaMimeTypes } from "@/lib/media-validation";
+import { storeMedia } from "@/lib/media-store";
 
 export const runtime = "nodejs";
 export async function POST(request: Request) {
@@ -22,11 +20,6 @@ export async function POST(request: Request) {
   if (!title) return Response.json({ error: "Nom du média requis." }, { status: 400 });
   if (!await hasValidImageSignature(file))
     return Response.json({ error: "Le contenu ne correspond pas au format de l'image." }, { status: 400 });
-  const blob = await put("tlc/" + randomUUID() + "." + mediaMimeTypes[file.type], file, {
-    access: "public", addRandomSuffix: false, contentType: file.type,
-  });
-  const id = randomUUID();
-  const record = { id, title, alt, credit, url: blob.url, published: false, createdAt: new Date().toISOString() };
-  await appendRecord("media", record, "media");
+  const record = await storeMedia(file, { title, alt, credit });
   return Response.json(record, { status: 201 });
 }
