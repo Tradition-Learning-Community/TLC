@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Database, LayoutDashboard, LogOut, Users } from "lucide-react";
+import { ArrowUpRight, Database, LayoutDashboard, LogOut, Newspaper, Users } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 const navigation = [
   { href: "/admin", label: "Vue d’ensemble", icon: LayoutDashboard },
+  { href: "/admin/publications", label: "Actualités", icon: Newspaper },
   { href: "/admin/contributors", label: "Contributeurs", icon: Users },
   { href: "/admin/data", label: "Données", icon: Database },
 ];

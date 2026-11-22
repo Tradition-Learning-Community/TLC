@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { appendRecord, readCollection, replaceRecordIfVersion } from "@/lib/database";
+import { appendRecord, readCollection, replaceRecordIfVersion } from "./database";
 
 export type PublicationStatus = "draft" | "review" | "published" | "archived";
 export type Article = {
