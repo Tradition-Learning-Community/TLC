@@ -1,14 +1,14 @@
 import { randomUUID } from "node:crypto";
 import { put } from "@vercel/blob";
 import { appendRecord } from "@/lib/database";
-import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { deniedPermission } from "@/lib/staff-auth";
 
 export const runtime = "nodejs";
 const types: Record<string, string> = {
   "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/avif": "avif",
 };
 export async function POST(request: Request) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "media:upload"); if (denied) return denied;
   if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID)
     return Response.json({ error: "Stockage des médias non configuré." }, { status: 503 });
   const contentLength = Number(request.headers.get("content-length") || 0);
@@ -22,6 +22,12 @@ export async function POST(request: Request) {
   const alt = String(form?.get("alt") || title).trim().slice(0, 200);
   const credit = String(form?.get("credit") || "").trim().slice(0, 250);
   if (!title) return Response.json({ error: "Nom du média requis." }, { status: 400 });
+  const bytes = new Uint8Array(await file.slice(0, 16).arrayBuffer());
+  const matches = file.type === "image/jpeg" ? bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+    : file.type === "image/png" ? [137,80,78,71,13,10,26,10].every((v,i) => bytes[i] === v)
+    : file.type === "image/webp" ? new TextDecoder().decode(bytes.slice(0,4)) === "RIFF" && new TextDecoder().decode(bytes.slice(8,12)) === "WEBP"
+    : file.type === "image/avif" ? new TextDecoder().decode(bytes.slice(4,12)).includes("ftypavif") || new TextDecoder().decode(bytes.slice(4,12)).includes("ftypavis") : false;
+  if (!matches) return Response.json({ error: "Le contenu ne correspond pas au format de l'image." }, { status: 400 });
   const blob = await put("tlc/" + randomUUID() + "." + types[file.type], file, {
     access: "public", addRandomSuffix: false, contentType: file.type,
   });

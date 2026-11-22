@@ -1,5 +1,5 @@
 import { appendJsonItem, readJsonArray } from "@/lib/community-store";
-import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { deniedPermission } from "@/lib/staff-auth";
 
 type MemberItem = {
   id?: string;
@@ -21,7 +21,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "data:manage"); if (denied) return denied;
   try {
     const body = (await request.json()) as MemberItem;
 

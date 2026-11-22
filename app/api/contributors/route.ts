@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { deleteRecord, readCollection, updateRecord, appendRecord } from "@/lib/database";
-import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth";
+import { deniedPermission } from "@/lib/staff-auth";
 import type { Contributor } from "@/lib/types";
 
 export async function GET() {
@@ -9,7 +9,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "contributors:manage"); if (denied) return denied;
   const body = await request.json().catch(() => null);
   if (!body || typeof body.name !== "string" || typeof body.github !== "string") {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "contributors:manage"); if (denied) return denied;
   const body = await request.json().catch(() => null);
   if (!body || typeof body.id !== "string") {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
@@ -39,7 +39,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "contributors:manage"); if (denied) return denied;
   const id = new URL(request.url).searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
   await deleteRecord("contributors", id);

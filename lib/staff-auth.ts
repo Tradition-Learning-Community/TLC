@@ -56,6 +56,8 @@ export async function getStaffIdentity(request: Request): Promise<StaffIdentity 
 }
 
 export async function deniedPermission(request: Request, permission: Permission): Promise<Response | null> {
+  if (!sameOrigin(request) && !["GET", "HEAD"].includes(request.method))
+    return Response.json({ error: "Origine interdite." }, { status: 403 });
   const identity = await getStaffIdentity(request);
   if (!identity) return unauthorizedResponse();
   if (!hasPermission(identity.role, permission))
