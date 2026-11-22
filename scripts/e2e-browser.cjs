@@ -16,8 +16,34 @@ fs.mkdirSync(screenshots, {recursive:true});
  const errors = [];
  page.on("pageerror", e => errors.push(e.message));
  try {
-   // Real browser: legacy login -> signed cookie -> protected admin session.
+   // The principal administrator must change the initial credentials.
    await page.goto("/admin/login");
+   await page.getByLabel("Identifiant").fill("admin");
+   await page.getByLabel("Mot de passe").fill(process.env.E2E_LOCAL_PASSWORD);
+   await page.getByRole("button",{name:"Se connecter"}).click();
+   await page.waitForURL("**/admin/security",{timeout:18000});
+   const initialActor=(await (await context.request.get("/api/admin/verify")).json()).actor;
+   assert.equal(initialActor.kind,"local");
+   assert.equal(initialActor.mustChange,true);
+   assert.equal((await context.request.get("/api/admin/staff")).status(),403);
+   await page.getByLabel("Identifiant").fill("tleadministrator");
+   await page.getByLabel("Mot de passe actuel").fill(process.env.E2E_LOCAL_PASSWORD);
+   await page.getByLabel("Nouveau mot de passe",{exact:true}).fill("TLCAccessUpdated#2048");
+   await page.getByLabel("Confirmer le nouveau mot de passe").fill("TLCAccessUpdated#2048");
+   await page.getByRole("button",{name:"Enregistrer mes nouveaux accès"}).click();
+   await page.waitForURL("**/admin",{timeout:15000});
+   assert.equal((await context.request.get("/api/admin/staff")).status(),200);
+   await context.request.post("/api/admin/logout");
+   await page.goto("/admin/login");
+   await page.getByLabel("Identifiant").fill("tleadministrator");
+   await page.getByLabel("Mot de passe").fill("TLCAccessUpdated#2048");
+   await page.getByRole("button",{name:"Se connecter"}).click();
+   await page.waitForURL("**/admin",{timeout:15000});
+   assert.equal((await context.request.get("/api/admin/verify")).status(),200);
+   await context.request.post("/api/admin/logout");
+   // Historical login remains temporarily supported for migration and recovery.
+   await page.goto("/admin/login");
+   await page.getByText("Accès technique temporaire").click();
    await page.getByRole("button", {name:"Ancien accès"}).click();
    await page.getByLabel("Mot de passe").fill(password);
    await page.getByRole("button", {name:"Se connecter"}).click();
