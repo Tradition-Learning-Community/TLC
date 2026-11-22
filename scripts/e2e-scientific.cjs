@@ -407,6 +407,13 @@ async function cleanupFixtures() {
         for (const route of ["/home", "/tradition-learning", "/tllib"]) {
           await visit(route);
           await setTheme(appearance.theme);
+          await page.evaluate(() => document.fonts.ready);
+          if (route === "/home") {
+            await page.waitForFunction(() => {
+              const heroImage = document.querySelector(".hero-image-frame img");
+              return heroImage instanceof HTMLImageElement && heroImage.complete && heroImage.naturalWidth > 0;
+            }, undefined, { timeout: 15000 });
+          }
           const filename = `scientific-${route.slice(1)}-${appearance.name}.png`;
           await page.screenshot({ path: path.join(output, filename), fullPage: true, animations: "disabled" });
           summary.screenshots.push(filename);
