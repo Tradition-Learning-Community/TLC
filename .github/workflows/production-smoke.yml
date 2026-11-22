@@ -1,9 +1,12 @@
-name: TLC production smoke
+name: TLC deployment smoke (manual target)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'URL HTTPS de la prévisualisation à vérifier (Vercel ou autre hébergeur)'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -14,10 +17,12 @@ jobs:
     steps:
       - name: Verify production HTTP routes and access control
         env:
-          TLC_URL: https://tlc-ruby.vercel.app
+          TLC_URL: ${{ inputs.base_url }}
         run: |
           node <<'NODE'
-          const base = process.env.TLC_URL;
+          const parsed = new URL(process.env.TLC_URL);
+          if (parsed.protocol !== "https:" || parsed.username || parsed.password) throw new Error("HTTPS required for TLC test URL");
+          const base = parsed.origin;
           const routes = [
             ['/home', 'html'],
             ['/actualites', 'html'],

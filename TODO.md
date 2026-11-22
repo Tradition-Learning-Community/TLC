@@ -1,66 +1,36 @@
-# TODO — TLC
+# TLC — Suivi des travaux vérifiables
 
-## Priorité 1 — Sécurité et administration
+Le présent fichier décrit des limites **observables ou à tester**, pas un audit général ni une liste d'annonces. Référence de développement : Next.js 16, PostgreSQL, Neon Auth, médias S3/Vercel Blob.
 
-- [x] Protéger les routes API d’écriture avec une authentification serveur.
-- [x] Supprimer les mots de passe et tokens par défaut du code client.
-- [x] Ajouter une session administrateur signée et une route de déconnexion.
-- [x] Bloquer les types de fichiers arbitraires dans l’API générique.
-- [x] Ajouter les variables d’environnement dans `.env.local`.
-- [x] Ajouter une limitation du nombre de tentatives de connexion.
-- [ ] Ajouter une validation stricte des données avec Zod ou Valibot.
-- [ ] Ajouter une protection CSRF complète si l’administration devient publique.
+## Réalisé dans le code
 
-## Priorité 2 — Interface utilisateur
+- [x] Site public Tradition Learning, tllib, TLC, recherche, articles, événements et participation.
+- [x] Comptes administratifs, permissions serveur, authentification nominative et changement des accès.
+- [x] Création et modération d'articles ; contenu public filtré par état de publication.
+- [x] Demandes publiques persistantes et alertes internes.
+- [x] Choix d'images depuis appareil et URL facultative ; validation de format et taille.
+- [x] Stockage média S3 compatible ou Vercel Blob, avec compensation en cas d'échec d'enregistrement.
+- [x] Navigation mobile administrative déroulante ; tableau de bord sans nombre de collections fictif.
+- [x] Configuration et documentation d'installation non liées à Vercel.
+- [x] Tests unitaires et scénario navigateur sur PostgreSQL isolé.
 
-- [ ] Corriger tous les problèmes d’encodage : `Ã©`, `Ã`, `ðŸ`, etc.
-- [ ] Remplacer les liens fictifs `#` du footer par de vraies destinations.
-- [x] Ajouter le lien GitHub officiel dans le footer.
-- [x] Corriger le slogan de la page d’accueil.
-- [x] Remplacer les statistiques fictives par des statistiques réellement calculées.
-- [ ] Améliorer les états de chargement et les messages d’erreur.
-- [x] Ajouter des états `focus` visibles pour la navigation au clavier.
-- [ ] Vérifier les contrastes du texte doré sur fond clair.
-- [ ] Ajouter des textes alternatifs descriptifs pour les images.
-- [ ] Tester l’interface sur mobile, tablette et grand écran.
-- [x] Unifier les deux espaces administrateurs `/admin` et `/x-admin-*`.
+## À qualifier sur un environnement réel
 
-## Priorité 3 — Architecture et données
+- [ ] Vérifier un transfert et une lecture d'image sur le **bucket S3 cible**, avec compte autorisé.
+- [ ] Tester la chaîne complète d'e-mails Resend depuis le domaine expéditeur **vérifié**, si souhaitée.
+- [ ] Valider la reprise après incident : restauration PostgreSQL **sur une base isolée** et sauvegarde des fichiers médias.
+- [ ] Confirmer la rotation des secrets, la désactivation du compte partagé historique et les comptes de l'équipe.
+- [ ] Tester tous les parcours mobiles, l'accessibilité et les états d'erreur sur les navigateurs cibles.
+- [ ] Vérifier chaque page publique face aux maquettes TLC 2027 et la disponibilité réelle de ses contenus.
+- [ ] Valider le registre des personnes et organisations avant publication ; ne pas inventer de partenaires.
+- [ ] Établir la politique institutionnelle de confidentialité et de conservation des demandes.
+- [ ] Éprouver le déploiement sur l'hébergement définitif ; une prévisualisation Vercel ne vaut pas qualification finale.
 
-- [x] Mettre en place la couche SQLite et la migration automatique initiale.
-- [x] Remplacer le stockage JSON par une base de données SQLite.
-- [x] Centraliser les accès aux données dans une couche dédiée.
-- [x] Créer des types TypeScript partagés pour les projets, profils et événements.
-- [ ] Réduire progressivement l’utilisation de `any`.
-- [ ] Ajouter des validations métier pour chaque ressource.
-- [ ] Éviter les écritures concurrentes qui peuvent écraser des données.
-- [x] Ajouter une stratégie de sauvegarde et de récupération des données.
+## Améliorations futures sans blocage de l'édition actuelle
 
-## Priorité 4 — Tests et qualité
+- [ ] Poursuivre la spécialisation des formulaires « Projets », « Expériences » et « Événements » pour limiter le gestionnaire générique.
+- [ ] Prévoir l'inventaire des références avant toute suppression physique de médias.
+- [ ] Renforcer les validations par collection et couvrir les routes d'écriture restantes.
+- [ ] Mettre en place supervision des erreurs et des performances sur l'hébergement retenu.
 
-- [x] Faire passer le lint sans masquer les erreurs.
-- [x] Faire passer le build de production.
-- [x] Ajouter les tests de session administrateur.
-- [ ] Ajouter des tests pour toutes les routes API d’écriture.
-- [ ] Ajouter des tests de permissions : accès anonyme refusé, administrateur accepté.
-- [ ] Ajouter des tests de validation des formulaires.
-- [ ] Ajouter des tests end-to-end des parcours principaux.
-- [ ] Ajouter une vérification d’accessibilité automatisée.
-
-## Priorité 5 — Documentation et déploiement
-
-- [ ] Corriger l’encodage du README.
-- [x] Documenter l’installation et les variables d’environnement.
-- [x] Documenter la version Node.js supportée.
-- [ ] Décrire la procédure de déploiement.
-- [ ] Décrire la procédure de sauvegarde des données.
-- [ ] Configurer les variables secrètes dans l’environnement de production.
-- [ ] Ajouter un monitoring des erreurs et des performances.
-
-## Objectif final
-
-- [ ] Interface cohérente, accessible et correctement traduite.
-- [ ] API sécurisée et validée.
-- [ ] Données persistantes dans une base fiable.
-- [ ] Tests automatisés couvrant les parcours critiques.
-- [ ] Déploiement reproductible et documenté.
+Ne pas modifier tllib dans les travaux ordinaires du site TLC.

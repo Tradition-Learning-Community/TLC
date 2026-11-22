@@ -1,5 +1,5 @@
-import { put } from "@vercel/blob";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { del, put } from "@vercel/blob";
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 export type MediaDriver = "vercel-blob" | "s3";
 export function mediaDriver(): MediaDriver {
@@ -19,11 +19,7 @@ export async function uploadImage({ path, body, mime }: StorageUpload): Promise<
   }
   const base = process.env.MEDIA_PUBLIC_BASE_URL!.replace(/\/+$/, "");
   if (!/^https:\/\//i.test(base)) throw new Error("MEDIA_PUBLIC_BASE_URL must be an HTTPS URL");
-  const client = new S3Client({
-    region: process.env.S3_REGION!,
-    ...(process.env.S3_ENDPOINT ? { endpoint: process.env.S3_ENDPOINT, forcePathStyle: process.env.S3_FORCE_PATH_STYLE !== "false" } : {}),
-    credentials: { accessKeyId: process.env.S3_ACCESS_KEY_ID!, secretAccessKey: process.env.S3_SECRET_ACCESS_KEY! },
-  });
+  const client = s3Client();
   try {
     await client.send(new PutObjectCommand({
       Bucket: process.env.S3_BUCKET!,
@@ -34,4 +30,22 @@ export async function uploadImage({ path, body, mime }: StorageUpload): Promise<
     }));
   } finally { client.destroy(); }
   return { url: base + "/" + path.split("/").map(encodeURIComponent).join("/") };
+}
+
+/** Remove an object only after a failed metadata write, never when merely unlinking it from a page. */
+export async function removeUploadedImage(path: string, url: string): Promise<void> {
+  if (!path.startsWith("tlc/") || !mediaStorageConfigured()) return;
+  if (mediaDriver() === "vercel-blob") { await del(url); return; }
+  const client = s3Client();
+  try {
+    await client.send(new DeleteObjectCommand({ Bucket: process.env.S3_BUCKET!, Key: path }));
+  } finally { client.destroy(); }
+}
+
+function s3Client(): S3Client {
+  return new S3Client({
+    region: process.env.S3_REGION!,
+    ...(process.env.S3_ENDPOINT ? { endpoint: process.env.S3_ENDPOINT, forcePathStyle: process.env.S3_FORCE_PATH_STYLE !== "false" } : {}),
+    credentials: { accessKeyId: process.env.S3_ACCESS_KEY_ID!, secretAccessKey: process.env.S3_SECRET_ACCESS_KEY! },
+  });
 }

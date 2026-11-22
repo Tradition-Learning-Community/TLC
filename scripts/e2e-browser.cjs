@@ -92,6 +92,18 @@ fs.mkdirSync(screenshots, {recursive:true});
    await page.goto("/admin/data/media");
    await page.getByRole("heading",{name:"Médiathèque"}).waitFor();
    assert.equal(await page.getByLabel("Sélectionner une image sur cet appareil").count(),1);
+   await page.goto("/admin/data/events");
+   await page.getByRole("heading",{name:"Événements"}).waitFor();
+   assert.equal(await page.getByLabel("Choisir une image pour Image de l'événement").count(),1);
+   // Mobile administration must be navigable without a clipped horizontal menu.
+   await page.setViewportSize({width:390,height:844});
+   await page.goto("/admin");
+   await page.getByRole("button",{name:"Ouvrir le menu d'administration"}).click();
+   const mobileMenu = page.getByRole("navigation",{name:"Navigation administration mobile"});
+   await mobileMenu.getByRole("link",{name:"Actualités"}).click();
+   await page.getByRole("heading",{name:"Actualités & articles"}).waitFor();
+   assert.equal(await page.getByRole("button",{name:"Ouvrir le menu d'administration"}).getAttribute("aria-expanded"),"false");
+   await page.setViewportSize({width:1280,height:800});
 
    // A separately invited editor can prepare drafts, but cannot publish,
    // inspect private inquiries, or manage team accounts.
