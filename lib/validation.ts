@@ -31,6 +31,8 @@ const validators: Record<string, (value: DataRecord) => string | null> = {
   resources: (value) => requiredString(value.title, "title", 160) || requiredString(value.category, "category", 80),
   experiments: (value) => requiredString(value.title, "title", 160),
   "open-calls": (value) => requiredString(value.title, "title", 160) || requiredString(value.description, "description", 2000),
+  organizations: (value) => requiredString(value.name, "name", 160) || requiredString(value.category, "category", 80),
+  media: (value) => requiredString(value.title, "title", 160) || requiredString(value.url, "url", 1200),
   discussions: (value) => requiredString(value.title, "title", 160),
 };
 

@@ -6,7 +6,7 @@ import { validateDataRecord, type DataRecord } from "@/lib/validation";
 
 const ALLOWED_TYPES = new Set([
   "contributors", "profiles", "projects", "events", "resources",
-  "experiments", "open-calls", "discussions",
+  "experiments", "open-calls", "discussions", "organizations", "media",
 ]);
 type RouteContext = { params: Promise<{ type: string }> };
 async function resolveType(context: RouteContext) {

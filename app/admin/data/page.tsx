@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { ArrowUpRight, BookOpen, CalendarDays, FlaskConical, FolderKanban, Layers3, MessageSquare, Radio, Users, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, BookOpen, Building2, CalendarDays, FlaskConical, FolderKanban, Images, Layers3, MessageSquare, Radio, Users, type LucideIcon } from "lucide-react";
 
 const TYPES: { key: string; title: string; description: string; icon: LucideIcon; color: string }[] = [
   { key: "contributors", title: "Contributeurs", description: "Personnes présentées sur la page d’accueil.", icon: Users, color: "text-amber-200 bg-amber-300/10" },
+  { key: "organizations", title: "Organisations", description: "Partenaires, sponsors et structures ayant accepté la publication.", icon: Building2, color: "text-sky-200 bg-sky-300/10" },
+  { key: "media", title: "Médiathèque", description: "Images et fichiers référencés par TLC.", icon: Images, color: "text-indigo-200 bg-indigo-300/10" },
   { key: "profiles", title: "Profils communauté", description: "Rôles, compétences et participation des membres.", icon: Users, color: "text-violet-200 bg-violet-300/10" },
   { key: "projects", title: "Projets", description: "Projets, membres associés et tâches.", icon: FolderKanban, color: "text-sky-200 bg-sky-300/10" },
   { key: "events", title: "Événements", description: "Ateliers, webinaires et rendez-vous.", icon: CalendarDays, color: "text-emerald-200 bg-emerald-300/10" },
