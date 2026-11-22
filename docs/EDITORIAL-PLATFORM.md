@@ -68,3 +68,13 @@ Le corps de l'e-mail contient **uniquement un type et une référence de demande
 - Le succès d'un test de téléversement simulé ne prouve pas, à lui seul, que les quotas ou autorisations du Blob de production permettent le téléversement : un essai administrateur avec un vrai fichier doit confirmer la chaîne complète.
 - Les politiques institutionnelles de confidentialité, de conservation des demandes et la récupération des comptes doivent être publiées avant utilisation à grande échelle.
 - Ne jamais envoyer de mots de passe, liens d'invitation ni secrets de stockage dans une issue, une capture ou un journal de CI.
+
+## Premier compte administrateur et modification des identifiants
+
+L'espace `/admin/login` propose désormais **Administrateur** et **Équipe TLC**. Le premier est un compte TLC principal nommé `admin`, enregistré dans la collection privée `staff_local_credentials` de Neon PostgreSQL. Le mot de passe initial est unique, temporaire et **n'est pas `admin`**, car un couple public connu serait immédiatement exploitable sur un site internet. Il n'est stocké qu'en dérivé scrypt salé, jamais en clair.
+
+**Première connexion :** les actions administratives sont bloquées jusqu'à la définition d'un nouvel identifiant et d'un mot de passe fort dans `/admin/security`. Le responsable peut ensuite revenir à **Mon accès** à n'importe quel moment pour changer ses deux identifiants. Le changement invalide toutes les sessions précédentes grâce à la révision du compte incluse dans les cookies signés et contrôlée en base. Une déconnexion efface tous les cookies locaux et historiques.
+
+Les comptes **Équipe TLC** restent gérés par invitations nominatives et Neon Auth. L'ancien mot de passe technique est conservé dans un panneau discret à titre transitoire, sans obligation de le connaître pour accéder au compte principal. Ne jamais publier d'identifiants `admin/admin` ou de secret initial dans un dépôt de code.
+
+La mise en place initiale est une opération unique d'administration de Neon : créer la ligne `staff_local_credentials/admin` avec un hachage scrypt et un mot de passe temporaire transmis uniquement au responsable autorisé. La CI utilise un autre compte provisoire, dans un PostgreSQL jetable, et ne copie pas les secrets de production.
