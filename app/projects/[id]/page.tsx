@@ -1,62 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from 'next/navigation'
+import { useParams } from "next/navigation";
+import Link from "next/link";
+import { referenceProjects, referenceProjectSlug } from "@/data/reference-projects";
 
-type Task = { id: string; title: string; done: boolean };
-
+type Task={id:string;title:string;done:boolean};
+type Project={id:string;title:string;description:string;members:string[];tasks:Task[]};
+const known=referenceProjects.map(project=>({
+ title:project[2],description:project[4],lead:project[3],domain:project[0],status:project[1],
+ progress:project[6],contributors:project[7],technologies:project[5],
+ timeline:["Cadrage et préparation","Expérimentation et revue","Documentation et publication"],
+}));
 export default function ProjectDetail(){
-  // Note: useParams in client components works with next/navigation
-  const params = useParams() as { id: string };
-  const [project, setProject] = useState<any>(null);
-  const [taskTitle, setTaskTitle] = useState('');
-
-  async function load(){
-    const res = await fetch(`/api/projects/${params.id}`);
-    if (res.ok) setProject(await res.json());
-  }
-
-  async function addTask(e: React.FormEvent){
-    e.preventDefault();
-    if (!taskTitle) return;
-    await fetch(`/api/projects/${params.id}/tasks`, {
-      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ title: taskTitle })
-    });
-    setTaskTitle('');
-    load();
-  }
-
-  async function toggleTask(tid: string, done: boolean){
-    await fetch(`/api/projects/${params.id}/tasks/${tid}`, {
-      method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ done: !done })
-    });
-    load();
-  }
-
-  useEffect(() => { if (params?.id) load(); }, [params?.id]);
-
-  if (!project) return <div className="mx-auto max-w-3xl px-6 py-16">Chargement...</div>
-
-  return (
-    <section className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-2xl font-semibold">{project.title}</h1>
-      <p className="mt-2 text-zinc-700">{project.description}</p>
-
-      <h2 className="mt-6 text-lg font-medium">Tâches</h2>
-      <form onSubmit={addTask} className="mt-2 flex gap-2">
-        <input className="flex-1 rounded border px-3 py-2" value={taskTitle} onChange={e=>setTaskTitle(e.target.value)} placeholder="Nouvelle tâche" />
-        <button className="rounded bg-primary px-3 py-2 text-white">Ajouter</button>
-      </form>
-
-      <ul className="mt-4 space-y-2">
-        {project.tasks?.map((t: Task) => (
-          <li key={t.id} className="flex items-center justify-between rounded border p-2">
-            <div className={t.done ? 'line-through' : ''}>{t.title}</div>
-            <div className="flex gap-2">
-              <button onClick={()=>toggleTask(t.id, t.done)} className="text-sm text-primary">{t.done ? 'Réouvrir' : 'Terminer'}</button>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )
+ const {id}=useParams<{id:string}>();const [project,setProject]=useState<Project|null>(null);const [taskTitle,setTaskTitle]=useState("");const [dialog,setDialog]=useState(false);const fallback=known.find(p=>referenceProjectSlug(p.title)===id)||known[0];
+ async function load(){try{const r=await fetch(`/api/projects/${id}`);if(r.ok)setProject(await r.json())}catch{/* Display the reference dossier if the API has no matching project. */}}
+ async function addTask(e:React.FormEvent){e.preventDefault();if(!taskTitle)return;await fetch(`/api/projects/${id}/tasks`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:taskTitle})});setTaskTitle("");load()}
+ async function toggleTask(t:Task){await fetch(`/api/projects/${id}/tasks/${t.id}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({done:!t.done})});load()}
+ useEffect(()=>{if(id)load()},[id]);
+ useEffect(()=>{if(!dialog)return;const onKey=(e:KeyboardEvent)=>{if(e.key==="Escape")setDialog(false)};document.addEventListener("keydown",onKey);document.body.style.overflow="hidden";return()=>{document.removeEventListener("keydown",onKey);document.body.style.overflow=""}},[dialog]);
+ const title=project?.title||fallback.title;const description=project?.description||fallback.description;
+ return <div id="top"><section className="hero-band"><div className="hero-inner"><div className="hero-copy"><div className="eyebrow"><Link href="/projects">PROJETS TLC</Link>　/　{fallback.domain}</div><p style={{marginTop:22}}><span className="chip">{fallback.status}</span></p><h1 style={{fontSize:"clamp(38px,5vw,60px)"}}>{title}</h1><p>{description}</p><div className="hero-actions"><button className="button button-gold" onClick={()=>setDialog(true)}>Proposer ma candidature</button><Link className="button button-outline" href="/projects">Tous les projets</Link></div></div><div className="hero-art"><i className="art-orbit"/><i className="art-orbit"/><i className="art-orbit"/><i className="art-line"/><i className="art-dot a"/><i className="art-dot b"/><i className="art-dot c"/><div className="art-core">TLC</div></div></div></section><div className="stats-row">{[["4","Contributeurs"],["09","Tâches documentées"],["03","Étapes du projet"],["2026","Depuis"]].map(([n,l])=><div className="stat" key={l}><strong>{n}</strong><span>{l}</span></div>)}</div><section className="section container"><div className="grid-2"><article><span className="eyebrow">CONTEXTE</span><h2 className="section-title">Une recherche documentée et partageable.</h2><p className="section-copy">{description} Le travail suit des étapes explicites afin que les résultats puissent être évalués, discutés et réutilisés par la communauté.</p><h3 style={{fontSize:22,marginTop:30}}>Objectifs</h3><ol className="numbered-list"><li>Définir des données et un protocole reproductible.</li><li>Évaluer les méthodes avec des critères explicites.</li><li>Partager les résultats, le code et les limites.</li></ol></article><aside className="card"><span className="eyebrow">LE PROJET EN BREF</span><h3>{fallback.domain}</h3><p>Responsable : {fallback.lead}</p><p>Statut : {fallback.status}</p><p>Contributeurs : {project?.members?.join(", ")||"Nadia Traoré, Karim Bello, Amina Kaboré"}</p><button className="button button-gold" style={{width:"100%",marginTop:12}} onClick={()=>setDialog(true)}>Rejoindre le projet</button></aside></div></section><section className="dark-section section"><div className="container grid-2"><div><span className="eyebrow">ÉTAPES DU PROJET</span><h2 className="section-title">De la question au résultat.</h2><div className="timeline">{fallback.timeline.map((t,i)=><div className="timeline-item" key={t}><strong>0{i+1}　{t}</strong><p>{i===0?"Cadrage et préparation":"Travail collaboratif en cours"}</p></div>)}</div></div><div><span className="eyebrow">ÉQUIPE</span><h2 className="section-title">Les personnes impliquées.</h2>{[fallback.lead,"Amina Kaboré","Karim Bello"].map((n,i)=><div className="list-row" key={n}><div className="avatar" style={{display:"grid",placeItems:"center",color:"var(--gold)"}}>{n.split(" ").map(s=>s[0]).join("")}</div><div style={{flex:1}}><h3>{n}</h3><p>{i===0?"Responsable du projet":"Contributeur·rice"}</p></div></div>)}</div></div></section>{project&&<section className="section container"><span className="eyebrow">SUIVI COLLABORATIF</span><h2 className="section-title">Tâches du projet</h2><form onSubmit={addTask} className="grid-2"><input className="field" value={taskTitle} onChange={e=>setTaskTitle(e.target.value)} placeholder="Ajouter une tâche"/><button className="button button-dark">Ajouter</button></form>{project.tasks?.map(t=><div className="list-row" key={t.id}><span>{t.title}</span><button className="button button-outline" style={{color:"var(--ink)"}} onClick={()=>toggleTask(t)}>{t.done?"Réouvrir":"Terminer"}</button></div>)}</section>}<section className="cta-band"><span className="eyebrow">PROJET TLC</span><h2>Une contribution peut faire avancer la recherche.</h2><p>Proposez votre expertise ou posez une question à l’équipe.</p><button className="button button-gold" onClick={()=>setDialog(true)}>Candidater ↗</button></section>{dialog&&<div className="modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setDialog(false)}}><section className="modal-panel" role="dialog" aria-modal="true"><button className="modal-close" onClick={()=>setDialog(false)} aria-label="Fermer">×</button><span className="eyebrow">CANDIDATURE</span><h2>{title}</h2><div className="gold-rule"/><p className="section-copy">Présentez votre profil et votre motivation pour contribuer à ce projet.</p><form onSubmit={e=>{e.preventDefault();setDialog(false)}}><div className="field"><label htmlFor="candidate-name">Nom complet</label><input id="candidate-name" required placeholder="Votre nom"/></div><div className="field"><label htmlFor="candidate-email">Adresse e-mail</label><input id="candidate-email" type="email" required placeholder="vous@exemple.com"/></div><div className="field"><label htmlFor="candidate-role">Votre profil</label><select id="candidate-role"><option>Chercheur·euse</option><option>Développeur·euse</option><option>Étudiant·e</option><option>Autre</option></select></div><div className="field"><label htmlFor="candidate-message">Votre motivation</label><textarea id="candidate-message" required placeholder="Quelques lignes sur votre intérêt…"/></div><button className="button button-gold">Envoyer ma candidature</button><p className="small-note">Vos informations sont utilisées uniquement pour traiter votre demande.</p></form></section></div>}</div>
 }
