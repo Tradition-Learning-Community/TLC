@@ -58,6 +58,21 @@ export async function deleteRecord(collection: string, id: string): Promise<bool
   return rows.length > 0;
 }
 
+/**
+ * Atomic compare-and-swap for editorial documents. Prevents lost updates
+ * when two editors save the same version.
+ */
+export async function replaceRecordIfVersion<T extends { id: string; version: number }>(
+  collection: string, item: T, expectedVersion: number,
+): Promise<boolean> {
+  const rows = await getClient()`UPDATE records
+    SET data = ${JSON.stringify(item)}::jsonb, updated_at = NOW()
+    WHERE collection = ${collection} AND id = ${item.id}
+    AND COALESCE((data->>'version')::integer, 1) = ${expectedVersion}
+    RETURNING id`;
+  return rows.length === 1;
+}
+
 export async function closeDatabase() {
   if (client) {
     await client.end();
