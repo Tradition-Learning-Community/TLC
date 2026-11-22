@@ -19,6 +19,7 @@ export default function PublicationsAdmin() {
   const [form, setForm] = useState<ArticleInput>({ ...base });
   const [editing, setEditing] = useState<Article | null>(null);
   const [preview, setPreview] = useState(false);
+  const [canPublish, setCanPublish] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -29,7 +30,11 @@ export default function PublicationsAdmin() {
     if (!response.ok) throw new Error("Impossible de charger les articles.");
     setArticles(await response.json());
   }, []);
-  useEffect(() => { void load().catch(() => setError("Chargement impossible.")); }, [load]);
+  useEffect(() => {
+    void load().catch(() => setError("Chargement impossible."));
+    void fetch("/api/admin/verify",{cache:"no-store"}).then(r => r.json()).then(data =>
+      setCanPublish(data?.actor?.permissions?.includes("editorial:publish") === true)).catch(() => {});
+  }, [load]);
   function update<K extends keyof ArticleInput>(field: K, value: ArticleInput[K]) {
     setForm((current) => ({ ...current, [field]: value }));
   }
@@ -108,11 +113,12 @@ export default function PublicationsAdmin() {
           <label className="flex items-center gap-3 text-sm text-slate-300"><input type="checkbox" className="accent-[#d4af37]" checked={form.featured} onChange={(e) => update("featured", e.target.checked)} /> Mettre en avant sur l'accueil</label>
         </div>}
         <div className="mt-7 flex flex-wrap gap-3 border-t border-white/10 pt-5">
-          <button type="button" disabled={busy} onClick={() => void save("draft")} className="rounded-lg border border-white/20 px-4 py-2.5 text-sm text-white disabled:opacity-50">Enregistrer le brouillon</button>
-          <button type="button" disabled={busy} onClick={() => void save("review")} className="rounded-lg border border-white/20 px-4 py-2.5 text-sm text-white disabled:opacity-50">Soumettre à validation</button>
-          <button type="button" disabled={busy} onClick={() => void save("published")} className="rounded-lg bg-[#d4af37] px-5 py-2.5 text-sm font-semibold text-[#081626] disabled:opacity-50">{busy ? "Enregistrement..." : "Publier"}</button>
-          {editing && <button type="button" disabled={busy} onClick={() => void save("archived")} className="rounded-lg px-3 py-2.5 text-sm text-slate-400 hover:text-white">Archiver</button>}
+          <button type="button" disabled={busy || (editing?.status === "published" && !canPublish)} onClick={() => void save("draft")} className="rounded-lg border border-white/20 px-4 py-2.5 text-sm text-white disabled:opacity-50">Enregistrer le brouillon</button>
+          <button type="button" disabled={busy || (editing?.status === "published" && !canPublish)} onClick={() => void save("review")} className="rounded-lg border border-white/20 px-4 py-2.5 text-sm text-white disabled:opacity-50">Soumettre à validation</button>
+          {canPublish && <button type="button" disabled={busy} onClick={() => void save("published")} className="rounded-lg bg-[#d4af37] px-5 py-2.5 text-sm font-semibold text-[#081626] disabled:opacity-50">{busy ? "Enregistrement..." : "Publier"}</button>}
+          {editing && canPublish && <button type="button" disabled={busy} onClick={() => void save("archived")} className="rounded-lg px-3 py-2.5 text-sm text-slate-400 hover:text-white">Archiver</button>}
         </div>
+        {!canPublish && <p className="mt-3 text-xs text-amber-200">Votre rôle permet de préparer des articles, mais pas de les publier. Adressez-vous au responsable éditorial.</p>}
         <p className="mt-3 text-xs text-slate-500">Les brouillons et articles en validation restent invisibles aux visiteurs. Les publications apparaissent immédiatement après enregistrement.</p>
       </section>
       <aside className="rounded-2xl border border-white/10 bg-[#0b1827] p-5">
