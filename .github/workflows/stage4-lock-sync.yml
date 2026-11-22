@@ -1,0 +1,33 @@
+name: Stage 4 dependency lock sync
+
+on:
+  push:
+    branches:
+      - feature/stage4-editorial-platform
+    paths:
+      - .github/workflows/stage4-lock-sync.yml
+
+permissions:
+  contents: write
+
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install pnpm
+        run: npm install -g pnpm@10.33.2
+      - name: Add Vercel Blob dependency and lock
+        run: pnpm add @vercel/blob@^2.3.0
+      - name: Commit resolved dependency
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add package.json pnpm-lock.yaml
+          git commit -m "Lock Vercel Blob SDK for TLC media" || exit 0
+          git push origin HEAD:feature/stage4-editorial-platform
