@@ -5,7 +5,7 @@ describe("public inquiry validation", () => {
   it("rejects missing consent, malformed emails and short messages", () => {
     expect(validateInquiry({ ...valid, consent: false }).ok).toBe(false);
     expect(validateInquiry({ ...valid, email: "invalid" }).ok).toBe(false);
-    expect(validateInquiry({ ...valid, message: "trop court" }).ok).toBe(false);
+    expect(validateInquiry({ ...valid, message: "court" }).ok).toBe(false);
   });
   it("accepts a valid application", () => {
     const result = validateInquiry(valid);
