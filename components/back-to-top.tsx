@@ -29,7 +29,7 @@ export default function BackToTop() {
       >
         ↑
       </span>
-      Haut de page
+      <span className="back-top-label">Haut de page</span>
     </button>
   );
 }

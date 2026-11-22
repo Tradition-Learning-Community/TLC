@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
+import ImageField from "@/components/admin/ImageField";
 type Contributor = { id: string; name: string; github: string; avatar?: string; roles?: string[]; published?: boolean };
 const base = {name:"", github:"", avatar:"", roles:"Contributeur", published:true};
 const input = "mt-1 w-full rounded-lg border border-white/15 bg-[#07111f] px-3 py-2.5 text-sm text-white";
@@ -47,7 +48,7 @@ export default function ContributorsAdmin() {
       <h2 className="text-lg font-semibold sm:col-span-2">{editing?"Modifier le profil":"Ajouter un contributeur"}</h2>
       <label className="text-sm">Nom<input required maxLength={140} className={input} value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/></label>
       <label className="text-sm">Profil GitHub<input required className={input} value={form.github} onChange={e=>setForm({...form,github:e.target.value})}/></label>
-      <label className="text-sm">Image du profil (URL)<input className={input} value={form.avatar} onChange={e=>setForm({...form,avatar:e.target.value})}/></label>
+      <div className="sm:col-span-2"><ImageField label="Photo du contributeur" value={form.avatar} title={form.name} onChange={avatar=>setForm({...form,avatar})} disabled={busy}/></div>
       <label className="text-sm">Participations / rôles (séparés par des virgules)<input className={input} value={form.roles} onChange={e=>setForm({...form,roles:e.target.value})}/></label>
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.published} onChange={e=>setForm({...form,published:e.target.checked})}/> Visible publiquement</label>
       <div className="flex gap-2"><button disabled={busy} className="rounded-lg bg-[#d4af37] px-4 py-2 text-sm font-semibold text-[#07111f]">{busy?"Enregistrement...":"Enregistrer"}</button>

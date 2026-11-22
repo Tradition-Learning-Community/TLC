@@ -41,7 +41,7 @@ export default function LoginPage() {
     <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#0b1827] px-6 py-8 text-white shadow-2xl sm:p-9">
       <header className="mb-7 flex items-center gap-4">
         <div className="rounded-2xl border border-[#d4af37]/20 bg-[#d4af37]/10 p-3"><LockKeyhole size={25} className="text-[#d4af37]"/></div>
-        <div><h1 className="text-2xl font-semibold tracking-tight">TLC Studio</h1><p className="text-sm text-slate-400">Espace d'administration</p></div>
+        <div><h1 className="text-2xl font-semibold tracking-tight">Administration TLC</h1><p className="text-sm text-slate-400">Espace d'administration</p></div>
       </header>
       <div className="mb-6 grid grid-cols-2 rounded-xl border border-white/10 bg-[#07111f] p-1 text-sm">
         <button type="button" aria-pressed={mode==="principal"} onClick={()=>{setMode("principal");setError("");}}

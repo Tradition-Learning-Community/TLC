@@ -46,3 +46,14 @@
 [data-mode="projects"] .hero-copy::before{content:"Accueil  /  Projets";display:block;margin-bottom:24px;color:#d2d7df;font-size:10px;letter-spacing:0}
 @media(min-width:701px){.directory-content[data-mode="events"] .list-row{display:inline-grid;width:calc(50% - 16px);min-height:190px;margin:7px 8px;vertical-align:top;grid-template-columns:105px minmax(0,1fr);align-items:start;padding:18px;border:1px solid var(--line);background:var(--card)}.directory-content[data-mode="events"] .list-row>button{grid-column:2;justify-self:start}.directory-content[data-mode="events"] .list-row>div:nth-child(2){min-width:0}}
 @media(max-width:700px){.directory-content[data-mode="events"] .list-row{display:grid;grid-template-columns:1fr 1fr;width:100%;padding:15px;border:1px solid var(--line);margin:9px 0;background:var(--card)}.directory-content[data-mode="events"] .list-row>button{grid-column:2;justify-self:end}.directory-content .section{padding-top:58px}}
+
+/* Compact, accessible floating back-to-top on handheld screens. */
+@media(max-width:700px){
+  .back-top{right:14px;bottom:max(14px,env(safe-area-inset-bottom));width:43px;height:43px;padding:8px;justify-content:center;gap:0;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+  .back-top-icon{width:29px;height:29px}
+  .back-top-label{display:none}
+  .home-hero .hero-copy h1{font-size:clamp(32px,8vw,42px)}
+  .home-hero .hero-inner{padding-top:42px;padding-bottom:34px}
+  .home-hero .hero-image-frame{height:220px}
+  .home-content .section{padding-top:48px;padding-bottom:48px}
+}

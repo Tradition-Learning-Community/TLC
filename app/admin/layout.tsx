@@ -59,16 +59,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   });
   return <div className="min-h-screen bg-[#07111f] text-slate-100 lg:flex">
     <aside className="hidden w-72 shrink-0 flex-col border-r border-white/[0.07] bg-[#091523] px-5 py-6 lg:flex">
-      <Link href="/admin" className="mb-8 flex items-center gap-3 px-2"><img src="/tlc-logo-hd.png" alt="TLC" className="h-10 w-10 rounded-lg object-contain"/><span className="font-semibold">TLC Studio</span></Link>
+      <Link href="/admin" className="mb-8 flex items-center gap-3 px-2"><img src="/tlc-logo-hd.png" alt="TLC" className="h-10 w-10 rounded-lg object-contain"/><span className="font-semibold">Administration TLC</span></Link>
       <div className="mb-7 rounded-xl border border-white/10 p-3"><p className="text-sm text-white">{identity.name}</p><p className="mt-1 text-xs text-slate-400">{identity.role}</p></div>
       <nav className="flex-1 space-y-1">{navLinks}</nav>
       <Link href="/" className="mb-3 flex items-center justify-between rounded-xl border border-white/10 px-3 py-3 text-xs text-slate-400">Voir le site <ArrowUpRight size={15}/></Link>
       <button onClick={() => void logout()} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-400"><LogOut size={17}/> Se déconnecter</button>
     </aside>
     <div className="min-w-0 flex-1">
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-[#07111f]/90 p-3 backdrop-blur-xl lg:hidden">
-        <div className="flex items-center justify-between"><div><p className="font-semibold">TLC Studio</p><p className="text-xs text-slate-400">{identity.name}</p></div><button aria-label="Se déconnecter" onClick={() => void logout()}><LogOut size={18}/></button></div>
-        <nav className="mt-3 flex gap-2 overflow-x-auto">{navLinks}</nav>
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-[#07111f]/95 px-3 py-2 backdrop-blur-xl lg:hidden">
+        <div className="flex items-center justify-between"><div><p className="font-semibold">Administration TLC</p><p className="text-xs text-slate-400">{identity.name}</p></div><button aria-label="Se déconnecter" onClick={() => void logout()}><LogOut size={18}/></button></div>
+        <nav className="mt-2 flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:thin]">{navLinks}</nav>
       </header>
       <main className="mx-auto w-full max-w-[1500px] p-4 sm:p-6 lg:p-10">{children}</main>
     </div>
