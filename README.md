@@ -76,4 +76,7 @@ Le portail propose six visualisations interactives, des lectures textuelles et u
 - [Spécification et critères de réception](docs/frontend/TLC-2027-FRONTEND-SPEC.md)
 - [Sources et règles de représentation scientifique](docs/frontend/SCIENTIFIC-VISUALIZATION-RULES.md)
 - `test/scientific-visualizations.spec.ts` : invariants des contenus et scénarios.
-- `scripts/e2e-scientific.cjs` : recette navigateur des huit pages, six largeurs, thèmes, clavier et filtres. Exécutée avec PostgreSQL isolé dans le workflow navigateur.
+- `scripts/e2e-scientific.cjs` : recette navigateur des huit pages, six largeurs, thèmes, clavier et filtres. Exécutée sur un build de production avec PostgreSQL isolé dans le workflow navigateur.
+- `scripts/measure-public-performance.cjs` : 18 visites de laboratoire sur trois pages, avec LCP, CLS et latence des interactions observées. Les résultats ne constituent pas une mesure d’INP terrain.
+
+Ces scripts utilisent Playwright et `E2E_BASE_URL` ; `E2E_BROWSER_EXECUTABLE` permet de choisir un Chromium déjà installé. Sans `E2E_SEED_PUBLIC=true`, la recette ne crée aucune donnée. Ce mode de fixtures est limité à une base PostgreSQL locale nommée `tlc`. Les captures et résultats JSON sont joints aux artefacts du workflow navigateur.

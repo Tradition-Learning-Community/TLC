@@ -9,7 +9,10 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Ressources — TLC", description: "Sources scientifiques, bibliothèque, guides et ressources de Tradition Learning. Recherchez les publications de TLC par sujet et catégorie." };
 
 export default async function ResourcesPage() {
-  const resources = await publishedResources();
+  // Only these public fields may cross the server/client boundary.
+  const resources = (await publishedResources()).map(({ id, title, category, url, description }) => ({
+    id, title, category, url, description, published: true,
+  }));
   return <div className="directory-content editorial-page">
     <section className="hero-band editorial-hero"><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">LIRE · EXPLORER · APPROFONDIR</span><h1>Ressources</h1><p>Les textes, les outils et les publications pour comprendre Tradition Learning et suivre son développement.</p><div className="hero-actions"><a href="#catalogue" className="button button-gold">Explorer le catalogue</a></div></div><div className="editorial-hero-summary"><LibraryBig size={34} aria-hidden="true" /><p>Une entrée vers les fondements scientifiques, les contrats et la documentation de tllib.</p></div></div></section>
     <EditorialSection eyebrow="S’ORIENTER" title="Commencer par l’essentiel" description="Choisissez votre point d’entrée selon ce que vous souhaitez comprendre.">

@@ -74,7 +74,7 @@ export default function CohortsLineageDiagram() {
           {nodes.map((node) => {
             const relay = node.relayFrom !== undefined && activeSnapshot >= node.relayFrom;
             return <button key={node.id} data-science-node={node.id} type="button" className={`diagram-node lineage-node ${selected.id === node.id ? "is-active" : ""} ${relay || node.id === "m" ? "is-transmitter" : ""}`} style={{ left: `${node.x}%`, top: `${node.y}%` }} aria-pressed={selected.id === node.id} aria-controls={detailId} aria-label={`${node.label}${relay ? ", Disciple et Maître-relais dans ce scénario" : node.id === "m" ? "" : ", Disciple"}`} onClick={() => setSelectedId(node.id)}>
-              <strong>{node.label}</strong><span>{node.id === "m" ? "Transmission" : relay ? "Maître-relais" : "Disciple"}</span>
+              <strong>{node.label}</strong><span>{node.id === "m" ? "Transmet" : relay ? "Maître-relais" : "Disciple"}</span>
             </button>;
           })}
         </div>

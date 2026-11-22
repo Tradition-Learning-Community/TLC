@@ -8,7 +8,7 @@
  * DATABASE_URL=postgresql://...@127.0.0.1:5432/tlc
  * NODE_PATH may point to the environment's installed Playwright module.
  *
- * Writes test-results/scientific-summary.json and nine representative screenshots.
+ * Writes test-results/scientific-summary.json, nine page and three focused screenshots.
  * Fixtures are inserted after screenshots and removed by their exact run-specific IDs.
  */
 const assert = require("node:assert/strict");
@@ -176,7 +176,7 @@ async function seedPublicFixtures() {
   const sql = require("postgres")(databaseUrl, { max: 1, connect_timeout: 5, idle_timeout: 5, ssl: false });
   const id = suffix => `e2e-public-${runId}-${suffix}`;
   const now = new Date().toISOString();
-  const resource = { id: id("resource"), title: `${runId} Guide d’évaluation`, category: `Méthodes ${runId}`, description: "Protocole de test de recherche par mots-clés et accents.", url: "https://example.org/e2e-evaluation", published: true };
+  const resource = { id: id("resource"), title: `${runId} Guide d’évaluation`, category: `Méthodes ${runId}`, description: "Protocole de test de recherche par mots-clés et accents.", url: "https://example.org/e2e-evaluation", published: true, internalEditorialNote: `INTERNAL-RESOURCE-FIELD-${runId}` };
   const secondResource = { id: id("resource-software"), title: `${runId} Architecture du logiciel`, category: `Logiciel ${runId}`, description: "Ressource publique de recette locale.", url: "https://example.org/e2e-architecture", published: true };
   const hiddenResource = { ...resource, id: id("resource-hidden"), title: `PRIVATE-RESOURCE-${runId}`, published: false };
   const article = { id: id("article"), slug: id("article"), title: `Publication publique de recette ${runId}`, summary: "Article de test réservé à la base locale jetable de recette.", body: `Premier paragraphe de recette ${runId}.\n\nDeuxième paragraphe public vérifiable.`, category: "Recette locale", author: "Équipe de test TLC", coverImage: "", status: "published", featured: true, createdAt: now, updatedAt: now, publishedAt: now, version: 1 };
@@ -415,6 +415,26 @@ async function cleanupFixtures() {
       await setTheme("light");
     });
 
+    await check("focused 360px object relations and evolving lineage screenshots", async () => {
+      await page.setViewportSize({ width: 360, height: 844 });
+      await visit("/tradition-learning");
+      const objects = page.locator("#objets");
+      await active(objects.getByRole("button", { name: "Relations documentées", exact: true }), "Enter");
+      await active(objects.locator(".object-node").filter({ has: page.getByText("Pratique", { exact: true }) }).first(), "Enter");
+      const objectCapture = "scientific-objects-pratique-relations-360.png";
+      await objects.screenshot({ path: path.join(output, objectCapture), animations: "disabled" });
+      summary.screenshots.push(objectCapture);
+      const lineage = page.locator("#filiations");
+      await active(lineage.getByRole("group", { name: "Vue des cohortes et filiations", exact: true }).getByRole("button", { name: "Évolution", exact: true }), "Enter");
+      const snapshots = lineage.getByRole("group", { name: "Instantané du scénario", exact: true });
+      for (const [name, suffix] of [["Relais reconnus", "relays"], ["Nouvelle cohorte", "new-cohort"]]) {
+        await active(snapshots.getByRole("button", { name, exact: true }), "Enter");
+        const filename = `scientific-lineage-${suffix}-360.png`;
+        await lineage.screenshot({ path: path.join(output, filename), animations: "disabled" });
+        summary.screenshots.push(filename);
+      }
+    });
+
     if (summary.fixtures.requested) await check("seed isolated local public-content fixtures", async () => { fixtures = await seedPublicFixtures(); });
 
     await check("resources: search, category filter, empty result and reset", async () => {
@@ -423,8 +443,18 @@ async function cleanupFixtures() {
       const search = page.getByRole("searchbox", { name: "Rechercher une ressource", exact: true });
       if (fixtures) {
         assert.equal(await page.getByText(fixtures.hiddenResource.title, { exact: true }).count(), 0);
-        const html = await (await context.request.get("/resources")).text();
-        assert.ok(!html.includes(fixtures.hiddenResource.title), "unpublished resources are absent from HTML and serialized props");
+        const htmlResponse = await context.request.get("/resources");
+        assert.ok(htmlResponse.ok(), "resource HTML responds successfully");
+        const html = await htmlResponse.text();
+        const rscResponse = await context.request.get(`/resources?_rsc=${runId}`, { headers: { RSC: "1" } });
+        assert.ok(rscResponse.ok(), "resource navigation payload responds successfully");
+        assert.match(rscResponse.headers()["content-type"] || "", /text\/x-component/, "navigation check receives a React Server Components payload");
+        const rsc = await rscResponse.text();
+        for (const [format, response] of [["HTML", html], ["RSC", rsc]]) {
+          assert.ok(response.includes(fixtures.resource.id), `public resource is present in ${format}`);
+          assert.ok(!response.includes(fixtures.hiddenResource.title), `unpublished resources are absent from ${format}`);
+          assert.ok(!response.includes(fixtures.resource.internalEditorialNote), `internal fields on published resources are absent from ${format}`);
+        }
         await search.fill(`${runId} evaluation`);
         await page.waitForFunction(() => document.querySelectorAll(".resource-card").length === 1);
         assert.equal(await page.locator(".resource-card h3").innerText(), fixtures.resource.title, "accent-insensitive multiword search matches the expected resource");
@@ -492,19 +522,38 @@ async function cleanupFixtures() {
       }
     });
 
-    await check("participation choices remain keyboard-accessible and preserve the inquiry contract", async () => {
+    await check("participation choices preserve the filled inquiry without submitting it", async () => {
       await visit("/participer");
       const options = page.getByRole("group", { name: "Choisir le type de participation", exact: true });
       assert.equal(await options.getByRole("button").count(), 4);
-      for (const title of ["Rejoindre TLC", "Contribuer aux travaux", "Devenir partenaire", "Soutenir TLC"]) {
-        await active(options.getByRole("button", { name: new RegExp(`^${title}`) }), "Enter");
-        assert.equal(await page.locator(".participation-form h2").innerText(), title);
-        await page.getByLabel("Nom complet", { exact: true }).waitFor();
-        await page.getByLabel("Adresse e-mail", { exact: true }).waitFor();
-        assert.equal(await page.getByRole("checkbox").count(), 1, "consent remains required");
-        assert.equal(await page.getByRole("checkbox").getAttribute("required"), "");
-      }
-      assert.equal(await page.getByRole("button", { name: "Envoyer ma demande", exact: true }).count(), 1);
+      let inquiryRequests = 0;
+      const guardInquiry = async route => {
+        if (!["GET", "HEAD", "OPTIONS"].includes(route.request().method())) {
+          inquiryRequests += 1;
+          await route.abort("blockedbyclient");
+        } else await route.continue();
+      };
+      await page.route("**/api/inquiries", guardInquiry);
+      try {
+        const fields = [
+          ["Nom complet", "Recette publique TLC"],
+          ["Adresse e-mail", "e2e-public@example.invalid"],
+          ["Profil / organisation (facultatif)", "Équipe de recette locale"],
+          ["Votre message", "Ce brouillon de recette doit rester présent après chaque choix. Il ne sera pas envoyé."],
+        ];
+        for (const [label, value] of fields) await page.getByLabel(label, { exact: true }).fill(value);
+        await page.getByRole("checkbox").check();
+        for (const title of ["Rejoindre TLC", "Contribuer aux travaux", "Devenir partenaire", "Soutenir TLC"]) {
+          await active(options.getByRole("button", { name: new RegExp(`^${title}`) }), "Enter");
+          assert.equal(await page.locator(".participation-form h2").innerText(), title);
+          for (const [label, value] of fields) assert.equal(await page.getByLabel(label, { exact: true }).inputValue(), value, `${label} survives selection of ${title}`);
+          assert.equal(await page.getByRole("checkbox").count(), 1, "consent remains required");
+          assert.equal(await page.getByRole("checkbox").getAttribute("required"), "");
+          assert.equal(await page.getByRole("checkbox").isChecked(), true, "consent remains checked when changing participation");
+          assert.equal(inquiryRequests, 0, "changing participation never submits the inquiry");
+        }
+        assert.equal(await page.getByRole("button", { name: "Envoyer ma demande", exact: true }).count(), 1);
+      } finally { await page.unroute("**/api/inquiries", guardInquiry); }
       summary.skipped.push({ scenario: "Live inquiry submission", reason: "Public recipe does not send messages; existing authenticated E2E covers persistence in the isolated database." });
     });
 

@@ -24,6 +24,6 @@ export default function ParticipationChoices() {
       })}</div>
       <p className="participation-note">Les demandes sont examinées par l’équipe TLC selon les activités et les possibilités de collaboration.</p>
     </div>
-    <div className="participation-form" id="participation-request"><div className="participation-form-heading" aria-live="polite" aria-atomic="true"><span className="eyebrow">VOTRE DEMANDE</span><h2>{selected.title}</h2><p>{selected.detail}</p></div><InquiryForm key={kind} kind={kind} /></div>
+    <div className="participation-form" id="participation-request"><div className="participation-form-heading" aria-live="polite" aria-atomic="true"><span className="eyebrow">VOTRE DEMANDE</span><h2>{selected.title}</h2><p>{selected.detail}</p></div><InquiryForm kind={kind} /></div>
   </div>;
 }
