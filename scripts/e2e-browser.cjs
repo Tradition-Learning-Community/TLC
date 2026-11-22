@@ -82,6 +82,7 @@ fs.mkdirSync(screenshots, {recursive:true});
    assert.equal(namedActor.kind,"staff");
    assert.equal(namedActor.role,"owner");
    await page.goto("/admin/publications");
+   await page.getByRole("heading",{name:"Actualités & articles"}).waitFor();
    assert.equal(await page.getByLabel("Choisir une image pour Image de couverture").count(),1);
    await page.getByRole("button",{name:"Utiliser un lien"}).click();
    assert.equal(await page.getByPlaceholder("https://exemple.org/photo.jpg").count(),1);
