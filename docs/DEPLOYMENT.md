@@ -46,6 +46,17 @@ Publier le service derrière un proxy inverse HTTPS (transmission de l'hôte et 
 
 **Critères d'acceptation de l'installation :** pages publiques et `/api/articles` accessibles, `/api/admin/verify` renvoyant HTTP 401 sans session, connexion nominative, test d'un brouillon puis publication, téléversement JPEG réel et affichage via l'URL générée, soumission et lecture d'une demande, déconnexion et refus des accès non autorisés.
 
+### Conteneur Docker (optionnel)
+
+Le dépôt fournit aussi un `Dockerfile` avec exécution non privilégiée. Il ne copie pas le fichier d'environnement dans l'image :
+
+```bash
+docker build -t tlc-site .
+docker run --rm -p 3000:3000 --env-file .env.local tlc-site
+```
+
+La variable `DATABASE_URL` doit pointer vers une base accessible **depuis le conteneur**, pas vers l'hôte local du navigateur. Le stockage S3 et Neon Auth restent des services externes. Conserver `.env.local` et les sauvegardes hors de l'image, utiliser TLS et un reverse proxy en exploitation.
+
 ## 4. Sauvegardes et reprise
 
 Le script `pnpm backup` de l'ancienne version sauvegarde uniquement SQLite locale ; il n'est **pas** une sauvegarde de PostgreSQL. Prévoir sauvegarde planifiée et rétention au niveau PostgreSQL ou Neon. Exemple depuis un poste administratif sécurisé :

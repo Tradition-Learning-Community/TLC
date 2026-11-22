@@ -24,7 +24,7 @@ cp .env.example .env.local
 pnpm dev
 ```
 
-Ouvrir `http://localhost:3000` (la racine redirige vers `/home`). Le site avec ses pages dépendant de PostgreSQL nécessite une base initialisée. La création du schéma est décrite dans [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Ne jamais enregistrer les secrets dans Git, un ticket ou une capture d'écran.
+Ouvrir `http://localhost:3000` (la racine redirige vers `/home`). Le site avec ses pages dépendant de PostgreSQL nécessite une base initialisée. Un `Dockerfile` permet également de construire et lancer la même application hors Vercel. La création du schéma est décrite dans [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Ne jamais enregistrer les secrets dans Git, un ticket ou une capture d'écran.
 
 ```bash
 pnpm lint

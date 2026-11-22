@@ -1,0 +1,15 @@
+.git
+.github
+.next
+node_modules
+.data
+.env
+.env.*
+!.env.example
+test-results
+coverage
+*.log
+*.dump
+*.sqlite
+*.sqlite3
+Dockerfile*

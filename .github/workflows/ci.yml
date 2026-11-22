@@ -31,3 +31,10 @@ jobs:
 
       - name: Run tests
         run: pnpm test
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build portable Node.js image
+        run: docker build --tag tlc-site:ci .
