@@ -33,4 +33,4 @@ Le présent fichier décrit des limites **observables ou à tester**, pas un aud
 - [ ] Renforcer les validations par collection et couvrir les routes d'écriture restantes.
 - [ ] Mettre en place supervision des erreurs et des performances sur l'hébergement retenu.
 
-Ne pas modifier tllib ni annoncer TL Studio au cours des travaux ordinaires du site TLC.
+Ne pas modifier tllib dans les travaux ordinaires du site TLC.

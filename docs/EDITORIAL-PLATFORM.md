@@ -81,4 +81,4 @@ La mise en place initiale est une opération unique d'administration de Neon : c
 
 ## Nom des produits
 
-L'administration du site est nommée **Administration TLC**. Ne pas employer « TLC Studio » ni « TL Studio » : TL Studio désigne une application distincte envisagée pour utiliser tllib au moyen d'une interface, hors du périmètre du site et non annoncée comme disponible. La route institutionnelle principale est `/tlc` et `/about` redirige vers elle.
+L'administration du site est nommée **Administration TLC**. Aucune autre appellation de produit n'est associée à cet espace de gestion. La route institutionnelle principale est `/tlc` et `/about` redirige vers elle.

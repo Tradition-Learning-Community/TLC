@@ -1,6 +1,6 @@
 # Tradition Learning Community — site officiel TLC
 
-Ce dépôt contient le **portail scientifique et institutionnel TLC** ainsi que son espace **Administration TLC**. Le site présente trois réalités distinctes : la théorie **Tradition Learning**, la bibliothèque [**tllib**](https://github.com/Tradition-Learning-Community/tllib) et l'organisation **Tradition Learning Community**. Il ne constitue pas **TL Studio**, application distincte envisagée pour utiliser tllib au moyen d'une interface.
+Ce dépôt contient le **portail scientifique et institutionnel TLC** ainsi que son espace **Administration TLC**. Le site présente trois réalités distinctes : la théorie **Tradition Learning**, la bibliothèque [**tllib**](https://github.com/Tradition-Learning-Community/tllib) et l'organisation **Tradition Learning Community**.
 
 ## Fonctionnement actuel
 
