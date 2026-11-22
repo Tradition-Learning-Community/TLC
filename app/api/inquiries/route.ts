@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ ok: true, reference: record.id }, { status: 201 });
 }
 export async function PATCH(request: NextRequest) {
-  if (!isAdminRequest(request)) return unauthorizedResponse();
+  const denied = await deniedPermission(request, "inquiries:write"); if (denied) return denied;
   const data = await request.json().catch(() => null);
   if (!data || typeof data.id !== "string" || !["new", "in-progress", "closed"].includes(data.status)) {
     return NextResponse.json({ error: "Données invalides." }, { status: 400 });
