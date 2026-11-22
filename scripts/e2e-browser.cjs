@@ -87,8 +87,10 @@ fs.mkdirSync(screenshots, {recursive:true});
    await page.getByRole("button",{name:"Utiliser un lien"}).click();
    assert.equal(await page.getByPlaceholder("https://exemple.org/photo.jpg").count(),1);
    await page.goto("/admin/contributors");
+   await page.getByRole("heading",{name:"Contributeurs",exact:true}).waitFor();
    assert.equal(await page.getByLabel("Choisir une image pour Photo du contributeur").count(),1);
    await page.goto("/admin/data/media");
+   await page.getByRole("heading",{name:"Médiathèque"}).waitFor();
    assert.equal(await page.getByLabel("Sélectionner une image sur cet appareil").count(),1);
 
    // A separately invited editor can prepare drafts, but cannot publish,
