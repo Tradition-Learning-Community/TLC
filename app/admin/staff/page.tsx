@@ -78,7 +78,7 @@ export default function StaffPage() {
       </article>)}</section>
     <section className="rounded-xl border border-white/10 bg-[#0b1827] p-5"><h2 className="text-lg">Accès historique</h2>
       <p className="mt-2 text-sm text-slate-400">Statut : {legacyEnabled === null ? "Non vérifié" : legacyEnabled ? "Actif pendant la transition" : "Désactivé"}</p>
-      {legacyEnabled && actorKind === "staff" && <button onClick={() => void toggleLegacy()} className="mt-3 rounded-lg border border-amber-500/40 px-4 py-2 text-sm text-amber-200">Désactiver l'ancien mot de passe commun</button>}
+      {legacyEnabled && ["staff","local"].includes(actorKind) && <button onClick={() => void toggleLegacy()} className="mt-3 rounded-lg border border-amber-500/40 px-4 py-2 text-sm text-amber-200">Désactiver l'ancien mot de passe commun</button>}
     </section>
   </div>;
 }
