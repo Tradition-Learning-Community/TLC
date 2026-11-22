@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ImportButton from "@/components/admin/ImportButton";
+import MediaUploader from "@/components/admin/MediaUploader";
 
 type RecordItem = { id?: string; title?: string; name?: string; [key: string]: unknown };
 type Field = { key: string; label: string; type?: "text" | "url" | "date" | "number" | "textarea" | "list" | "select" | "checkbox"; options?: string[]; placeholder?: string };
@@ -195,6 +196,8 @@ export default function DataManager({ type }: { type: string }) {
       {success && <div role="status" className="rounded-xl border border-emerald-400/20 bg-emerald-950/20 p-3 text-sm text-emerald-200">{success}</div>}
 
       <div className="rounded-2xl border border-white/[0.08] bg-[#0b1827] p-4 sm:p-5"><div className="text-sm font-semibold text-white">À propos des champs</div><p className="mt-1 text-sm text-slate-400">{help.expected}</p>{help.tips.length > 0 && <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-slate-500">{help.tips.map((tip) => <li key={tip}>{tip}</li>)}</ul>}</div>
+
+      {type === "media" && <MediaUploader onUploaded={fetchItems} />}
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <section className="md:col-span-2 rounded-2xl border border-white/[0.08] bg-[#0b1827] p-4 sm:p-5">

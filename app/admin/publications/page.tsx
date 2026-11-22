@@ -19,6 +19,7 @@ export default function PublicationsAdmin() {
   const [form, setForm] = useState<ArticleInput>({ ...base });
   const [editing, setEditing] = useState<Article | null>(null);
   const [preview, setPreview] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -41,6 +42,18 @@ export default function PublicationsAdmin() {
     });
     setError(""); setMessage(""); setPreview(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  async function uploadCover(file: File | undefined) {
+    if (!file) return;
+    setUploading(true); setError("");
+    try {
+      const data = new FormData(); data.append("file", file); data.append("title", form.title || file.name);
+      const response = await fetch("/api/media/upload", { method: "POST", body: data });
+      const result = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(result?.error || "Impossible d'importer l'image.");
+      update("coverImage", result.url as string);
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "Erreur d'import."); }
+    finally { setUploading(false); }
   }
   async function save(status: PublicationStatus) {
     setBusy(true); setError(""); setMessage("");
@@ -90,6 +103,7 @@ export default function PublicationsAdmin() {
           </div>
           <label className={labelClass}>Résumé <textarea className={fieldClass} rows={3} maxLength={600} value={form.summary} onChange={(e) => update("summary", e.target.value)} /></label>
           <label className={labelClass}>Contenu de l'article <textarea className={fieldClass + " min-h-80"} rows={13} value={form.body} onChange={(e) => update("body", e.target.value)} placeholder="Rédigez le contenu avec des paragraphes séparés par une ligne vide." /></label>
+          <label className={labelClass}>Importer une image de couverture <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" disabled={uploading} onChange={(e) => void uploadCover(e.target.files?.[0])} className="block w-full text-xs text-slate-300" />{uploading && <span>Import en cours...</span>}</label>
           <label className={labelClass}>URL de l'image de couverture <input className={fieldClass} value={form.coverImage} placeholder="https://... ou /images/..." onChange={(e) => update("coverImage", e.target.value)} /></label>
           <label className="flex items-center gap-3 text-sm text-slate-300"><input type="checkbox" className="accent-[#d4af37]" checked={form.featured} onChange={(e) => update("featured", e.target.checked)} /> Mettre en avant sur l'accueil</label>
         </div>}
