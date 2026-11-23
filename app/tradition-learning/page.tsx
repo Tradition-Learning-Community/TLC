@@ -2,6 +2,7 @@ import Link from "next/link";
 import FundamentalEntitiesDiagram from "@/components/science/FundamentalEntitiesDiagram";
 import FundamentalObjectsExplorer from "@/components/science/FundamentalObjectsExplorer";
 import CohortsLineageDiagram from "@/components/science/CohortsLineageDiagram";
+import FoundingAnalogy from "@/components/science/FoundingAnalogy";
 import "@/components/science/science-diagrams.css";
 
 export const metadata = {
@@ -20,12 +21,14 @@ export default function TraditionLearningPage() {
       <div className="hero-actions"><a className="button button-gold" href="#fondements">Explorer les fondements</a><Link className="button button-outline" href="/recherche">Les travaux de recherche</Link></div>
     </div></div></section>
 
-    <div className="container"><nav className="theory-navigation" aria-label="Dans cette page"><a href="#fondements">La Tradition</a><a href="#entites">Trois entités</a><a href="#objets">Huit objets</a><a href="#filiations">Cohortes et filiations</a><a href="#approfondir">Approfondir</a></nav></div>
+    <div className="container"><nav className="theory-navigation" aria-label="Dans cette page"><a href="#fondements">La Tradition</a><a href="#analogie">Analogie fondatrice</a><a href="#entites">Trois entités</a><a href="#objets">Huit objets</a><a href="#filiations">Cohortes et filiations</a><a href="#approfondir">Approfondir</a></nav></div>
 
     <section className="section container theory-introduction" id="fondements" aria-labelledby="tradition-title">
       <div><span className="eyebrow">LE CADRE SCIENTIFIQUE</span><h2 className="section-title" id="tradition-title">Une Tradition vivante</h2><div className="gold-rule" /></div>
       <div className="theory-body"><p className="theory-quote">Un héritage intégré, évolutif et transmissible, que les participants peuvent enrichir.</p><p>La Tradition se développe à travers les relations, les pratiques, la mémoire et les transformations de ses participants. Une solution, un modèle ou des poids peuvent contribuer à son expression ; ils ne suffisent pas à la définir.</p><p>Le Maître peut guider une mission dont la solution reste inconnue. Les Disciples apprennent, découvrent et contribuent. La Communauté soutient les interactions, la reconnaissance et la continuité de cet héritage.</p><p>Ces rôles scientifiques et leurs conditions s’étudient dans des systèmes variés. Classification, régression, génération ou décision constituent des contextes d’application possibles, sans enfermer TL dans un algorithme ou une modalité.</p></div>
     </section>
+
+    <FoundingAnalogy />
 
     <div className="container"><FundamentalEntitiesDiagram /></div>
     <div className="container"><FundamentalObjectsExplorer /></div>
