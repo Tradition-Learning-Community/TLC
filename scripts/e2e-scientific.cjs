@@ -238,6 +238,19 @@ async function cleanupFixtures() {
     for (const width of widths) for (const route of routes) await check(`layout ${route} ${width}px`, () => layout(route, width));
 
     await page.setViewportSize({ width: 1440, height: 960 });
+    await check("founding analogy: three historical transmissions and scope disclaimer", async () => {
+      await visit("/tradition-learning");
+      const analogy = page.locator("#analogie");
+      assert.equal(await analogy.count(), 1, "founding analogy section exists");
+      assert.equal(await analogy.locator(".founding-analogy-card").count(), 3, "Buddha, Socrates and Jesus examples exist");
+      for (const label of ["Bouddha", "Socrate", "Jésus", "Platon", "Aristote", "Alexandre le Grand", "Apôtres et disciples"]) {
+        assert.equal(await analogy.getByText(label, { exact: true }).count() > 0, true, label + " displayed");
+      }
+      assert.match(await analogy.innerText(), /analogies historiques simplifiées/);
+      assert.match(await analogy.innerText(), /La théorie n’exige ni l’absence d’écrits/);
+      assert.equal(await page.locator('.theory-navigation a[href="#analogie"]').count(), 1);
+    });
+
     await check("VIS-01 entities: keyboard, selection, details and references", async () => {
       await visit("/tradition-learning");
       const section = page.locator("#entites");
