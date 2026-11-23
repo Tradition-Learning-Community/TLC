@@ -1,0 +1,29 @@
+/* Historical analogy: explanatory illustrations, not a scientific transmission graph. */
+.founding-analogy { background: var(--soft); }
+.founding-analogy-heading { max-width: 890px; }
+.founding-analogy-heading > p { max-width: 830px; font-size: 1.05rem; line-height: 1.86; margin: 0 0 16px; color: var(--ink); }
+.founding-analogy-legend { display: flex; flex-wrap: wrap; gap: 10px 24px; padding: 22px 0; margin: 14px 0 8px; color: var(--muted); font-size: .88rem; }
+.founding-analogy-legend > span { display: inline-flex; align-items: center; gap: 8px; }
+.founding-analogy-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; }
+.founding-analogy-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: clamp(20px,2vw,30px); box-shadow: 0 14px 40px rgba(6,20,45,.045); transition: transform .22s ease,border-color .22s ease,box-shadow .22s ease; }
+.founding-analogy-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 18px 40px rgba(6,20,45,.1); }
+.founding-analogy-card-head { min-height: 90px; }
+.founding-analogy-label { color: var(--gold-ink); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.founding-analogy-card h3 { font-size: 1.55rem; margin: 6px 0 16px; line-height: 1.25; }
+.founding-analogy-chain { padding: 3px 0 17px; margin: 0; list-style: none; }
+.founding-analogy-chain li { display: flex; flex-direction: column; align-items: flex-start; min-height: 54px; }
+.founding-analogy-step { display: inline-flex; align-items: center; gap: 10px; padding: 10px 13px; border-radius: 10px; background: var(--soft); border: 1px solid var(--line); color: var(--ink); font-weight: 650; font-size: .94rem; line-height: 1.4; }
+.founding-analogy-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+.founding-analogy-arrow { transform: rotate(90deg); margin: 5px 0 5px 18px; color: var(--gold-ink); }
+.founding-analogy-card > p { margin: 5px 0 0; font-size: .94rem; line-height: 1.8; color: var(--muted); }
+.founding-analogy-takeaway { display: flex; gap: 18px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 15px; padding: clamp(22px,3vw,38px); margin-top: 26px; }
+.founding-analogy-takeaway > svg { flex-shrink: 0; color: var(--gold-ink); margin-top: 3px; }
+.founding-analogy-takeaway h3 { font-size: 1.34rem; margin: 0 0 8px; }
+.founding-analogy-takeaway p { margin: 0 0 12px; max-width: 920px; line-height: 1.82; }
+.founding-analogy-takeaway .founding-analogy-note { font-size: .9rem; color: var(--muted); }
+.founding-analogy-takeaway .text-link { display: inline-flex; align-items: center; gap: 8px; }
+.founding-analogy-source { display: flex; align-items: flex-start; gap: 10px; margin: 18px 0 0; font-size: .83rem; color: var(--muted); }
+.founding-analogy-source svg { flex-shrink: 0; margin-top: 3px; }
+@media(max-width:1020px) { .founding-analogy-grid { grid-template-columns: 1fr; } .founding-analogy-card-head { min-height: auto; } .founding-analogy-chain { display: flex; flex-wrap: wrap; gap: 8px; } .founding-analogy-chain li { min-height: auto; flex-direction: row; align-items: center; } .founding-analogy-arrow { transform: none; margin: 0 0 0 8px; } }
+@media(max-width:600px) { .founding-analogy-heading > p { font-size: .97rem; } .founding-analogy-card { padding: 20px; } .founding-analogy-chain { display: block; } .founding-analogy-chain li { flex-direction: column; align-items: flex-start; } .founding-analogy-arrow { transform: rotate(90deg); margin: 5px 0 5px 18px; } .founding-analogy-takeaway { gap: 10px; padding: 19px; } .founding-analogy-takeaway > svg { width: 21px; } }
+@media(prefers-reduced-motion:reduce) { .founding-analogy-card { transition: none; } .founding-analogy-card:hover { transform: none; } }
