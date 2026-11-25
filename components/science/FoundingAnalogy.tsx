@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, BookOpen, CircleDot, GitBranch, Lightbulb, Users } from "lucide-react";
+import { ArrowRight, CircleDot, GitBranch, Lightbulb, Users } from "lucide-react";
 import HistoricalPath from "./HistoricalPath";
 import { analogyMotifs, historicalPaths, type AnalogyView } from "./founding-analogy-data";
 import "./founding-analogy.css";
@@ -67,7 +67,7 @@ export default function FoundingAnalogy() {
               </div>;
             })}
           </div>
-          <p className="tl-analogy-caption">Ces quatre repères servent seulement à lire les exemples historiques. Ils ne définissent pas quatre objets TL supplémentaires.</p>
+          
         </section>
 
         <div className="tl-analogy-conclusion">
@@ -79,7 +79,7 @@ export default function FoundingAnalogy() {
             <a className="tl-analogy-link" href="#entites">Explorer les fondements scientifiques <ArrowRight size={17} aria-hidden="true" /></a>
           </div>
         </div>
-        <p className="tl-analogy-source"><BookOpen size={17} aria-hidden="true" /> Source : <em>Tradition Learning - main.pdf</em>, sections 2.2, 2.3 et 3.10. Ces analogies historiques simplifiées ne constituent ni des filiations TL calculées ni une preuve expérimentale. TL n’exige ni l’absence d’écrits ni l’absence de données.</p>
+        
       </div>
     </section>
   );
