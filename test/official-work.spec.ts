@@ -1,32 +1,39 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { communityContributions, officialWork } from "../data/official-work";
+import { officialWork } from "../data/official-work";
 
-describe("Travaux officiels et contributions du portail", () => {
-  it("affiche les trois dépôts officiels avec leurs URL GitHub", () => {
-    expect(officialWork.map(item => item.id)).toEqual(["tllib", "tllib-specs", "TLC"]);
-    expect(officialWork.map(item => item.href)).toEqual([
-      "https://github.com/Tradition-Learning-Community/tllib",
-      "https://github.com/Tradition-Learning-Community/tllib-specs",
-      "https://github.com/Tradition-Learning-Community/TLC",
-    ]);
+const source = (path: string) => readFileSync(resolve(process.cwd(), path), "utf8");
+
+describe("Travaux scientifiques publics de TLC", () => {
+  it("présente Tradition Learning et tllib, pas le développement du portail", () => {
+    expect(officialWork.map(item => item.id)).toEqual(["tradition-learning", "tllib"]);
+    expect(officialWork.map(item => item.href)).toEqual(["/resources/tradition-learning", "/resources/tllib"]);
+    expect(officialWork.some(item => item.name === "Portail TLC")).toBe(false);
     for (const item of officialWork) {
-      expect(item.description.length).toBeGreaterThan(40);
-      expect(item.status.length).toBeGreaterThan(4);
+      expect(item.description.length).toBeGreaterThan(65);
+      expect(item.status.length).toBeGreaterThan(5);
+      expect(item.linkLabel.length).toBeGreaterThan(10);
     }
   });
 
-  it("précise que tllib V1 est encore en développement", () => {
-    expect(officialWork.find(item => item.id === "tllib")?.status).toBe("V1 en développement");
-    expect(officialWork.find(item => item.id === "tllib-specs")?.highlights).toContain("694 TLC-FC");
+  it("décrit la recherche et la bibliothèque sans chiffres de contrats en accueil", () => {
+    expect(officialWork.find(item => item.id === "tllib")?.status).toBe("En développement");
+    expect(officialWork.find(item => item.id === "tradition-learning")?.description).toContain("mathématiques");
+    const home = source("components/reference-home.tsx");
+    expect(home).not.toContain("694");
+    expect(home).not.toContain("36");
+    expect(home).not.toContain("Membres GitHub");
+    expect(home).toContain('"45","Membres du groupe TL Community"');
+    expect(home).toContain('"7","Groupes de la communauté WhatsApp"');
   });
 
-  it("relie les réalisations des contributeurs à des PR publiques précises", () => {
-    expect(communityContributions).toHaveLength(3);
-    for (const item of communityContributions) {
-      expect(item.handle.length).toBeGreaterThan(4);
-      expect(item.description.length).toBeGreaterThan(30);
-      expect(item.href).toMatch(/^https:\/\/github\.com\/Tradition-Learning-Community\/TLC\/pull\/\d+$/);
-    }
-    expect(new Set(communityContributions.map(item => item.href)).size).toBe(3);
+  it("affiche des témoignages fictifs de manière transparente", () => {
+    const home = source("components/reference-home.tsx");
+    const voices = source("components/community-voices.tsx");
+    expect(home).toContain("<CommunityVoices />");
+    expect(voices).toContain("Témoignages fictifs");
+    expect(voices).toContain("PARCOURS ILLUSTRATIFS");
+    expect(voices.match(/initials: /g)).toHaveLength(3);
   });
 });
