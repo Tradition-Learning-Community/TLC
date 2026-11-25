@@ -48,6 +48,7 @@ export default function AdminHome() {
         <Link href="/home" className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#d4af37] px-4 py-3 text-sm font-semibold text-[#1a160d] transition hover:bg-[#e2c260]">Voir le site <ArrowUpRight size={16} /></Link>
       </section>
 
+      <Link href="/admin/memberships" className="inline-flex items-center gap-2 rounded-xl border border-amber-300 bg-amber-50 px-5 py-4 font-semibold text-amber-900 hover:bg-amber-100">Examiner les demandes d’adhésion <ArrowRight size={18}/></Link>
       <section aria-label="Indicateurs du site" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map(({ key, label, icon: Icon, href }) => <Link key={key} href={href} className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md">
           <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-50 text-[#9a7427]"><Icon size={19} /></span><ArrowUpRight size={16} className="text-slate-300 group-hover:text-[#9a7427]" /></div>
