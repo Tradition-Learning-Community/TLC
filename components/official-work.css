@@ -1,0 +1,21 @@
+/* Verified TLC repositories and attributed public contributions */
+.tlc-official-work .section-head,.tlc-contribution-work .section-head{max-width:840px}
+.tlc-official-work-grid,.tlc-contribution-work-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.tlc-official-work-card,.tlc-contribution-work-card{display:flex;flex-direction:column;min-width:0;padding:28px;border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:0 6px 24px rgba(4,22,40,.04)}
+.tlc-official-work-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}
+.tlc-official-work-icon,.tlc-contribution-work-icon{display:grid;place-items:center;width:52px;height:52px;border-radius:15px;background:var(--muted-background);color:var(--gold-ink,#9a783b)}
+.tlc-official-work-status{font-size:12px;line-height:1.35;padding:7px 10px;border:1px solid var(--line);border-radius:100px;text-align:center;color:var(--muted)}
+.tlc-official-work-kind{font-size:12px;color:var(--gold-ink,#9a783b);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tlc-official-work-card h3,.tlc-contribution-work-card h3{font-size:clamp(23px,2vw,28px);margin:7px 0 12px}
+.tlc-official-work-card p,.tlc-contribution-work-card p{font-size:15px;line-height:1.75;color:var(--muted);margin:0 0 18px;flex:1}
+.tlc-official-work-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
+.tlc-official-work-tags span{padding:6px 10px;background:var(--muted-background);border-radius:20px;font-size:12px}
+.tlc-official-work-link,.tlc-contribution-work-author a,.tlc-official-work-more a{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--gold-ink,#9a783b);text-decoration:none}
+.tlc-contribution-work{background:var(--muted-background)}
+.tlc-contribution-work-icon{margin-bottom:14px}
+.tlc-contribution-work-card h3{font-size:21px}
+.tlc-contribution-work-author{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line);padding-top:17px}
+.tlc-contribution-work-author a{font-size:13px}
+.tlc-official-work-more{margin:22px 0 0;text-align:right}
+@media(max-width:950px){.tlc-official-work-grid,.tlc-contribution-work-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.tlc-official-work-grid,.tlc-contribution-work-grid{grid-template-columns:1fr}.tlc-official-work-card,.tlc-contribution-work-card{padding:23px}}
