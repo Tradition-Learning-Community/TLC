@@ -38,7 +38,7 @@ const ContactPage = () => {
             les possibilités de contribution depuis l’espace Communauté.
             Les questions techniques peuvent ensuite être suivies dans les dépôts du projet.
           </p>
-          <a href="/community" className="content-api-link mt-4">Découvrir les contributions</a>
+          <a href="/join" className="content-api-link mt-4">Devenir membre de TLC</a>
         </article>
       </div>
     </section>
