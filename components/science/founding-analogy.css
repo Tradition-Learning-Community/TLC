@@ -18,7 +18,7 @@
 .tl-analogy-path h3{font-size:clamp(25px,2.2vw,33px);line-height:1.2;margin:9px 0 17px}
 .tl-analogy-steps{list-style:none;margin:0 0 25px;padding:0;display:flex;flex-direction:column;align-items:flex-start;flex:1}
 .tl-analogy-step{display:flex;flex-direction:column;align-items:flex-start;min-width:0;max-width:100%}
-.tl-analogy-node{display:flex;align-items:center;gap:10px;min-height:46px;min-width:0;max-width:100%;padding:10px 13px;border:1px solid var(--line);border-radius:13px;background:var(--soft,#edf2f8);color:var(--ink);font:600 14px/1.45 inherit;cursor:pointer;text-align:left;transition:background .2s,border-color .2s,box-shadow .2s,transform .2s}
+.tl-analogy-node{display:flex;align-items:center;gap:10px;min-height:46px;min-width:0;max-width:100%;padding:10px 13px;border:1px solid var(--line);border-radius:13px;background:var(--soft,#edf2f8);color:var(--ink);font-family:inherit;font-size:14px;line-height:1.45;font-weight:600;cursor:pointer;text-align:left;transition:background .2s,border-color .2s,box-shadow .2s,transform .2s}
 .tl-analogy-node span{overflow-wrap:anywhere;font-weight:650;font-size:14px;line-height:1.45}
 .tl-analogy-node svg{flex-shrink:0;color:var(--gold-ink,#9a783b)}
 .tl-analogy-node--source{background:var(--navy,#06142d);color:#fff;border-color:var(--navy,#06142d)}
