@@ -24,7 +24,6 @@ export default function Header() {
   const { resolvedTheme, setTheme } = useTheme();
   const [themeReady, setThemeReady] = useState(false);
   useEffect(() => { setThemeReady(true); }, []);
-  if (path?.startsWith("/admin") || path?.startsWith("/x-admin")) return null;
   const isPublicationsActive = path === "/resources" || path?.startsWith("/resources/") || path === "/projects" || path?.startsWith("/projects/");
   const closeMenus = () => { setOpen(false); setPublicationsOpen(false); };
   useEffect(() => {
@@ -43,6 +42,7 @@ export default function Header() {
     };
   }, [publicationsOpen]);
 
+  if (path?.startsWith("/admin") || path?.startsWith("/x-admin")) return null;
   return <header className="site-header">
     <nav className="site-nav" aria-label="Navigation principale">
       <Link href="/home" className="brand" onClick={closeMenus} aria-label="TLC, accueil">
