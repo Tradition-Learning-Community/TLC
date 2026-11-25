@@ -224,3 +224,7 @@ body,main{font-size:16px;line-height:1.7}
   .home-content .contributors-home .contributor-avatar-ring{transition:none}
   .home-content .contributors-home .contributor-card:hover .contributor-avatar-ring{transform:none}
 }
+
+/* Public fact counters display only actual published records and known milestones. */
+.public-factual-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:560px){.public-factual-stats{grid-template-columns:1fr 1fr}.public-factual-stats .stat{padding-inline:10px}.public-factual-stats .stat span{overflow-wrap:anywhere}}
