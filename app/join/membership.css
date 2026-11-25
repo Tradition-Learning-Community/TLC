@@ -1,0 +1,36 @@
+/* Membership registration, account access and private application review */
+.tlc-member-form{display:flex;flex-direction:column;gap:20px;max-width:820px;width:100%;color:var(--ink)}
+.tlc-member-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.tlc-member-form label,.tlc-member-message{display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:650;line-height:1.5}
+.tlc-member-form input:not([type="checkbox"]),.tlc-member-form select,.tlc-member-form textarea,.tlc-member-login-form input{width:100%;min-height:45px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:11px;padding:12px 13px;font:400 15px/1.5 inherit;outline:none}
+.tlc-member-form input:not([type="checkbox"]):focus,.tlc-member-form select:focus,.tlc-member-form textarea:focus,.tlc-member-login-form input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(210,174,68,.15)}
+.tlc-member-form input::placeholder,.tlc-member-form textarea::placeholder{color:var(--muted)}
+.tlc-member-form .tlc-member-wide{grid-column:1/-1}
+.tlc-member-interests{border:1px solid var(--line);border-radius:13px;padding:15px 17px;margin:0}
+.tlc-member-interests legend{font-size:15px;font-weight:700;padding:0 6px}
+.tlc-member-interests>p{font-size:13px;color:var(--muted);margin:0 0 13px}
+.tlc-member-interests>div{display:flex;flex-wrap:wrap;gap:10px}
+.tlc-member-interests label{display:inline-flex;flex-direction:row;align-items:center;gap:8px;border:1px solid var(--line);border-radius:100px;padding:10px 13px;background:var(--card);font-size:13px;cursor:pointer}
+.tlc-member-form input[type="checkbox"]{width:18px;height:18px;accent-color:#b18a29;flex-shrink:0}
+.tlc-member-consent{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:11px!important;font-size:13px!important;font-weight:400!important;line-height:1.6!important}
+.tlc-member-consent input{margin-top:3px}
+.tlc-member-submit{width:100%;min-height:49px;font-size:15px}
+.tlc-member-submit:disabled{opacity:.65;cursor:wait}
+.tlc-member-help{font-size:13px;line-height:1.75;color:var(--muted);margin:0}
+.tlc-member-help a{color:var(--gold-ink,#a18129);font-weight:700;text-decoration:underline}
+.tlc-member-error{color:#9e302a;font-size:14px;font-weight:650;line-height:1.6}
+.tlc-member-honey{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.tlc-member-success{border:1px solid var(--line);padding:27px;border-radius:16px;background:var(--card);max-width:760px}
+.tlc-member-success h3{font-size:23px;margin:10px 0}
+.tlc-member-success p{font-size:15px;line-height:1.8;margin:0 0 22px}
+.tlc-member-success-mark{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#d9eecf;color:#246e3b;font-weight:800}
+.tlc-join-page,.tlc-member-area{padding:85px 0 105px;background:var(--background)}
+.tlc-join-layout{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.2fr);gap:clamp(20px,5vw,75px);align-items:start}
+.tlc-join-intro h1,.tlc-member-intro h1{font-size:clamp(32px,4vw,53px);line-height:1.14;margin:13px 0 24px}
+.tlc-join-intro p,.tlc-member-intro p{color:var(--muted);line-height:1.85;font-size:16px}
+.tlc-join-form-card{padding:clamp(22px,3vw,35px);border-radius:20px;border:1px solid var(--line);background:var(--card);box-shadow:0 12px 35px rgba(6,20,45,.06)}
+.tlc-member-login-form{display:flex;flex-direction:column;gap:17px;max-width:440px}
+.tlc-member-login-form label{display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:650}
+.tlc-member-panel{max-width:760px;padding:28px;border-radius:18px;border:1px solid var(--line);background:var(--card)}
+@media(max-width:900px){.tlc-join-layout{grid-template-columns:1fr}.tlc-join-intro{max-width:720px}}
+@media(max-width:570px){.tlc-member-form-grid{grid-template-columns:1fr}.tlc-member-form .tlc-member-wide{grid-column:auto}.tlc-join-page,.tlc-member-area{padding:48px 0 65px}}
