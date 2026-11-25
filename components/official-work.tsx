@@ -1,18 +1,18 @@
 import Link from "next/link";
-import { ArrowRight, BookOpenText, Code2 } from "lucide-react";
+import { ArrowRight, BookOpenText, Code2, PanelsTopLeft } from "lucide-react";
 import { officialWork } from "@/data/official-work";
 import "./official-work.css";
 
-const icons = { "tradition-learning": BookOpenText, tllib: Code2 } as const;
+const icons = { "tradition-learning": BookOpenText, tllib: Code2, "tl-studio": PanelsTopLeft } as const;
 
 export function OfficialProjects({ compact = false }: { compact?: boolean }) {
   return (
     <section className={`section tlc-official-work${compact ? " tlc-official-work--compact" : ""}`} id="official-projects" aria-labelledby="tlc-official-work-title">
       <div className="container">
         <div className="section-head">
-          <span className="eyebrow">NOS TRAVAUX</span>
-          <h2 className="section-title" id="tlc-official-work-title">De la recherche à la bibliothèque.</h2>
-          <p className="section-copy">Des scientifiques approfondissent les fondements de Tradition Learning. Des développeurs travaillent à leur mise en œuvre avec tllib.</p>
+          <span className="eyebrow">RECHERCHE & PRODUITS</span>
+          <h2 className="section-title" id="tlc-official-work-title">Une recherche, une bibliothèque, un studio.</h2>
+          <p className="section-copy">TLC mène la recherche Tradition Learning, développe sa bibliothèque et prépare une application pour en faciliter l’utilisation. Chaque chantier avance à son propre rythme.</p>
         </div>
         <div className="tlc-official-work-grid">
           {officialWork.map(item => {
@@ -30,7 +30,7 @@ export function OfficialProjects({ compact = false }: { compact?: boolean }) {
             </article>;
           })}
         </div>
-        {compact && <p className="tlc-official-work-more"><Link href="/projects">Explorer les projets et initiatives TLC <ArrowRight size={17} aria-hidden="true" /></Link></p>}
+        {compact && <p className="tlc-official-work-more"><Link href="/projects">Découvrir les projets et initiatives de TLC <ArrowRight size={17} aria-hidden="true" /></Link></p>}
       </div>
     </section>
   );
