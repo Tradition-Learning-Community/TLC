@@ -37,7 +37,7 @@ export default function HeroSection() {
                 </Button>
 
                 <Button asChild size="lg" className="rounded-xl border-2 border-[#d4af37]/60 px-8 py-3 text-white font-semibold bg-[rgba(212,175,55,0.05)] hover:bg-[#d4af37]/15 transition-all duration-300 hover:scale-105 hover:border-[#d4af37]">
-                  <Link href="/community" className="inline-flex items-center gap-2">
+                  <Link href="/join" className="inline-flex items-center gap-2">
                     <Slack className="h-5 w-5" />
                     Rejoindre TLC
                   </Link>
