@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
+import MembershipForm from "@/components/membership-form";
 import contributors from "@/data/contributors.json";
 import { OfficialProjects } from "@/components/official-work";
 import CommunityVoices from "@/components/community-voices";
@@ -42,7 +43,7 @@ export default function ReferenceHome(){
 
   <section className="events-home section"><div className="container"><div className="section-head"><h2 className="section-title">Événements à venir</h2><p className="section-copy">Les rencontres et ateliers annoncés par TLC sont publiés ici, avec leurs dates et leurs modalités.</p></div><div className="event-table">{homeEvents.length === 0 ? <p className="section-copy" role="status">Aucun événement annoncé pour le moment. Les prochaines rencontres seront publiées dans le calendrier TLC.</p> : homeEvents.map(event=><article className="event-row" key={event.title}><div className="event-date">{event.date}</div><div className="event-time">◷　{event.time}</div><div className="event-description"><h3>{event.title}</h3><span>{event.note}</span></div><button className="event-register" onClick={()=>open({kind:"event",title:event.title})}>S’inscrire ↗</button></article>)}</div><div className="event-more"><Link href="/events">Consulter le calendrier TLC　→</Link></div></div></section>
 
-  <section className="join-band section" id="join"><div className="container join-grid"><div><span className="eyebrow">PARTICIPER À TLC</span><h2 className="section-title">Rejoindre la communauté</h2><p className="section-copy">Présentez votre parcours, vos compétences et les travaux auxquels vous aimeriez participer.</p><small>La demande se finalise directement auprès de l’équipe TLC.</small></div><JoinForm/></div></section>
+  <section className="join-band section" id="join"><div className="container join-grid"><div><span className="eyebrow">PARTICIPER À TLC</span><h2 className="section-title">Rejoindre la communauté</h2><p className="section-copy">Créez votre compte et choisissez vos formes de participation : membre, bénévole, contributeur, sponsor ou partenaire.</p><small>Inscription sécurisée, soumise à validation par TLC.</small></div><MembershipForm/></div></section>
 
   <section className="faq-home section"><div className="container faq-grid"><div><h2 className="section-title">Questions fréquentes</h2><p className="section-copy">Les réponses aux questions les plus fréquentes sur la participation.</p></div><div className="faq">{[["Qui peut rejoindre TLC ?","Toute personne intéressée par la recherche ouverte et les projets d’intelligence artificielle peut proposer sa candidature."],["Faut-il payer pour participer ?","Les activités et ressources ouvertes de TLC sont accessibles aux membres de la communauté."],["Comment fonctionne la collaboration sur les projets ?","Chaque projet possède un cadre, des tâches et des étapes documentées. Les contributions sont revues et attribuées."],["Puis-je proposer mon propre projet de recherche ?","Oui. Présentez le besoin, les objectifs et les résultats attendus à l’équipe TLC."],["Les projets produisent-ils des résultats concrets ?","Les projets visent des livrables réutilisables : prototypes, publications, jeux de données ou guides."]].map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
 
@@ -53,28 +54,3 @@ export default function ReferenceHome(){
 }
 
 function ApplicationForm({kind,onSent}:{kind:"project"|"event"|"join";onSent:()=>void}){return <form onSubmit={e=>{e.preventDefault();onSent()}}><div className="field"><label htmlFor="home-name">Nom complet</label><input id="home-name" required placeholder="Votre nom"/></div><div className="field"><label htmlFor="home-email">Adresse e-mail</label><input id="home-email" required type="email" placeholder="vous@exemple.fr"/></div>{kind!=="event"&&<div className="field"><label htmlFor="home-role">Profil</label><select id="home-role" defaultValue=""><option value="" disabled>Choisissez votre profil</option><option>Chercheur·euse</option><option>Développeur·euse</option><option>Étudiant·e</option><option>Autre</option></select></div>}<div className="field"><label htmlFor="home-message">{kind==="event"?"Message (facultatif)":"Votre projet ou motivation"}</label><textarea id="home-message" required={kind!=="event"} placeholder="Quel domaine de l’IA vous intéresse et sur quoi souhaitez-vous contribuer ?"/></div><button type="submit" className="button button-gold">{kind==="event"?"Confirmer mon inscription":"Envoyer ma demande"}</button><p className="small-note">Vos informations servent uniquement à traiter votre demande.</p></form>}
-
-function JoinForm(){
-  const prepareEmail = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const name = String(data.get("name") || "").trim();
-    const email = String(data.get("email") || "").trim();
-    const profile = String(data.get("profile") || "");
-    const message = String(data.get("message") || "").trim();
-    const subject = encodeURIComponent("Participation à TLC — " + name);
-    const body = encodeURIComponent(["Bonjour,","", "Je souhaite rejoindre ou contribuer aux activités de Tradition Learning Community.", "", "Nom : " + name, "Contact : " + email, "Profil : " + profile, "", "Mon intérêt :", message].join("\n"));
-    window.location.href = "mailto:tlccommunitymanager2@gmail.com?subject=" + subject + "&body=" + body;
-  };
-  return <div className="home-join-form">
-    <form onSubmit={prepareEmail}>
-      <div className="field"><label htmlFor="join-name">Votre nom</label><input id="join-name" name="name" required placeholder="Votre nom"/></div>
-      <div className="field"><label htmlFor="join-email">E-mail</label><input id="join-email" name="email" required type="email" placeholder="vous@exemple.fr"/></div>
-      <div className="field"><label htmlFor="join-profile">Profil</label><select id="join-profile" name="profile" required defaultValue=""><option value="" disabled>Choisissez votre profil</option><option>Recherche</option><option>Développement</option><option>Études</option><option>Autre</option></select></div>
-      <div className="field"><label htmlFor="join-message">Votre projet ou motivation</label><textarea id="join-message" name="message" required placeholder="Quel domaine de l’IA vous intéresse et sur quoi souhaitez-vous contribuer ?"/></div>
-      <button type="submit" className="button button-gold">Préparer mon message</button>
-      <p className="small-note">Votre messagerie s’ouvrira avec le message préparé. Vérifiez-le et envoyez-le depuis votre compte e-mail.</p>
-      <p className="small-note">Contact direct : <a href="mailto:tlccommunitymanager2@gmail.com">tlccommunitymanager2@gmail.com</a></p>
-    </form>
-  </div>;
-}
