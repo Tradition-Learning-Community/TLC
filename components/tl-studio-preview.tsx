@@ -12,7 +12,7 @@ export const studioScenarios = [
     mission: "Concevoir et étudier un système adapté à l’identification de pathologies oculaires dans son contexte.",
     probleme: "Disposer de connaissances et d’observations pertinentes malgré une représentativité limitée des images disponibles.",
     ressources: "Images existantes, expertise médicale, observations locales à collecter et moyens de calcul disponibles.",
-    roles: "Participants et relations initiales à définir selon l’expertise et les ressources mobilisables.",
+    roles: "Maître(s) et Disciple(s) à identifier ou constituer selon leurs Capacités ; Communauté et relations initiales à organiser.",
     capacites: "Analyse d’images, acquisition d’observations, évaluation et adaptation au contexte.",
   },
   {
@@ -23,7 +23,7 @@ export const studioScenarios = [
     mission: "Étudier un système capable d’accompagner le suivi et l’anticipation des incidents d’équipement.",
     probleme: "Articuler des observations hétérogènes, l’expertise du terrain et des événements peu documentés.",
     ressources: "Historique de maintenance, mesures disponibles, spécialistes des équipements et environnement de test.",
-    roles: "Rôles initiaux à constituer en tenant compte des expertises et des capacités réellement mobilisées.",
+    roles: "Maître(s), Disciple(s) et Communauté à constituer selon les expertises, les ressources et les conditions pertinentes.",
     capacites: "Observation de séries temporelles, diagnostic, suivi des interventions et évaluation.",
   },
 ] as const;
@@ -70,6 +70,7 @@ export default function TLStudioPreview() {
             <article><span>Rôles initiaux</span><p>{scenario.roles}</p></article>
             <article className="tlstudio-result-wide"><span>Capacités à associer</span><p>{scenario.capacites}</p></article>
           </div>
+          <div className="tlstudio-objects-panel"><strong>Contenus à approfondir avec TL Studio</strong><p>Message, Principes, Valeurs, Vertus, Compétences, Pratique et Expérience vécue : les objets pertinents et leurs relations pourront être explorés et précisés avec l’utilisateur au fil de la constitution.</p></div>
         </div>
       </div>
       <p className="tlstudio-preview-note">Cet aperçu illustre l’interface envisagée. Les propositions sont des exemples de conception ; aucun système n’est exécuté ici.</p>
