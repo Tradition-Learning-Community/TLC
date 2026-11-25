@@ -11,9 +11,10 @@ const primaryLinks = [
   ["Accueil", "/home"], ["Contributeurs", "/community"],
   ["\u00c9v\u00e9nements", "/events"], ["Actualit\u00e9s", "/blog"], ["\u00c0 propos", "/about"],
 ] as const;
-const publicationLinks = [
-  ["Les projets de TLC", "/projects"], ["Publications", "/resources"],
-  ["Tradition Learning", "/resources/tradition-learning"], ["tllib", "/resources/tllib"], ["TL Studio", "/tl-studio"],
+const workLinks = [
+  ["Tradition Learning", "/resources/tradition-learning"],
+  ["tllib", "/resources/tllib"],
+  ["TL Studio", "/tl-studio"],
 ] as const;
 
 export default function Header() {
@@ -24,7 +25,7 @@ export default function Header() {
   const { resolvedTheme, setTheme } = useTheme();
   const [themeReady, setThemeReady] = useState(false);
   useEffect(() => { setThemeReady(true); }, []);
-  const isPublicationsActive = path === "/resources" || path?.startsWith("/resources/") || path === "/projects" || path?.startsWith("/projects/") || path === "/tl-studio";
+  const isPublicationsActive = path === "/projects" || path?.startsWith("/projects/") || path === "/resources/tradition-learning" || path === "/resources/tllib" || path === "/tl-studio";
   const closeMenus = () => { setOpen(false); setPublicationsOpen(false); };
   useEffect(() => {
     if (!publicationsOpen) return;
@@ -53,10 +54,10 @@ export default function Header() {
         <div className="nav-links">
           {primaryLinks.slice(0, 1).map(([label, href]) => <Link key={href} href={href} onClick={closeMenus} className={path === href ? "active" : ""}>{label}</Link>)}
           <div ref={publicationsRef} className={`nav-publications${publicationsOpen ? " is-open" : ""}`}>
-            <Link href="/projects" onClick={closeMenus} className={isPublicationsActive ? "active" : ""} aria-current={isPublicationsActive ? "page" : undefined}>Nos travaux</Link>
+            <Link href="/projects" onClick={closeMenus} className={isPublicationsActive ? "active" : ""} aria-current={path === "/projects" ? "page" : undefined}>Nos travaux</Link>
             <button type="button" className="nav-publications-toggle" aria-label="Afficher les rubriques des travaux" aria-expanded={publicationsOpen} onClick={() => setPublicationsOpen(!publicationsOpen)}><ChevronDown size={14}/></button>
             <div className="nav-publications-menu" aria-label="Rubriques des travaux">
-              {publicationLinks.map(([label, href]) => <Link key={href} href={href} onClick={closeMenus} className={path === href ? "active" : ""}>{label}</Link>)}
+              {workLinks.map(([label, href]) => <Link key={href} href={href} onClick={closeMenus} className={path === href ? "active" : ""}>{label}</Link>)}
             </div>
           </div>
           {primaryLinks.slice(1).map(([label, href]) => <Link key={href} href={href} onClick={closeMenus} className={path === href || path?.startsWith(href + "/") ? "active" : ""}>{label}</Link>)}
