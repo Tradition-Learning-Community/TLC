@@ -36,8 +36,8 @@ describe("TL Studio — présentation publique d'un produit en conception", () =
     expect(home).toContain("organisation scientifique à vocation internationale");
     expect(home).not.toContain("WhatsApp");
     expect(home).not.toContain("Membres GitHub");
-    expect(home).toContain('window.location.href = "mailto:tlccommunitymanager2@gmail.com');
-    expect(home).toContain("Préparer mon message");
+    expect(home).toContain("<MembershipForm/>");
+    expect(home).not.toContain('window.location.href = "mailto:tlccommunitymanager2@gmail.com');
   });
 
   it("conserve les voix illustratives explicitement identifiées", () => {
