@@ -54,4 +54,27 @@ export default function ReferenceHome(){
 
 function ApplicationForm({kind,onSent}:{kind:"project"|"event"|"join";onSent:()=>void}){return <form onSubmit={e=>{e.preventDefault();onSent()}}><div className="field"><label htmlFor="home-name">Nom complet</label><input id="home-name" required placeholder="Votre nom"/></div><div className="field"><label htmlFor="home-email">Adresse e-mail</label><input id="home-email" required type="email" placeholder="vous@exemple.fr"/></div>{kind!=="event"&&<div className="field"><label htmlFor="home-role">Profil</label><select id="home-role" defaultValue=""><option value="" disabled>Choisissez votre profil</option><option>Chercheur·euse</option><option>Développeur·euse</option><option>Étudiant·e</option><option>Autre</option></select></div>}<div className="field"><label htmlFor="home-message">{kind==="event"?"Message (facultatif)":"Votre projet ou motivation"}</label><textarea id="home-message" required={kind!=="event"} placeholder="Quel domaine de l’IA vous intéresse et sur quoi souhaitez-vous contribuer ?"/></div><button type="submit" className="button button-gold">{kind==="event"?"Confirmer mon inscription":"Envoyer ma demande"}</button><p className="small-note">Vos informations servent uniquement à traiter votre demande.</p></form>}
 
-function JoinForm(){const [sent,setSent]=useState(false);return <div className="home-join-form">{sent?<div className="notice" role="status">Merci pour votre intérêt. Pour finaliser votre candidature, écrivez à <a href="mailto:tlccommunitymanager2@gmail.com">tlccommunitymanager2@gmail.com</a>.</div>:<form onSubmit={e=>{e.preventDefault();setSent(true)}}><div className="field"><label htmlFor="join-name">Votre nom</label><input id="join-name" required placeholder="Votre nom"/></div><div className="field"><label htmlFor="join-email">E-mail</label><input id="join-email" required type="email" placeholder="vous@exemple.fr"/></div><div className="field"><label htmlFor="join-profile">Profil</label><select id="join-profile" required defaultValue=""><option value="" disabled>Choisissez votre profil</option><option>Recherche</option><option>Développement</option><option>Études</option><option>Autre</option></select></div><div className="field"><label htmlFor="join-message">Votre projet ou motivation</label><textarea id="join-message" required placeholder="Quel domaine de l’IA vous intéresse et sur quoi souhaitez-vous contribuer ?"/></div><button type="submit" className="button button-gold">Envoyer ma demande</button></form>}</div>}
+function JoinForm(){
+  const prepareEmail = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const name = String(data.get("name") || "").trim();
+    const email = String(data.get("email") || "").trim();
+    const profile = String(data.get("profile") || "");
+    const message = String(data.get("message") || "").trim();
+    const subject = encodeURIComponent("Participation à TLC — " + name);
+    const body = encodeURIComponent(["Bonjour,","", "Je souhaite rejoindre ou contribuer aux activités de Tradition Learning Community.", "", "Nom : " + name, "Contact : " + email, "Profil : " + profile, "", "Mon intérêt :", message].join("\n"));
+    window.location.href = "mailto:tlccommunitymanager2@gmail.com?subject=" + subject + "&body=" + body;
+  };
+  return <div className="home-join-form">
+    <form onSubmit={prepareEmail}>
+      <div className="field"><label htmlFor="join-name">Votre nom</label><input id="join-name" name="name" required placeholder="Votre nom"/></div>
+      <div className="field"><label htmlFor="join-email">E-mail</label><input id="join-email" name="email" required type="email" placeholder="vous@exemple.fr"/></div>
+      <div className="field"><label htmlFor="join-profile">Profil</label><select id="join-profile" name="profile" required defaultValue=""><option value="" disabled>Choisissez votre profil</option><option>Recherche</option><option>Développement</option><option>Études</option><option>Autre</option></select></div>
+      <div className="field"><label htmlFor="join-message">Votre projet ou motivation</label><textarea id="join-message" name="message" required placeholder="Quel domaine de l’IA vous intéresse et sur quoi souhaitez-vous contribuer ?"/></div>
+      <button type="submit" className="button button-gold">Préparer mon message</button>
+      <p className="small-note">Votre messagerie s’ouvrira avec le message préparé. Vérifiez-le et envoyez-le depuis votre compte e-mail.</p>
+      <p className="small-note">Contact direct : <a href="mailto:tlccommunitymanager2@gmail.com">tlccommunitymanager2@gmail.com</a></p>
+    </form>
+  </div>;
+}
