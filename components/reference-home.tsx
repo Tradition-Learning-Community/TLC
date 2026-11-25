@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import contributors from "@/data/contributors.json";
 import { OfficialProjects } from "@/components/official-work";
 import CommunityVoices from "@/components/community-voices";
@@ -55,7 +55,7 @@ export default function ReferenceHome(){
 function ApplicationForm({kind,onSent}:{kind:"project"|"event"|"join";onSent:()=>void}){return <form onSubmit={e=>{e.preventDefault();onSent()}}><div className="field"><label htmlFor="home-name">Nom complet</label><input id="home-name" required placeholder="Votre nom"/></div><div className="field"><label htmlFor="home-email">Adresse e-mail</label><input id="home-email" required type="email" placeholder="vous@exemple.fr"/></div>{kind!=="event"&&<div className="field"><label htmlFor="home-role">Profil</label><select id="home-role" defaultValue=""><option value="" disabled>Choisissez votre profil</option><option>Chercheur·euse</option><option>Développeur·euse</option><option>Étudiant·e</option><option>Autre</option></select></div>}<div className="field"><label htmlFor="home-message">{kind==="event"?"Message (facultatif)":"Votre projet ou motivation"}</label><textarea id="home-message" required={kind!=="event"} placeholder="Quel domaine de l’IA vous intéresse et sur quoi souhaitez-vous contribuer ?"/></div><button type="submit" className="button button-gold">{kind==="event"?"Confirmer mon inscription":"Envoyer ma demande"}</button><p className="small-note">Vos informations servent uniquement à traiter votre demande.</p></form>}
 
 function JoinForm(){
-  const prepareEmail = (event: React.FormEvent<HTMLFormElement>) => {
+  const prepareEmail = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = String(data.get("name") || "").trim();
