@@ -25,3 +25,5 @@
 .tlc-voices-note{margin:18px 0 0;font-size:12px;color:var(--muted);line-height:1.6}
 @media(max-width:950px){.tlc-voices-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){.tlc-official-work-grid,.tlc-voices-grid{grid-template-columns:1fr}.tlc-official-work-card,.tlc-voice-card{padding:24px}}
+
+.home-community-figures-date{margin:10px auto 0;max-width:1080px;padding:0 24px;text-align:center;color:var(--muted);font-size:12px;line-height:1.65}
