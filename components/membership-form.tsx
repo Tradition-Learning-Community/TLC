@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { memberInterests, memberProfiles } from "@/lib/membership";
+import "@/app/join/membership.css";
 
 export default function MembershipForm() {
   const [submitting, setSubmitting] = useState(false);
