@@ -228,3 +228,16 @@ body,main{font-size:16px;line-height:1.7}
 /* Public fact counters display only actual published records and known milestones. */
 .public-factual-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:560px){.public-factual-stats{grid-template-columns:1fr 1fr}.public-factual-stats .stat{padding-inline:10px}.public-factual-stats .stat span{overflow-wrap:anywhere}}
+
+
+/* Navigation TLC : Travaux > Projets (TL, tllib, TL Studio) + Publications. */
+.site-header .nav-publications-menu{min-width:270px}
+.site-header .nav-work-group{display:flex;flex-direction:column;padding-bottom:8px;margin-bottom:7px;border-bottom:1px solid var(--line)}
+.site-header .nav-publications-menu a.nav-work-heading{font-size:14px;font-weight:800;color:var(--ink);padding:11px 12px 9px}
+.site-header .nav-publications-menu a.nav-work-child{font-size:13px;padding:9px 12px 9px 25px;color:var(--muted);white-space:normal}
+.site-header .nav-publications-menu a.nav-work-child:hover,
+.site-header .nav-publications-menu a.nav-work-child.active{color:var(--ink);background:var(--muted-background)}
+.site-header .nav-publications-menu a.nav-work-publications{font-size:14px;font-weight:750;padding:11px 12px}
+.site-footer .footer-links{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:850px){.site-footer .footer-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.site-footer .footer-links{grid-template-columns:1fr}}
