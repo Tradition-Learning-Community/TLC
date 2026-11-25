@@ -8,6 +8,7 @@ import { ArrowUpRight, BookOpen, CalendarDays, LayoutDashboard, LogOut, Newspape
 const navigation = [
   { href: "/admin", label: "Vue d'ensemble", icon: LayoutDashboard },
   { href: "/admin/data/contributors", label: "Contributeurs", icon: Users },
+  { href: "/admin/memberships", label: "Adhésions et membres", icon: Users },
   { href: "/admin/data/news", label: "Actualités", icon: Newspaper },
   { href: "/admin/data/projects", label: "Projets", icon: Layers3 },
   { href: "/admin/data/events", label: "Événements", icon: CalendarDays },
