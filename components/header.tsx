@@ -12,8 +12,8 @@ const primaryLinks = [
   ["\u00c9v\u00e9nements", "/events"], ["Actualit\u00e9s", "/blog"], ["\u00c0 propos", "/about"],
 ] as const;
 const publicationLinks = [
-  ["Toutes les publications", "/resources"], ["Projets TLC", "/projects"],
-  ["Tradition Learning", "/resources/tradition-learning"], ["tllib", "/resources/tllib"],
+  ["Les projets de TLC", "/projects"], ["Publications", "/resources"],
+  ["Tradition Learning", "/resources/tradition-learning"], ["tllib", "/resources/tllib"], ["TL Studio", "/tl-studio"],
 ] as const;
 
 export default function Header() {
@@ -24,7 +24,7 @@ export default function Header() {
   const { resolvedTheme, setTheme } = useTheme();
   const [themeReady, setThemeReady] = useState(false);
   useEffect(() => { setThemeReady(true); }, []);
-  const isPublicationsActive = path === "/resources" || path?.startsWith("/resources/") || path === "/projects" || path?.startsWith("/projects/");
+  const isPublicationsActive = path === "/resources" || path?.startsWith("/resources/") || path === "/projects" || path?.startsWith("/projects/") || path === "/tl-studio";
   const closeMenus = () => { setOpen(false); setPublicationsOpen(false); };
   useEffect(() => {
     if (!publicationsOpen) return;
@@ -53,9 +53,9 @@ export default function Header() {
         <div className="nav-links">
           {primaryLinks.slice(0, 1).map(([label, href]) => <Link key={href} href={href} onClick={closeMenus} className={path === href ? "active" : ""}>{label}</Link>)}
           <div ref={publicationsRef} className={`nav-publications${publicationsOpen ? " is-open" : ""}`}>
-            <Link href="/resources" onClick={closeMenus} className={isPublicationsActive ? "active" : ""} aria-current={isPublicationsActive ? "page" : undefined}>Publications</Link>
-            <button type="button" className="nav-publications-toggle" aria-label="Afficher les rubriques Publications" aria-expanded={publicationsOpen} onClick={() => setPublicationsOpen(!publicationsOpen)}><ChevronDown size={14}/></button>
-            <div className="nav-publications-menu" aria-label="Rubriques Publications">
+            <Link href="/projects" onClick={closeMenus} className={isPublicationsActive ? "active" : ""} aria-current={isPublicationsActive ? "page" : undefined}>Nos travaux</Link>
+            <button type="button" className="nav-publications-toggle" aria-label="Afficher les rubriques des travaux" aria-expanded={publicationsOpen} onClick={() => setPublicationsOpen(!publicationsOpen)}><ChevronDown size={14}/></button>
+            <div className="nav-publications-menu" aria-label="Rubriques des travaux">
               {publicationLinks.map(([label, href]) => <Link key={href} href={href} onClick={closeMenus} className={path === href ? "active" : ""}>{label}</Link>)}
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function Header() {
         </div>
         <div className="nav-actions">
           <button className="theme-switch" onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")} aria-label={!themeReady ? "Changer le theme" : resolvedTheme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}>{themeReady && resolvedTheme === "dark" ? <Sun/> : <Moon/>}</button>
-          <a className="button button-gold nav-cta" href="https://github.com/Tradition-Learning-Community" target="_blank" rel="noreferrer" onClick={closeMenus}>Rejoindre la communaut&#233; <span aria-hidden>&#8599;</span></a>
+          <Link className="button button-gold nav-cta" href="/home#join" onClick={closeMenus}>Rejoindre la communaut&#233; <span aria-hidden>&#8599;</span></Link>
         </div>
       </div>
     </nav>
