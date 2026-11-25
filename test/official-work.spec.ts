@@ -21,8 +21,9 @@ describe("Travaux scientifiques publics de TLC", () => {
     expect(officialWork.find(item => item.id === "tllib")?.status).toBe("En développement");
     expect(officialWork.find(item => item.id === "tradition-learning")?.description).toContain("mathématiques");
     const home = source("components/reference-home.tsx");
-    expect(home).not.toContain("694");
-    expect(home).not.toContain("36");
+    expect(home).not.toContain("694 TLC-FC");
+    expect(home).not.toContain("Domaines spécifiés");
+    expect(home).not.toContain("Fiches de fonctionnalité");
     expect(home).not.toContain("Membres GitHub");
     expect(home).toContain('"45","Membres du groupe TL Community"');
     expect(home).toContain('"7","Groupes de la communauté WhatsApp"');
