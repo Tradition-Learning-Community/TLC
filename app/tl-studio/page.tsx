@@ -85,7 +85,7 @@ export default function TLStudioPage() {
     <section className="new-section new-container tlstudio-participate">
       <div><span className="eyebrow">CONSTRUIRE LE PROJET</span><h2>Contribuer à TL Studio.</h2><p>La conception peut mobiliser des spécialistes de l’IA, des interfaces, du développement logiciel, de l’expérience utilisateur et de Tradition Learning.</p></div>
       <div className="tlstudio-participate-actions">
-        <Link href="/home#join" className="button button-gold"><UsersRound size={19} aria-hidden="true"/> Rejoindre TLC</Link>
+        <Link href="/join" className="button button-gold"><UsersRound size={19} aria-hidden="true"/> Rejoindre TLC</Link>
         <Link href="/projects" className="tlstudio-secondary-link"><Compass size={18} aria-hidden="true"/> Voir l’ensemble des projets</Link>
       </div>
     </section>
