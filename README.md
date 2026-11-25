@@ -83,6 +83,10 @@ La base utilise PostgreSQL. Au premier appel API, le schema est cree et les fich
 | `/resources` | Publications et ressources |
 | `/about` | Mission et principes de TLC |
 | `/community` | Comment participer et appels à contribution |
+| `/join` | Inscription à TLC : membre, bénévole, contributeur, sponsor ou partenaire |
+| `/member/login` | Connexion des membres approuvés |
+| `/member` | Espace privé du membre |
+| `/admin/memberships` | Examen et validation des demandes d’adhésion |
 | `/admin/login` | Connexion administrateur |
 | `/admin` | Gestion des données après connexion |
 
@@ -128,3 +132,13 @@ La copie de test utilise PostgreSQL. Sur cette machine, une instance TLC isolee 
 Apres un redemarrage de Windows, lancez l'instance depuis la racine du projet avec powershell -ExecutionPolicy Bypass -File scripts/start-laragon-postgres.ps1, puis redemarrez Next.js avec pnpm dev. Au premier appel de l'API, les tables sont creees et les donnees initiales de data/ sont importees.
 
 Pour ouvrir l'administration, allez sur /admin/login et utilisez la valeur de ADMIN_PASSWORD dans .env.local. Ce mot de passe est reserve au developpement local.
+
+## Adhésions TLC
+
+Le bouton **Rejoindre la communauté** ouvre le formulaire d’inscription de TLC. Les personnes peuvent demander plusieurs formes de participation : membre, bénévole, contributeur, sponsor ou partenaire.
+
+La demande crée un compte avec le statut `pending` dans la collection privée `membership-accounts` de PostgreSQL (table `records`). Le mot de passe est salé et haché avec scrypt. Les informations de compte et de motivation ne sont pas publiées dans l’annuaire.
+
+La console `/admin/memberships` permet au responsable de consulter les demandes et de les accepter ou refuser. Après acceptation (`approved`), l’intéressé peut se connecter depuis `/member/login`. Une demande refusée ou en attente ne donne pas accès à l'espace membre. La validation administrative doit inclure la vérification nécessaire de l'identité et du contact ; **le site ne réalise pas encore de vérification automatique par e-mail**. Les membres ne sont pas automatiquement ajoutés à l'annuaire public GitHub.
+
+La connexion est protégée par un cookie signé HttpOnly ; la session peut utiliser `MEMBER_SESSION_SECRET` (facultatif si `ADMIN_SESSION_SECRET` est déjà défini). La limitation de débit applicative s’ajoute aux protections anti-abus à configurer au niveau de l’hébergement. L’envoi automatique d’e-mails, le mot de passe oublié et les fonctionnalités avancées de profil ne sont pas compris dans cette première version.
