@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import FoundingAnalogy from "./science/FoundingAnalogy";
-import { ArrowRight, BookOpen, Braces, ChevronRight, CircleDot, Code2, Cpu, Database, FileCheck2, FlaskConical, FolderKanban, GitBranch, Layers, Lightbulb, Network, Newspaper, Plug, ShieldCheck, Users } from "lucide-react";
+import { ArrowRight, BookOpen, Braces, CircleDot, Code2, Cpu, Database, FileCheck2, FlaskConical, FolderKanban, GitBranch, Layers, Lightbulb, Network, Newspaper, Plug, ShieldCheck, Users } from "lucide-react";
 
 export function AboutPage() {
  const circles=[["Scientifique","Modèles et algorithmes",FlaskConical],["Développement","Bibliothèque et logiciels",Code2],["Qualité","Tests, revue et produit",ShieldCheck],["Communauté","Communication et partenariats",Users],["Finance","Budget et soutiens",Layers],["Logistique","Moyens et infrastructure",Database]] as const;
