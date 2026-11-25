@@ -21,7 +21,7 @@ describe("TL Studio — présentation publique d'un produit en conception", () =
     expect(preview).toContain('id: "sante"');
     expect(preview).toContain('id: "industrie"');
     for (const label of ["mission", "probleme", "ressources", "roles", "capacites"]) {
-      expect(preview).toContain(`${scenario.${label}}`);
+      expect(preview).toContain("${scenario." + label + "}");
     }
     expect(preview).toContain("onClick={() => setSelected(item.id)}");
     expect(preview).toContain("aria-pressed={selected === item.id}");
