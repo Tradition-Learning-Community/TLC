@@ -7,7 +7,7 @@ const source = (path: string) => readFileSync(resolve(process.cwd(), path), "utf
 describe("Parcours publics et langage institutionnel", () => {
   it("réserve le sous-menu Nos travaux aux trois projets TLC", () => {
     const header = source("components/header.tsx");
-    const match = header.match(/const workLinks = \[([\s\S]*?)\] as const;/);
+    const match = header.match(/const projectLinks = \[([\s\S]*?)\] as const;/);
     expect(match).not.toBeNull();
     const links = match![1];
     expect(links).toContain('["Tradition Learning", "/resources/tradition-learning"]');
@@ -15,7 +15,8 @@ describe("Parcours publics et langage institutionnel", () => {
     expect(links).toContain('["TL Studio", "/tl-studio"]');
     expect(links).not.toContain('"/projects"');
     expect(links).not.toContain('"/resources"');
-    expect(header).toContain('<Link href="/projects"');
+    expect(header).toContain('href="/projects" className="nav-work-heading"');
+    expect(header).toContain('href="/resources" onClick={closeMenus}');
   });
 
   it("n'affiche pas de compteurs administratifs sur la page Projets", () => {
