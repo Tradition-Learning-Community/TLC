@@ -160,26 +160,3 @@ body{font-size:16px;line-height:1.7}
 .directory-content[data-mode="mission"] .hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 190px;align-items:center;min-height:0;padding:38px 30px;gap:30px}.directory-content[data-mode="mission"] .hero-copy{max-width:700px}.directory-content[data-mode="mission"] .hero-copy h1{max-width:650px;margin:12px 0 14px;font-size:clamp(36px,4vw,48px);line-height:1.08}.directory-content[data-mode="mission"] .hero-copy p{max-width:650px;margin:0;font-size:16px;line-height:1.65}.directory-content[data-mode="mission"] .hero-art{display:grid;height:190px;min-width:0}.directory-content[data-mode="mission"] .art-orbit{width:176px;height:176px}.directory-content[data-mode="mission"] .art-orbit:nth-child(2){width:136px;height:136px}.directory-content[data-mode="mission"] .art-orbit:nth-child(3){width:94px;height:94px}.directory-content[data-mode="mission"] .art-core{width:72px;height:72px;font-size:20px}.directory-content[data-mode="mission"] .art-line{width:125px}.directory-content[data-mode="mission"] .hero-actions{margin-top:20px}.directory-content[data-mode="mission"] .hero-actions .button{width:auto;min-height:42px;padding:11px 16px;font-size:13px}
 @media(max-width:700px){.contributor-photo{height:235px}.directory-content[data-mode="mission"] .hero-inner{grid-template-columns:minmax(0,1fr) 92px;gap:8px;padding:34px 20px 32px}.directory-content[data-mode="mission"] .hero-copy{min-width:0}.directory-content[data-mode="mission"] .hero-copy h1{font-size:clamp(30px,7.5vw,38px)}.directory-content[data-mode="mission"] .hero-copy p{font-size:14px}.directory-content[data-mode="mission"] .hero-art{height:115px;transform:scale(.62);transform-origin:center}.directory-content[data-mode="mission"] .hero-actions{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.directory-content[data-mode="mission"] .hero-actions .button{flex:1 1 145px;width:auto}}
 @media(max-width:420px){.directory-content[data-mode="mission"] .hero-inner{grid-template-columns:minmax(0,1fr) 72px}.directory-content[data-mode="mission"] .hero-art{transform:scale(.48)}}
-
-/* Home stats: keep figures and labels aligned on a shared baseline. */
-.home-content .home-stats .stat{display:flex;align-items:center;justify-content:center;gap:12px;min-width:0;padding:15px 20px;text-align:left}
-.home-content .home-stats .stat strong{display:inline-block;flex:0 0 auto;margin:0;line-height:1}
-.home-content .home-stats .stat span{display:block;max-width:130px;font-size:12px;line-height:1.35;letter-spacing:.04em}
-@media(max-width:700px){.home-content .home-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.home-content .home-stats .stat{justify-content:flex-start;gap:10px;padding:13px 16px}.home-content .home-stats .stat strong{font-size:25px}.home-content .home-stats .stat span{font-size:11px}}
-
-/* Readability pass: raise supporting text while preserving heading hierarchy. */
-body,main{font-size:16px;line-height:1.7}
-.site-nav .brand-name{font-size:11px;line-height:1.4}
-.nav-links a{font-size:14px}
-.eyebrow{font-size:12px;letter-spacing:.13em;line-height:1.55}
-.button{font-size:14px;line-height:1.4;min-height:44px}
-.section-copy,.hero-copy p,.card p,.list-row p,.numbered-list li,.faq details p,.timeline-item p,.feature-copy p,.step-card p,.pillar-card p,.mission-point p,.cta-band p,.home-content .contributor-card-body p,.home-content .testimonial-card>p,.editorial-page .new-section p,.editorial-page .new-prose p,.editorial-page .new-card-grid p,.editorial-page .new-card-grid li,.editorial-page .organization-detail p,.editorial-page .about-principles p{font-size:16px;line-height:1.75}
-.card-meta,.small-note,.person-role,.status-tag,.tllib-status>span,.source-caption,.organization-note,.footer-note,.footer-bottom,.field label,.notice{font-size:14px;line-height:1.6}
-.chip,.filter-pill,.card-link,.text-link,.event-register,.event-more a,.directory-note button,.theory-anchor-nav a,.footer-links a,.footer-link-group a{font-size:14px;line-height:1.5}
-.stat span,.home-content .home-stats .stat span{font-size:13px;line-height:1.45;letter-spacing:.04em}
-.field input,.field textarea,.field select{font-size:16px;line-height:1.5}
-.admin-shell .text-xs{font-size:14px;line-height:1.55}
-.admin-shell .text-sm{font-size:16px;line-height:1.6}
-.admin-shell [class*="text-[11px]"]{font-size:13px}
-.admin-shell [class*="text-[10px]"]{font-size:12px}
-@media(max-width:700px){.nav-links a{font-size:16px}.section-copy,.hero-copy p,.card p,.list-row p,.editorial-page .new-section p,.editorial-page .new-prose p,.editorial-page .new-card-grid p,.editorial-page .new-card-grid li{font-size:16px}.button{font-size:15px}.card-meta,.small-note,.person-role,.field label{font-size:14px}}
